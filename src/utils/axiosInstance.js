@@ -26,9 +26,11 @@ axiosInstance.interceptors.response.use(
     (error) => {
         // Handle token expiration — but NOT on the login endpoint itself,
         // otherwise wrong-password 401s cause a redirect before the UI
-        // can show the error message.
+        // can show the error message. Also skip for the application endpoint
+        // since guests submit without a token.
         const isLoginRequest = error.config?.url?.includes("/api/auth/login");
-        if (error.response && error.response.status === 401 && !isLoginRequest) {
+        const isGuestApply = error.config?.method === "post" && error.config?.url?.includes("/api/applications/");
+        if (error.response && error.response.status === 401 && !isLoginRequest && !isGuestApply) {
             localStorage.removeItem("token")
             localStorage.removeItem("user")
             window.location.href = "/login"

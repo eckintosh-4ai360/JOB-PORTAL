@@ -111,7 +111,7 @@ const EmptyState = ({ title, description, icon: Icon = Inbox }) => (
 
 // ─── Applicant List Item ──────────────────────────────────────────────────────
 const ApplicantListItem = ({ app, index, isSelected, onClick }) => {
-  const name = app.applicant?.name || "Unknown Applicant";
+  const name = app.applicantName || app.applicant?.name || "Unknown Applicant";
   const initials = getInitials(name);
   const gradient = AVATAR_GRADIENTS[index % AVATAR_GRADIENTS.length];
   const cfg = STATUS_CONFIG[app.status] ?? STATUS_CONFIG["Applied"];
@@ -134,6 +134,9 @@ const ApplicantListItem = ({ app, index, isSelected, onClick }) => {
       <div className="min-w-0 flex-1">
         <p className={`truncate text-sm font-semibold ${isSelected ? "text-indigo-700" : "text-gray-900"} group-hover:text-indigo-700 transition-colors`}>
           {name}
+          {app.isGuest && (
+            <span className="ml-1.5 inline-flex items-center rounded-full bg-amber-50 px-1.5 py-0.5 text-[10px] font-bold text-amber-600 ring-1 ring-amber-200">Guest</span>
+          )}
         </p>
         <div className="mt-0.5 flex items-center gap-1.5 text-xs text-gray-400">
           <Calendar className="h-3 w-3 shrink-0" />
@@ -203,8 +206,8 @@ const ApplicationViewer = () => {
 
   // ── Filter Logic ───────────────────────────────────────────────────────────
   const filtered = applications.filter((app) => {
-    const name = app.applicant?.name?.toLowerCase() || "";
-    const email = app.applicant?.email?.toLowerCase() || "";
+    const name = (app.applicantName || app.applicant?.name || "").toLowerCase();
+    const email = (app.applicantEmail || app.applicant?.email || "").toLowerCase();
     const q = searchQuery.toLowerCase();
     const matchesSearch = !q || name.includes(q) || email.includes(q);
     const matchesStatus = statusFilter === "All" || app.status === statusFilter;
@@ -245,7 +248,7 @@ const ApplicationViewer = () => {
   const jobInfo = applications[0]?.job;
   const selectedIndex = filtered.findIndex((a) => a._id === selectedApp?._id);
   const selectedGradient = AVATAR_GRADIENTS[selectedIndex % AVATAR_GRADIENTS.length];
-  const selectedInitials = getInitials(selectedApp?.applicant?.name);
+  const selectedInitials = getInitials(selectedApp?.applicantName || selectedApp?.applicant?.name);
 
   if (!jobId) {
     return (
@@ -432,12 +435,15 @@ const ApplicationViewer = () => {
 
                     <div className="flex-1 min-w-0">
                       <h2 className="text-xl font-bold text-gray-900 truncate">
-                        {selectedApp.applicant?.name || "Unknown Applicant"}
+                        {selectedApp.applicantName || selectedApp.applicant?.name || "Unknown Applicant"}
+                        {selectedApp.isGuest && (
+                          <span className="ml-2 inline-flex items-center rounded-full bg-amber-50 px-2 py-0.5 text-xs font-bold text-amber-600 ring-1 ring-amber-200">Guest Applicant</span>
+                        )}
                       </h2>
                       <div className="flex items-center gap-2 mt-1 flex-wrap">
                         <span className="flex items-center gap-1 text-xs text-gray-400">
                           <Mail className="h-3 w-3" />
-                          {selectedApp.applicant?.email || "—"}
+                          {selectedApp.applicantEmail || selectedApp.applicant?.email || "—"}
                         </span>
                         <span className="h-1 w-1 rounded-full bg-gray-300 shrink-0" />
                         <span className="flex items-center gap-1 text-xs text-gray-400">
@@ -500,7 +506,10 @@ const ApplicationViewer = () => {
                         <h3 className="text-sm font-bold text-gray-900">Applicant Details</h3>
                       </div>
                       <div>
-                        <InfoRow icon={Mail} label="Email Address" value={selectedApp.applicant?.email} />
+                        <InfoRow icon={Mail} label="Email Address" value={selectedApp.applicantEmail || selectedApp.applicant?.email} />
+                        {selectedApp.isGuest && selectedApp.applicantPhone && (
+                          <InfoRow icon={Phone} label="Phone Number" value={selectedApp.applicantPhone} />
+                        )}
                         <InfoRow icon={Calendar} label="Applied On" value={moment(selectedApp.createdAt).format("MMM D, YYYY · h:mm A")} />
                         <InfoRow icon={Clock} label="Last Updated" value={moment(selectedApp.updatedAt).fromNow()} />
                         <InfoRow icon={Briefcase} label="Applied For" value={selectedApp.job?.title} />

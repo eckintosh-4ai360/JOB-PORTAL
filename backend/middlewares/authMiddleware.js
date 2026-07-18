@@ -19,4 +19,25 @@ const protect = async (req, res, next) => {
         return res.status(401).json({message: "Not authorized, invalid token"});
     }
 };
-module.exports = {protect};
+/**
+ * Optional auth middleware — attaches req.user when a valid token is present,
+ * but allows the request to proceed without authentication (for guest flows).
+ */
+const optionalAuth = async (req, res, next) => {
+    try {
+        let token = req.headers.authorization;
+
+        if (token && token.startsWith("Bearer")) {
+            token = token.split(" ")[1];
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            req.user = await User.findById(decoded.id).select("-password");
+        }
+        // If no token or invalid token, req.user stays undefined — that's fine
+    } catch (error) {
+        // Token was present but invalid — silently continue as guest
+        req.user = null;
+    }
+    next();
+};
+
+module.exports = { protect, optionalAuth };

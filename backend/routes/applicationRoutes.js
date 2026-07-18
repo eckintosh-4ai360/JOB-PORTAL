@@ -8,11 +8,11 @@ const {
     updateApplicationStatus,
     withdrawApplication,
 } = require("../controllers/applicationController");
-const { protect } = require("../middlewares/authMiddleware");
+const { protect, optionalAuth } = require("../middlewares/authMiddleware");
 const upload = require("../middlewares/uploadMiddleware");
 
-// Jobseeker — submit an application (with optional resume file upload)
-router.post("/:jobId", protect, upload.single("resume"), applyForJob);
+// Apply for a job — works for both logged-in users and guests
+router.post("/:jobId", optionalAuth, upload.single("resume"), applyForJob);
 
 // Jobseeker — view all their own applications
 router.get("/my-applications", protect, getMyApplications);

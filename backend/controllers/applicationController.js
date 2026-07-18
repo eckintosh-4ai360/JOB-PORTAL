@@ -2,15 +2,11 @@ const Application = require("../models/Application");
 const Job = require("../models/Job");
 const { uploadToCloudinary, uploadToLocalDisk } = require("../middlewares/uploadMiddleware");
 
-// @desc    Apply for a job
+// @desc    Apply for a job (authenticated users OR guests)
 // @route   POST /api/applications/:jobId
-// @access  Private (Jobseeker only)
+// @access  Public (optionalAuth — works with or without JWT)
 const applyForJob = async (req, res) => {
     try {
-        if (req.user.role !== "jobseeker") {
-            return res.status(403).json({ message: "Only jobseekers can apply for jobs" });
-        }
-
         const job = await Job.findById(req.params.jobId);
 
         if (!job) {
@@ -21,17 +17,38 @@ const applyForJob = async (req, res) => {
             return res.status(400).json({ message: "This job is no longer accepting applications" });
         }
 
-        // Prevent duplicate applications
-        const alreadyApplied = await Application.findOne({
-            job: req.params.jobId,
-            applicant: req.user._id,
-        });
+        const isLoggedIn = !!req.user;
 
-        if (alreadyApplied) {
-            return res.status(400).json({ message: "You have already applied for this job" });
+        // ── Role check (logged-in users only) ─────────────────────────────
+        if (isLoggedIn && req.user.role !== "jobseeker") {
+            return res.status(403).json({ message: "Only jobseekers can apply for jobs" });
         }
 
-        // Resume: upload file buffer to Cloudinary, or use a URL passed in body
+        // ── Duplicate prevention ───────────────────────────────────────────
+        if (isLoggedIn) {
+            const alreadyApplied = await Application.findOne({
+                job: req.params.jobId,
+                applicant: req.user._id,
+            });
+            if (alreadyApplied) {
+                return res.status(400).json({ message: "You have already applied for this job" });
+            }
+        } else {
+            // Guest: require name & email
+            const { guestName, guestEmail } = req.body;
+            if (!guestName || !guestEmail) {
+                return res.status(400).json({ message: "Name and email are required for guest applications" });
+            }
+            const alreadyApplied = await Application.findOne({
+                job: req.params.jobId,
+                guestEmail: guestEmail.toLowerCase().trim(),
+            });
+            if (alreadyApplied) {
+                return res.status(400).json({ message: "An application with this email already exists for this job" });
+            }
+        }
+
+        // ── Resume handling ────────────────────────────────────────────────
         let resume = req.body.resume;
         if (req.file) {
             try {
@@ -51,12 +68,22 @@ const applyForJob = async (req, res) => {
             return res.status(400).json({ message: "A resume (file or URL) is required" });
         }
 
-        const application = await Application.create({
+        // ── Create application ─────────────────────────────────────────────
+        const applicationData = {
             job: req.params.jobId,
-            applicant: req.user._id,
             resume,
             coverLetter: req.body.coverLetter || "",
-        });
+        };
+
+        if (isLoggedIn) {
+            applicationData.applicant = req.user._id;
+        } else {
+            applicationData.guestName = req.body.guestName.trim();
+            applicationData.guestEmail = req.body.guestEmail.toLowerCase().trim();
+            applicationData.guestPhone = req.body.guestPhone?.trim() || "";
+        }
+
+        const application = await Application.create(applicationData);
 
         res.status(201).json({ message: "Application submitted successfully", application });
     } catch (error) {
@@ -108,7 +135,22 @@ const getApplicationsForJob = async (req, res) => {
             .populate("applicant", "name email avatar resume")
             .sort({ createdAt: -1 });
 
-        res.status(200).json(applications);
+        // Normalize output so employers see consistent name/email for both
+        // registered and guest applicants
+        const normalized = applications.map((app) => {
+            const obj = app.toObject();
+            if (obj.isGuest) {
+                obj.applicantName = obj.guestName;
+                obj.applicantEmail = obj.guestEmail;
+                obj.applicantPhone = obj.guestPhone || "";
+            } else if (obj.applicant) {
+                obj.applicantName = obj.applicant.name;
+                obj.applicantEmail = obj.applicant.email;
+            }
+            return obj;
+        });
+
+        res.status(200).json(normalized);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server error", error: error.message });
@@ -128,7 +170,7 @@ const getApplicationById = async (req, res) => {
             return res.status(404).json({ message: "Application not found" });
         }
 
-        const isApplicant = application.applicant._id.toString() === req.user._id.toString();
+        const isApplicant = application.applicant && application.applicant._id.toString() === req.user._id.toString();
         const job = await Job.findById(application.job._id);
         const isJobOwner = job && job.company.toString() === req.user._id.toString();
 
