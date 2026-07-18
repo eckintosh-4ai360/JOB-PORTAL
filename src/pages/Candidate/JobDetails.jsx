@@ -5,7 +5,7 @@ import {
   ArrowLeft, Bookmark, CheckCircle2, ChevronRight,
   FileText, Shield, Sparkles, Building2, ExternalLink,
   Award, Globe, Mail, Phone, Loader2, Send, X, User,
-  UserPlus,
+  UserPlus, PenLine, Upload,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import CandidateHeader from "../../components/layout/CandidateHeader";
@@ -36,6 +36,10 @@ const JobDetails = () => {
   const [resumeOption, setResumeOption] = useState("profile"); // profile or custom
   const [customResumeFile, setCustomResumeFile] = useState(null);
   const [isSubmittingApp, setIsSubmittingApp] = useState(false);
+
+  // Cover letter option: "type" or "upload"
+  const [coverLetterOption, setCoverLetterOption] = useState("type");
+  const [coverLetterFile, setCoverLetterFile] = useState(null);
 
   // Guest applicant fields
   const [guestName, setGuestName] = useState("");
@@ -122,11 +126,13 @@ const JobDetails = () => {
 
   // Open apply modal — always opens, no login redirect
   const handleApplyClick = () => {
-    // Reset guest fields when opening the modal
+    // Reset all fields when opening the modal
     setGuestName("");
     setGuestEmail("");
     setGuestPhone("");
     setCoverLetter("");
+    setCoverLetterOption("type");
+    setCoverLetterFile(null);
     setCustomResumeFile(null);
     setResumeOption(isAuthenticated ? "profile" : "custom");
     setShowApplyModal(true);
@@ -175,7 +181,10 @@ const JobDetails = () => {
 
     try {
       const formData = new FormData();
-      formData.append("coverLetter", coverLetter);
+      formData.append("coverLetter", coverLetterOption === "type" ? coverLetter : "");
+      if (coverLetterOption === "upload" && coverLetterFile) {
+        formData.append("coverLetterFile", coverLetterFile);
+      }
 
       if (!isAuthenticated) {
         // Guest fields
@@ -201,6 +210,8 @@ const JobDetails = () => {
       setAppliedStatus("Applied");
       setShowApplyModal(false);
       setCoverLetter("");
+      setCoverLetterFile(null);
+      setCoverLetterOption("type");
       setCustomResumeFile(null);
       setGuestName("");
       setGuestEmail("");
@@ -605,16 +616,67 @@ const JobDetails = () => {
                 </div>
               )}
 
-              {/* Cover Letter Input */}
-              <div className="space-y-1.5">
+              {/* Cover Letter Section */}
+              <div className="space-y-2.5">
                 <label className="text-sm font-bold text-gray-700">Cover Letter (Optional)</label>
-                <textarea
-                  value={coverLetter}
-                  onChange={(e) => setCoverLetter(e.target.value)}
-                  rows={5}
-                  placeholder="Introduce yourself to the hiring manager and explain why you're a great fit for this job…"
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20"
-                />
+                {/* Toggle: Type vs Upload */}
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setCoverLetterOption("type")}
+                    className={`flex flex-col items-center gap-1.5 rounded-xl p-3 border-2 text-xs font-bold transition ${
+                      coverLetterOption === "type"
+                        ? "bg-indigo-50 border-indigo-600 text-indigo-700 shadow-xs"
+                        : "bg-gray-50 border-gray-100 text-gray-400 hover:border-gray-200 hover:text-gray-600"
+                    }`}
+                  >
+                    <PenLine className="h-4.5 w-4.5" />
+                    Write Cover Letter
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setCoverLetterOption("upload")}
+                    className={`flex flex-col items-center gap-1.5 rounded-xl p-3 border-2 text-xs font-bold transition ${
+                      coverLetterOption === "upload"
+                        ? "bg-indigo-50 border-indigo-600 text-indigo-700 shadow-xs"
+                        : "bg-gray-50 border-gray-100 text-gray-400 hover:border-gray-200 hover:text-gray-600"
+                    }`}
+                  >
+                    <Upload className="h-4.5 w-4.5" />
+                    Upload Document
+                  </button>
+                </div>
+
+                {/* Type mode */}
+                {coverLetterOption === "type" ? (
+                  <textarea
+                    value={coverLetter}
+                    onChange={(e) => setCoverLetter(e.target.value)}
+                    rows={5}
+                    placeholder="Introduce yourself to the hiring manager and explain why you're a great fit for this job…"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20"
+                  />
+                ) : (
+                  /* Upload mode */
+                  <div className="space-y-2">
+                    <div className="rounded-xl border-2 border-dashed border-gray-200 p-4 text-center">
+                      <input
+                        type="file"
+                        accept="application/pdf,.doc,.docx"
+                        onChange={(e) => setCoverLetterFile(e.target.files?.[0])}
+                        className="w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer"
+                      />
+                      <p className="text-[10px] text-gray-400 mt-2">PDF, DOC, or DOCX (Max 10 MB)</p>
+                    </div>
+                    {coverLetterFile && (
+                      <div className="rounded-xl border border-emerald-100 bg-emerald-50/30 p-3 flex items-center gap-2.5">
+                        <FileText className="h-4 w-4 text-emerald-600 shrink-0" />
+                        <p className="text-xs font-semibold text-emerald-700 truncate">{coverLetterFile.name}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* ── Optional Account Prompt (guest only) ─────────────────── */}

@@ -13,7 +13,8 @@ const applicationSchema = new mongoose.Schema(
         guestPhone: { type: String, default: "" },
 
         resume: { type: String, required: true }, // stored file path or URL
-        coverLetter: { type: String },
+        coverLetter: { type: String },             // typed text
+        coverLetterFile: { type: String },          // uploaded document URL
         status: {
             type: String,
             enum: ["Applied", "Under Review", "Offered", "Rejected"],
@@ -24,11 +25,10 @@ const applicationSchema = new mongoose.Schema(
 );
 
 // Custom validation: either a registered applicant OR guest name + email must be present
-applicationSchema.pre("validate", function (next) {
+applicationSchema.pre("validate", function () {
     if (!this.applicant && (!this.guestName || !this.guestEmail)) {
-        return next(new Error("Either a registered applicant or guest name and email are required."));
+        throw new Error("Either a registered applicant or guest name and email are required.");
     }
-    next();
 });
 
 // Virtual to quickly check if an application is from a guest

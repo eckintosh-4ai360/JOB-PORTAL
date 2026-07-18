@@ -49,17 +49,18 @@ const applyForJob = async (req, res) => {
         }
 
         // ── Resume handling ────────────────────────────────────────────────
+        const resumeFile = req.files?.resume?.[0];
         let resume = req.body.resume;
-        if (req.file) {
+        if (resumeFile) {
             try {
-                const result = await uploadToCloudinary(req.file.buffer, {
+                const result = await uploadToCloudinary(resumeFile.buffer, {
                     folder: "job-portal/resumes",
                     resource_type: "raw",
                 });
                 resume = result.secure_url;
             } catch (cloudinaryError) {
                 console.warn("Cloudinary upload failed, falling back to local disk storage:", cloudinaryError.message || cloudinaryError);
-                const filename = await uploadToLocalDisk(req.file.buffer, req.file.originalname);
+                const filename = await uploadToLocalDisk(resumeFile.buffer, resumeFile.originalname);
                 resume = `${req.protocol}://${req.get("host")}/uploads/${filename}`;
             }
         }
@@ -68,11 +69,29 @@ const applyForJob = async (req, res) => {
             return res.status(400).json({ message: "A resume (file or URL) is required" });
         }
 
+        // ── Cover letter file handling ─────────────────────────────────────
+        const coverLetterFileUpload = req.files?.coverLetterFile?.[0];
+        let coverLetterFileUrl = "";
+        if (coverLetterFileUpload) {
+            try {
+                const result = await uploadToCloudinary(coverLetterFileUpload.buffer, {
+                    folder: "job-portal/cover-letters",
+                    resource_type: "raw",
+                });
+                coverLetterFileUrl = result.secure_url;
+            } catch (cloudinaryError) {
+                console.warn("Cloudinary cover letter upload failed, falling back to local disk:", cloudinaryError.message || cloudinaryError);
+                const filename = await uploadToLocalDisk(coverLetterFileUpload.buffer, coverLetterFileUpload.originalname);
+                coverLetterFileUrl = `${req.protocol}://${req.get("host")}/uploads/${filename}`;
+            }
+        }
+
         // ── Create application ─────────────────────────────────────────────
         const applicationData = {
             job: req.params.jobId,
             resume,
             coverLetter: req.body.coverLetter || "",
+            coverLetterFile: coverLetterFileUrl || "",
         };
 
         if (isLoggedIn) {

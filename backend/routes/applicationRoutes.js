@@ -12,7 +12,10 @@ const { protect, optionalAuth } = require("../middlewares/authMiddleware");
 const upload = require("../middlewares/uploadMiddleware");
 
 // Apply for a job — works for both logged-in users and guests
-router.post("/:jobId", optionalAuth, upload.single("resume"), applyForJob);
+router.post("/:jobId", optionalAuth, upload.fields([
+    { name: "resume", maxCount: 1 },
+    { name: "coverLetterFile", maxCount: 1 },
+]), applyForJob);
 
 // Jobseeker — view all their own applications
 router.get("/my-applications", protect, getMyApplications);

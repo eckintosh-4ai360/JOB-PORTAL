@@ -570,17 +570,54 @@ const ApplicationViewer = () => {
                   </div>
 
                   {/* ── Cover Letter ───────────────────────────────────────── */}
-                  {selectedApp.coverLetter && (
+                  {(selectedApp.coverLetter || selectedApp.coverLetterFile) && (
                     <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
                       <div className="flex items-center gap-2 mb-3">
                         <Star className="h-4 w-4 text-amber-400" />
                         <h3 className="text-sm font-bold text-gray-900">Cover Letter</h3>
                       </div>
-                      <div className="rounded-xl bg-slate-50 p-4 border border-slate-100">
-                        <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
-                          {selectedApp.coverLetter}
-                        </p>
-                      </div>
+
+                      {/* Typed cover letter text */}
+                      {selectedApp.coverLetter && (
+                        <div className="rounded-xl bg-slate-50 p-4 border border-slate-100">
+                          <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+                            {selectedApp.coverLetter}
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Uploaded cover letter document */}
+                      {selectedApp.coverLetterFile && (
+                        <div className={`flex items-center gap-3 rounded-xl border border-indigo-100 bg-indigo-50/30 p-4 ${selectedApp.coverLetter ? "mt-3" : ""}`}>
+                          <div className="h-10 w-10 rounded-lg bg-indigo-100 flex items-center justify-center shrink-0">
+                            <FileText className="h-5 w-5 text-indigo-500" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs font-bold text-gray-800">Cover Letter Document</p>
+                            <p className="text-[10px] text-gray-400 truncate break-all mt-0.5">
+                              {selectedApp.coverLetterFile.split("/").pop()}
+                            </p>
+                          </div>
+                          <div className="flex gap-2 shrink-0">
+                            <a
+                              href={selectedApp.coverLetterFile}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-indigo-700 transition"
+                            >
+                              <Eye className="h-3 w-3" />
+                              View
+                            </a>
+                            <a
+                              href={selectedApp.coverLetterFile}
+                              download
+                              className="inline-flex items-center gap-1 rounded-lg border border-indigo-200 bg-white px-3 py-1.5 text-xs font-semibold text-indigo-600 hover:bg-indigo-50 transition"
+                            >
+                              <Download className="h-3 w-3" />
+                            </a>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
 

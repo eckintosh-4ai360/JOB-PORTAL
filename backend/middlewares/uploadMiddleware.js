@@ -11,13 +11,18 @@ cloudinary.config({
 // Use memoryStorage instead of multer-storage-cloudinary (incompatible with multer v2)
 const storage = multer.memoryStorage();
 
-// File filter — allow images and PDFs only
+// File filter — allow images, PDFs, and Word documents
 const fileFilter = (req, file, cb) => {
-    const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png", "application/pdf"];
+    const allowedFileTypes = [
+        "image/jpeg", "image/jpg", "image/png",
+        "application/pdf",
+        "application/msword",                                                    // .doc
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" // .docx
+    ];
     if (allowedFileTypes.includes(file.mimetype)) {
         cb(null, true);
     } else {
-        cb(new Error("Invalid file type. Only JPEG, PNG, and PDF are allowed."), false);
+        cb(new Error("Invalid file type. Only JPEG, PNG, PDF, DOC, and DOCX are allowed."), false);
     }
 };
 
