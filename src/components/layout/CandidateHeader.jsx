@@ -115,7 +115,6 @@ const CandidateHeader = () => {
               </div>
             )}
           </div>
-
         </div>
       </div>
     </header>
