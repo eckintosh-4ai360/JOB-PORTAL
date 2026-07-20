@@ -37,7 +37,7 @@ export const App = () => {
           <Route path="/job/:jobId" element={<JobDetails/>} />
 
           {/* candidate-only routes — login required */}
-          <Route element={<ProtectedRoute requiredRole="candidate" />}>
+          <Route element={<ProtectedRoute requiredRole="jobseeker" />}>
             <Route path="/saved-jobs" element={<SavedJobs/>} />
             <Route path="/profile" element={<UserProfile/>} />
           </Route>

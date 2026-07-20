@@ -588,7 +588,14 @@ const ApplicationViewer = () => {
                         <div className="bg-white rounded-xl p-3 border border-amber-100/50 shadow-xs">
                           <p className="text-[10px] uppercase font-bold text-gray-400">Time</p>
                           <p className="mt-1 text-sm font-semibold text-gray-800">
-                            {selectedApp.interview.time}
+                            {selectedApp.interview.time
+                              ? (() => {
+                                  const [h, m] = selectedApp.interview.time.split(":").map(Number);
+                                  const ampm = h >= 12 ? "PM" : "AM";
+                                  const hour = h % 12 || 12;
+                                  return `${hour}:${String(m).padStart(2, "0")} ${ampm}`;
+                                })()
+                              : "—"}
                           </p>
                         </div>
                         <div className="bg-white rounded-xl p-3 border border-amber-100/50 shadow-xs">
@@ -849,12 +856,11 @@ const ApplicationViewer = () => {
                 <div className="flex flex-col gap-1.5">
                   <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Interview Time</label>
                   <input
-                    type="text"
-                    placeholder="e.g. 10:00 AM, 2:30 PM"
+                    type="time"
                     required
                     value={interviewDetails.time}
                     onChange={(e) => setInterviewDetails((prev) => ({ ...prev, time: e.target.value }))}
-                    className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm text-gray-805 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none transition"
+                    className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm text-gray-800 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none transition cursor-pointer"
                   />
                 </div>
               </div>
