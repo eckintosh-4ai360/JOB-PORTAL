@@ -3,7 +3,7 @@ import {
   User2, Mail, FileText, Edit3, Save, X, Camera,
   Shield, Check, Loader2, Briefcase, Star, Trash2,
   Eye, Download, Bookmark, Clock, ArrowRight, ExternalLink,
-  ChevronRight, AlertCircle, Inbox, Plus,
+  ChevronRight, AlertCircle, Inbox, Plus, Calendar,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -23,9 +23,13 @@ const STATUS_CONFIG = {
     label: "Under Review",
     badge: "bg-blue-50 text-blue-700 ring-1 ring-blue-200",
   },
+  Interviewing: {
+    label: "Interviewing",
+    badge: "bg-amber-50 text-amber-700 ring-1 ring-amber-200",
+  },
   Offered: {
     label: "Offered",
-    badge: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200",
+    badge: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-250",
   },
   Rejected: {
     label: "Rejected",
@@ -91,6 +95,8 @@ const UserProfile = () => {
   const [myApplications, setMyApplications] = useState([]);
   const [savedJobsCount, setSavedJobsCount] = useState(0);
   const [isLoadingStats, setIsLoadingStats] = useState(false);
+  const [isInterviewModalOpen, setIsInterviewModalOpen] = useState(false);
+  const [selectedInterviewApp, setSelectedInterviewApp] = useState(null);
 
   // Form state
   const [form, setForm] = useState({
@@ -583,15 +589,30 @@ const UserProfile = () => {
                 <div className="divide-y divide-gray-100">
                   {myApplications.slice(0, 4).map((app) => {
                     const statusCfg = STATUS_CONFIG[app.status] || STATUS_CONFIG.Applied;
+                    const companyName = app.job?.company?.companyName || app.job?.company?.name || "Company";
                     return (
                       <div key={app._id} className="py-3.5 flex items-center justify-between gap-4 first:pt-0 last:pb-0">
-                        <div className="min-w-0">
+                        <div className="min-w-0 flex-1">
                           <p className="text-sm font-bold text-gray-800 truncate">{app.job?.title || "Position"}</p>
-                          <div className="flex items-center gap-2 mt-1 text-xs text-gray-400">
+                          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1 text-xs text-gray-400">
+                            <span className="font-semibold text-gray-500">{companyName}</span>
+                            <span>•</span>
                             <span>{app.job?.location || "Location"}</span>
                             <span>•</span>
                             <span>Applied {moment(app.createdAt).fromNow()}</span>
                           </div>
+                          {app.status === "Interviewing" && app.interview && (
+                            <button
+                              onClick={() => {
+                                setSelectedInterviewApp(app);
+                                setIsInterviewModalOpen(true);
+                              }}
+                              className="mt-2.5 inline-flex items-center gap-1.5 rounded-lg border border-amber-200 bg-amber-50/30 hover:bg-amber-50 px-2.5 py-1 text-[11px] font-bold text-amber-700 transition"
+                            >
+                              <Calendar className="h-3 w-3 text-amber-500" />
+                              View Interview Schedule
+                            </button>
+                          )}
                         </div>
 
                         <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-bold shrink-0 ${statusCfg.badge}`}>
@@ -694,8 +715,115 @@ const UserProfile = () => {
         </div>
 
       </main>
-    </div>
-  );
+      
+      {/* ── Candidate Interview Details Modal ──────────────────────────────── */}
+    {isInterviewModalOpen && selectedInterviewApp?.interview && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+        <div className="bg-white rounded-2xl max-w-lg w-full border border-gray-100 shadow-2xl p-6 relative overflow-hidden animate-in fade-in zoom-in duration-200">
+          <button
+            onClick={() => {
+              setIsInterviewModalOpen(false);
+              setSelectedInterviewApp(null);
+            }}
+            className="absolute right-4 top-4 text-gray-400 hover:text-gray-600 transition"
+          >
+            <X className="h-5 w-5" />
+          </button>
+          
+          <div className="flex items-center gap-2.5 mb-5">
+            <div className="h-9 w-9 bg-amber-50 rounded-xl flex items-center justify-center">
+              <Calendar className="h-5 w-5 text-amber-600" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-gray-900">Interview Scheduled</h3>
+              <p className="text-xs text-gray-400">For position: <span className="font-semibold text-indigo-650">{selectedInterviewApp.job?.title}</span></p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <div className="bg-slate-50/50 rounded-xl p-4 border border-slate-100 flex items-center gap-3">
+              <div className="h-10 w-10 bg-indigo-50 rounded-xl flex items-center justify-center shrink-0">
+                <Briefcase className="h-5 w-5 text-indigo-500" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs font-medium text-gray-400">Employer / Company</p>
+                <p className="text-sm font-bold text-gray-800 truncate">
+                  {selectedInterviewApp.job?.company?.companyName || selectedInterviewApp.job?.company?.name || "Company Name"}
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-slate-50/50 rounded-xl p-3.5 border border-slate-100">
+                <p className="text-[10px] uppercase font-bold text-gray-400">Date</p>
+                <p className="mt-1 text-sm font-semibold text-gray-800">
+                  {moment(selectedInterviewApp.interview.date).format("MMM D, YYYY")}
+                </p>
+              </div>
+              <div className="bg-slate-50/50 rounded-xl p-3.5 border border-slate-100">
+                <p className="text-[10px] uppercase font-bold text-gray-400">Time</p>
+                <p className="mt-1 text-sm font-semibold text-gray-800">
+                  {selectedInterviewApp.interview.time}
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-slate-50/50 rounded-xl p-4 border border-slate-100">
+              <p className="text-[10px] uppercase font-bold text-gray-400 mb-1">Location / Joining Link</p>
+              <div className="flex items-center justify-between gap-3 min-w-0">
+                <p className="text-sm font-semibold text-gray-805 truncate break-all">
+                  {selectedInterviewApp.interview.location}
+                </p>
+                {selectedInterviewApp.interview.location?.startsWith("http") ? (
+                  <a
+                    href={selectedInterviewApp.interview.location}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 rounded-lg bg-indigo-600 hover:bg-indigo-700 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition shrink-0"
+                  >
+                    Join
+                    <ExternalLink className="h-3 w-3" />
+                  </a>
+                ) : (
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(selectedInterviewApp.interview.location);
+                      toast.success("Location copied to clipboard!");
+                    }}
+                    className="text-xs font-semibold text-indigo-650 hover:text-indigo-700 hover:underline shrink-0"
+                  >
+                    Copy
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {selectedInterviewApp.interview.notes && (
+              <div className="bg-slate-50/50 rounded-xl p-4 border border-slate-100">
+                <p className="text-[10px] uppercase font-bold text-gray-400 mb-1.5">Employer's Instructions</p>
+                <p className="text-xs text-gray-600 leading-relaxed whitespace-pre-wrap">
+                  {selectedInterviewApp.interview.notes}
+                </p>
+              </div>
+            )}
+
+            <div className="pt-3 border-t border-gray-150/70 flex justify-end">
+              <button
+                onClick={() => {
+                  setIsInterviewModalOpen(false);
+                  setSelectedInterviewApp(null);
+                }}
+                className="rounded-xl bg-gray-100 hover:bg-gray-200 px-5 py-2.5 text-xs font-semibold text-gray-700 transition"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+);
 };
 
 export default UserProfile;

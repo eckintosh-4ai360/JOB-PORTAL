@@ -17,8 +17,14 @@ const applicationSchema = new mongoose.Schema(
         coverLetterFile: { type: String },          // uploaded document URL
         status: {
             type: String,
-            enum: ["Applied", "Under Review", "Offered", "Rejected"],
+            enum: ["Applied", "Under Review", "Interviewing", "Offered", "Rejected"],
             default: "Applied",
+        },
+        interview: {
+            date: { type: Date },
+            time: { type: String },
+            location: { type: String },
+            notes: { type: String, default: "" },
         },
     },
     { timestamps: true }

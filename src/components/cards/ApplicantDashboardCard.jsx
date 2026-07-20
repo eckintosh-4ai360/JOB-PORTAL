@@ -3,26 +3,26 @@ import moment from "moment";
 
 // ── Status config ─────────────────────────────────────────────────────────────
 const STATUS_CONFIG = {
-  pending: {
-    label: "Pending",
-    icon: Loader2,
-    classes: "bg-amber-50 text-amber-600 ring-1 ring-amber-200",
-    spin: true,
+  applied: {
+    label: "Applied",
+    icon: Clock,
+    classes: "bg-slate-50 text-slate-600 ring-1 ring-slate-200",
+    spin: false,
   },
-  reviewing: {
-    label: "Reviewing",
+  "under review": {
+    label: "Under Review",
     icon: Loader2,
     classes: "bg-blue-50 text-blue-600 ring-1 ring-blue-200",
     spin: true,
   },
-  shortlisted: {
-    label: "Shortlisted",
-    icon: CheckCircle2,
-    classes: "bg-violet-50 text-violet-600 ring-1 ring-violet-200",
+  interviewing: {
+    label: "Interviewing",
+    icon: Clock,
+    classes: "bg-amber-50 text-amber-600 ring-1 ring-amber-200",
     spin: false,
   },
-  accepted: {
-    label: "Accepted",
+  offered: {
+    label: "Offered",
     icon: CheckCircle2,
     classes: "bg-emerald-50 text-emerald-600 ring-1 ring-emerald-200",
     spin: false,
@@ -31,6 +31,12 @@ const STATUS_CONFIG = {
     label: "Rejected",
     icon: XCircle,
     classes: "bg-red-50 text-red-500 ring-1 ring-red-200",
+    spin: false,
+  },
+  pending: {
+    label: "Pending",
+    icon: Clock,
+    classes: "bg-slate-50 text-slate-600 ring-1 ring-slate-200",
     spin: false,
   },
 };

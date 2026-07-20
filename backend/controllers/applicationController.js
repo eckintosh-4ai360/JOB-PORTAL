@@ -121,7 +121,14 @@ const getMyApplications = async (req, res) => {
         }
 
         const applications = await Application.find({ applicant: req.user._id })
-            .populate("job", "title location type company isClosed")
+            .populate({
+                path: "job",
+                select: "title location type company isClosed",
+                populate: {
+                    path: "company",
+                    select: "name companyName companyLogo",
+                },
+            })
             .sort({ createdAt: -1 });
 
         res.status(200).json(applications);
@@ -182,7 +189,14 @@ const getApplicationsForJob = async (req, res) => {
 const getApplicationById = async (req, res) => {
     try {
         const application = await Application.findById(req.params.id)
-            .populate("job", "title location type company")
+            .populate({
+                path: "job",
+                select: "title location type company",
+                populate: {
+                    path: "company",
+                    select: "name companyName companyLogo",
+                },
+            })
             .populate("applicant", "name email avatar");
 
         if (!application) {
@@ -213,8 +227,8 @@ const updateApplicationStatus = async (req, res) => {
             return res.status(403).json({ message: "Only employers can update application status" });
         }
 
-        const { status } = req.body;
-        const allowedStatuses = ["Applied", "Under Review", "Offered", "Rejected"];
+        const { status, interview } = req.body;
+        const allowedStatuses = ["Applied", "Under Review", "Interviewing", "Offered", "Rejected"];
 
         if (!allowedStatuses.includes(status)) {
             return res.status(400).json({ message: `Status must be one of: ${allowedStatuses.join(", ")}` });
@@ -230,6 +244,21 @@ const updateApplicationStatus = async (req, res) => {
 
         if (!job || job.company.toString() !== req.user._id.toString()) {
             return res.status(403).json({ message: "Not authorized to update this application" });
+        }
+
+        if (status === "Interviewing") {
+            if (!application.applicant) {
+                return res.status(400).json({ message: "Interviews can only be scheduled for candidates with registered accounts." });
+            }
+            if (!interview || !interview.date || !interview.time || !interview.location) {
+                return res.status(400).json({ message: "Interview date, time, and location/link are required when scheduling an interview." });
+            }
+            application.interview = {
+                date: new Date(interview.date),
+                time: interview.time,
+                location: interview.location,
+                notes: interview.notes || "",
+            };
         }
 
         application.status = status;

@@ -44,6 +44,7 @@ const GhsIcon = () => (
 const STATUS_CONFIGS = {
   Applied: "bg-slate-100 text-slate-700 ring-1 ring-slate-200",
   "Under Review": "bg-blue-50 text-blue-700 ring-1 ring-blue-200",
+  Interviewing: "bg-amber-50 text-amber-700 ring-1 ring-amber-200",
   Offered: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-250",
   Rejected: "bg-red-50 text-red-600 ring-1 ring-red-200",
 };

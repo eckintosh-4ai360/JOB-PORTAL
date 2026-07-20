@@ -34,6 +34,15 @@ const STATUS_CONFIG = {
     badge: "bg-blue-50 text-blue-600 ring-1 ring-blue-200",
     spin: true,
   },
+  Interviewing: {
+    label: "Interviewing",
+    icon: Calendar,
+    bg: "bg-amber-50",
+    text: "text-amber-600",
+    ring: "ring-amber-200",
+    dot: "bg-amber-500",
+    badge: "bg-amber-50 text-amber-600 ring-1 ring-amber-200",
+  },
   Offered: {
     label: "Offered",
     icon: CheckCircle2,
@@ -54,7 +63,7 @@ const STATUS_CONFIG = {
   },
 };
 
-const STATUS_OPTIONS = ["Applied", "Under Review", "Offered", "Rejected"];
+const STATUS_OPTIONS = ["Applied", "Under Review", "Interviewing", "Offered", "Rejected"];
 
 // ─── Avatar Gradients ────────────────────────────────────────────────────────
 const AVATAR_GRADIENTS = [
@@ -180,6 +189,8 @@ const ApplicationViewer = () => {
   const [statusFilter, setStatusFilter] = useState("All");
   const [showFilters, setShowFilters] = useState(false);
   const [resumePreviewOpen, setResumePreviewOpen] = useState(false);
+  const [isSchedulingModalOpen, setIsSchedulingModalOpen] = useState(false);
+  const [interviewDetails, setInterviewDetails] = useState({ date: "", time: "", location: "", notes: "" });
 
   // ── Fetch Applications ─────────────────────────────────────────────────────
   const fetchApplications = useCallback(async () => {
@@ -239,6 +250,49 @@ const ApplicationViewer = () => {
     } catch (err) {
       toast.dismiss(id);
       toast.error(err.response?.data?.message || "Failed to update status.");
+    } finally {
+      setIsUpdatingStatus(false);
+    }
+  };
+  
+  // ── Schedule/Update Interview ─────────────────────────────────────────────
+  const handleScheduleSubmit = async (e) => {
+    e.preventDefault();
+    if (!interviewDetails.date || !interviewDetails.time || !interviewDetails.location) {
+      toast.error("Date, Time, and Location/Link are required.");
+      return;
+    }
+
+    setIsUpdatingStatus(true);
+    const id = toast.loading("Saving interview schedule…");
+    try {
+      const res = await axiosInstance.patch(API_PATHS.APPLICATIONS.UPDATE_STATUS(selectedApp._id), {
+        status: "Interviewing",
+        interview: interviewDetails,
+      });
+      toast.dismiss(id);
+      toast.success("Interview scheduled successfully!");
+      
+      const updatedApp = res.data.application || {
+        ...selectedApp,
+        status: "Interviewing",
+        interview: {
+          date: new Date(interviewDetails.date),
+          time: interviewDetails.time,
+          location: interviewDetails.location,
+          notes: interviewDetails.notes,
+        }
+      };
+      
+      const updated = applications.map((a) =>
+        a._id === selectedApp._id ? { ...a, status: "Interviewing", interview: updatedApp.interview } : a
+      );
+      setApplications(updated);
+      setSelectedApp(updatedApp);
+      setIsSchedulingModalOpen(false);
+    } catch (err) {
+      toast.dismiss(id);
+      toast.error(err.response?.data?.message || "Failed to schedule interview.");
     } finally {
       setIsUpdatingStatus(false);
     }
@@ -478,7 +532,23 @@ const ApplicationViewer = () => {
                           <button
                             key={s}
                             disabled={isUpdatingStatus}
-                            onClick={() => handleUpdateStatus(s)}
+                            onClick={() => {
+                              if (s === "Interviewing") {
+                                if (selectedApp.isGuest) {
+                                  toast.error("Interviews can only be scheduled for candidates with registered accounts.");
+                                  return;
+                                }
+                                setInterviewDetails({
+                                  date: selectedApp.interview?.date ? moment(selectedApp.interview.date).format("YYYY-MM-DD") : "",
+                                  time: selectedApp.interview?.time || "",
+                                  location: selectedApp.interview?.location || "",
+                                  notes: selectedApp.interview?.notes || "",
+                                });
+                                setIsSchedulingModalOpen(true);
+                              } else {
+                                handleUpdateStatus(s);
+                              }
+                            }}
                             className={`flex flex-col items-center gap-1.5 rounded-xl p-3 border-2 text-xs font-bold transition-all duration-200 ${
                               isActive
                                 ? `${cfg.bg} ${cfg.text} ${cfg.ring} border-current shadow-sm`
@@ -495,6 +565,75 @@ const ApplicationViewer = () => {
                       })}
                     </div>
                   </div>
+
+                  {/* ── Scheduled Interview Details ───────────────────────── */}
+                  {selectedApp.status === "Interviewing" && selectedApp.interview && (
+                    <div className="rounded-2xl border border-amber-100 bg-amber-50/20 p-5 shadow-sm relative overflow-hidden">
+                      <div className="absolute top-0 right-0 p-4 hidden md:block">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-bold text-amber-800">
+                          Interview Scheduled
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 mb-4">
+                        <Calendar className="h-5 w-5 text-amber-500" />
+                        <h3 className="text-sm font-bold text-gray-900">Scheduled Interview Details</h3>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div className="bg-white rounded-xl p-3 border border-amber-100/50 shadow-xs">
+                          <p className="text-[10px] uppercase font-bold text-gray-400">Date</p>
+                          <p className="mt-1 text-sm font-semibold text-gray-800">
+                            {moment(selectedApp.interview.date).format("dddd, MMMM D, YYYY")}
+                          </p>
+                        </div>
+                        <div className="bg-white rounded-xl p-3 border border-amber-100/50 shadow-xs">
+                          <p className="text-[10px] uppercase font-bold text-gray-400">Time</p>
+                          <p className="mt-1 text-sm font-semibold text-gray-800">
+                            {selectedApp.interview.time}
+                          </p>
+                        </div>
+                        <div className="bg-white rounded-xl p-3 border border-amber-100/50 shadow-xs">
+                          <p className="text-[10px] uppercase font-bold text-gray-400">Location / Link</p>
+                          <div className="mt-1 text-sm font-semibold text-gray-800 flex items-center gap-1.5 min-w-0">
+                            <span className="truncate">{selectedApp.interview.location}</span>
+                            {selectedApp.interview.location?.startsWith("http") && (
+                              <a
+                                href={selectedApp.interview.location}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center text-indigo-600 hover:text-indigo-700 shrink-0"
+                                title="Open Link"
+                              >
+                                <ExternalLink className="h-3.5 w-3.5" />
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      {selectedApp.interview.notes && (
+                        <div className="bg-white rounded-xl p-4 border border-amber-100/50 shadow-xs mb-4">
+                          <p className="text-[10px] uppercase font-bold text-gray-400 mb-1">Instructions / Notes</p>
+                          <p className="text-xs text-gray-600 leading-relaxed whitespace-pre-wrap">
+                            {selectedApp.interview.notes}
+                          </p>
+                        </div>
+                      )}
+                      <button
+                        onClick={() => {
+                          setInterviewDetails({
+                            date: moment(selectedApp.interview.date).format("YYYY-MM-DD"),
+                            time: selectedApp.interview.time,
+                            location: selectedApp.interview.location,
+                            notes: selectedApp.interview.notes || "",
+                          });
+                          setIsSchedulingModalOpen(true);
+                        }}
+                        className="inline-flex items-center gap-1.5 rounded-xl border border-amber-200 bg-white hover:bg-amber-50 px-4 py-2.5 text-xs font-semibold text-amber-700 transition"
+                      >
+                        <SlidersHorizontal className="h-3.5 w-3.5" />
+                        Edit Interview Details
+                      </button>
+                    </div>
+                  )}
 
                   {/* ── Two-col Grid ───────────────────────────────────────── */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
@@ -673,6 +812,96 @@ const ApplicationViewer = () => {
           </div>
         )}
       </div>
+
+      {/* ── Scheduling Modal ───────────────────────────────────────────── */}
+      {isSchedulingModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-2xl max-w-lg w-full border border-gray-100 shadow-2xl p-6 relative overflow-hidden animate-in fade-in zoom-in duration-200">
+            <button
+              onClick={() => setIsSchedulingModalOpen(false)}
+              className="absolute right-4 top-4 text-gray-400 hover:text-gray-600 transition"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            
+            <div className="flex items-center gap-2.5 mb-5">
+              <div className="h-9 w-9 bg-amber-50 rounded-xl flex items-center justify-center">
+                <Calendar className="h-5 w-5 text-amber-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-gray-900">Schedule Interview</h3>
+                <p className="text-xs text-gray-400">Specify details for candidate: <span className="font-semibold text-gray-700">{selectedApp?.applicantName || selectedApp?.applicant?.name}</span></p>
+              </div>
+            </div>
+
+            <form onSubmit={handleScheduleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Interview Date</label>
+                  <input
+                    type="date"
+                    required
+                    value={interviewDetails.date}
+                    onChange={(e) => setInterviewDetails((prev) => ({ ...prev, date: e.target.value }))}
+                    className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm text-gray-805 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none transition"
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Interview Time</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. 10:00 AM, 2:30 PM"
+                    required
+                    value={interviewDetails.time}
+                    onChange={(e) => setInterviewDetails((prev) => ({ ...prev, time: e.target.value }))}
+                    className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm text-gray-805 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none transition"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Location / Meet Link</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Google Meet URL, Zoom link, or Office Location Address"
+                  required
+                  value={interviewDetails.location}
+                  onChange={(e) => setInterviewDetails((prev) => ({ ...prev, location: e.target.value }))}
+                  className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm text-gray-805 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none transition"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">Notes & Instructions (Optional)</label>
+                <textarea
+                  rows={3}
+                  placeholder="Provide meeting password, preparation guide, or notes for the candidate..."
+                  value={interviewDetails.notes}
+                  onChange={(e) => setInterviewDetails((prev) => ({ ...prev, notes: e.target.value }))}
+                  className="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm text-gray-805 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none transition resize-none"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2.5 pt-3 border-t border-gray-100 mt-5">
+                <button
+                  type="button"
+                  onClick={() => setIsSchedulingModalOpen(false)}
+                  className="rounded-xl border border-gray-200 bg-white hover:bg-gray-50 px-4 py-2.5 text-xs font-semibold text-gray-500 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isUpdatingStatus}
+                  className="rounded-xl bg-indigo-600 hover:bg-indigo-700 px-5 py-2.5 text-xs font-semibold text-white shadow-md shadow-indigo-100 transition disabled:opacity-50"
+                >
+                  {isUpdatingStatus ? "Saving..." : "Confirm & Schedule"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </DashboardLayout>
   );
 };
