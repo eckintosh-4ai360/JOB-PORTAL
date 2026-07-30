@@ -8,7 +8,7 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Use memoryStorage instead of multer-storage-cloudinary (incompatible with multer v2)
+// Use memoryStorage instead of multer-storage-cloudinary
 const storage = multer.memoryStorage();
 
 // File filter — allow images, PDFs, and Word documents
@@ -31,7 +31,7 @@ const upload = multer({ storage, fileFilter });
 /**
  * Upload a buffer to Cloudinary.
  * @param {Buffer} buffer – the file buffer from multer memoryStorage
- * @param {object} options – Cloudinary upload options (folder, resource_type, etc.)
+ * @param {object} options – Cloudinary upload options 
  * @returns {Promise<object>} Cloudinary upload result
  */
 const uploadToCloudinary = (buffer, options = {}) => {

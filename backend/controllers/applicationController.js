@@ -19,12 +19,12 @@ const applyForJob = async (req, res) => {
 
         const isLoggedIn = !!req.user;
 
-        // ── Role check (logged-in users only) ─────────────────────────────
+        // ── Role check (logged-in users only)     
         if (isLoggedIn && req.user.role !== "jobseeker") {
             return res.status(403).json({ message: "Only jobseekers can apply for jobs" });
         }
 
-        // ── Duplicate prevention ───────────────────────────────────────────
+        // ── Duplicate prevention  
         if (isLoggedIn) {
             const alreadyApplied = await Application.findOne({
                 job: req.params.jobId,
@@ -48,7 +48,7 @@ const applyForJob = async (req, res) => {
             }
         }
 
-        // ── Resume handling ────────────────────────────────────────────────
+        // ── Resume handling   
         const resumeFile = req.files?.resume?.[0];
         let resume = req.body.resume;
         if (resumeFile) {
@@ -69,7 +69,7 @@ const applyForJob = async (req, res) => {
             return res.status(400).json({ message: "A resume (file or URL) is required" });
         }
 
-        // ── Cover letter file handling ─────────────────────────────────────
+        // ── Cover letter file handling 
         const coverLetterFileUpload = req.files?.coverLetterFile?.[0];
         let coverLetterFileUrl = "";
         if (coverLetterFileUpload) {
@@ -86,7 +86,7 @@ const applyForJob = async (req, res) => {
             }
         }
 
-        // ── Create application ─────────────────────────────────────────────
+        // ── Create application 
         const applicationData = {
             job: req.params.jobId,
             resume,

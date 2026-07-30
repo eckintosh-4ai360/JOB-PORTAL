@@ -13,7 +13,7 @@ const getEmployerAnalytics = async (req, res) => {
 
         const employerId = req.user._id;
 
-        // ── Live counts ───────────────────────────────────────────────────────
+        // Live counts 
         const totalActiveJobs = await Job.countDocuments({ company: employerId, isClosed: false });
 
         const allJobs     = await Job.find({ company: employerId }).select("_id");
@@ -29,7 +29,7 @@ const getEmployerAnalytics = async (req, res) => {
             ? Math.round((totalHired / totalApplicants) * 100)
             : 0;
 
-        // ── Recent jobs (last 5, newest first) ────────────────────────────────
+        // Recent jobs (last 5, newest first) 
         const recentJobs = await Job.find({ company: employerId })
             .sort({ createdAt: -1 })
             .limit(5)
@@ -51,7 +51,7 @@ const getEmployerAnalytics = async (req, res) => {
             })
         );
 
-        // ── Recent applications (last 5) ──────────────────────────────────────
+        // Recent applications (last 5)
         const recentApplications = await Application.find({ job: { $in: jobIds } })
             .sort({ updatedAt: -1 })
             .limit(5)
