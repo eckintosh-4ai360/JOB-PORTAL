@@ -21,14 +21,16 @@ const GoogleSignInButton = ({ role = null, label = "Continue with Google" }) => 
             const callbackUrl = new URL("/sso-callback", window.location.origin);
             if (role) callbackUrl.searchParams.set("role", role);
 
-            await signIn.authenticateWithRedirect({
+            const { error } = await signIn.sso({
                 strategy: "oauth_google",
                 redirectUrl: callbackUrl.toString(),
-                redirectUrlComplete: callbackUrl.toString(),
+                redirectCallbackUrl: callbackUrl.toString(),
             });
+
+            if (error) throw error;
         } catch (err) {
             console.error("Google sign-in error:", err);
-            toast.error("Google sign-in failed. Please try again.");
+            toast.error(err?.longMessage || err?.message || "Google sign-in failed. Please try again.");
             setLoading(false);
         }
     };
