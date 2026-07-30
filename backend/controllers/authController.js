@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-const { createClerkClient } = require("@clerk/backend");
+const { createClerkClient, verifyToken } = require("@clerk/backend");
 
 const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
 
@@ -86,14 +86,15 @@ exports.clerkAuth = async (req, res) => {
             return res.status(400).json({ message: "Clerk token is required" });
         }
 
-        // Verify the token with Clerk and get the user details
+        // Verify the session token with Clerk and get the user
         let clerkUser;
         try {
-            clerkUser = await clerkClient.users.getUser(
-                // getToken gives us the userId inside the JWT
-                // We use verifyToken to extract the sub (userId) from the session token
-                (await clerkClient.verifyToken(clerkToken)).sub
-            );
+            // verifyToken decodes & verifies the Clerk session JWT and returns the payload
+            // The "sub" claim is the Clerk user ID (user_xxxx)
+            const payload = await verifyToken(clerkToken, {
+                secretKey: process.env.CLERK_SECRET_KEY,
+            });
+            clerkUser = await clerkClient.users.getUser(payload.sub);
         } catch (err) {
             console.error("Clerk token verification failed:", err.message);
             return res.status(401).json({ message: "Invalid or expired Clerk token" });
