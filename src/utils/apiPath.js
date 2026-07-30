@@ -4,6 +4,7 @@ export const API_PATHS = {
   AUTH: {
     REGISTER: "/api/auth/register", // Signup
     LOGIN: "/api/auth/login", // Authenticate user & return JWT token
+    CLERK_AUTH: "/api/auth/clerk", // Google OAuth via Clerk → JWT
     GET_PROFILE: "/api/auth/profile", // Get logged-in user details
     UPDATE_PROFILE: "/api/user/profile", // Update profile details
     DELETE_RESUME: "/api/user/resume", // Delete Resume details

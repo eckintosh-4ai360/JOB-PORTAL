@@ -9,6 +9,7 @@ import {Toaster} from "react-hot-toast";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import SignUp from "./pages/Auth/SignUp";
 import Login from "./pages/Auth/Login";
+import SSOCallback from "./pages/Auth/SSOCallback";
 
 import CandidateDashboard from "./pages/Candidate/CandidateDashboard";
 import UserProfile from "./pages/Candidate/UserProfile";
@@ -31,6 +32,7 @@ export const App = () => {
           <Route path="/" element={<LandingPage/>} />
           <Route path="/signup" element={<SignUp/>} />
           <Route path="/login" element={<Login/>} />
+          <Route path="/sso-callback" element={<SSOCallback/>} />
 
           {/* public candidate routes — no login required to browse */}
           <Route path="/find-jobs" element={<CandidateDashboard/>} />
