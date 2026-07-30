@@ -29,8 +29,9 @@ axiosInstance.interceptors.response.use(
         // can show the error message. Also skip for the application endpoint
         // since guests submit without a token.
         const isLoginRequest = error.config?.url?.includes("/api/auth/login");
+        const isClerkAuthRequest = error.config?.url?.includes("/api/auth/clerk");
         const isGuestApply = error.config?.method === "post" && error.config?.url?.includes("/api/applications/");
-        if (error.response && error.response.status === 401 && !isLoginRequest && !isGuestApply) {
+        if (error.response && error.response.status === 401 && !isLoginRequest && !isClerkAuthRequest && !isGuestApply) {
             localStorage.removeItem("token")
             localStorage.removeItem("user")
             window.location.href = "/login"

@@ -1,30 +1,40 @@
 import { useState } from "react";
-import { useSignIn } from "@clerk/react";
+import { useClerk, useSignIn } from "@clerk/react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
 // GoogleSignInButton
 const GoogleSignInButton = ({ role = null, label = "Continue with Google" }) => {
+    const clerk = useClerk();
     const { signIn } = useSignIn();
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
     const handleGoogleSignIn = async () => {
         if (loading) return;
 
-        if (!signIn) {
-            toast.error("Google sign-in is still loading. Please try again in a moment.");
-            return;
-        }
-
-        setLoading(true);
-
         try {
             const callbackUrl = new URL("/sso-callback", window.location.origin);
             if (role) callbackUrl.searchParams.set("role", role);
+            const callbackPath = `${callbackUrl.pathname}${callbackUrl.search}`;
+
+            if (clerk.session) {
+                setLoading(true);
+                navigate(callbackPath, { replace: true });
+                return;
+            }
+
+            if (!signIn) {
+                toast.error("Google sign-in is still loading. Please try again in a moment.");
+                return;
+            }
+
+            setLoading(true);
 
             const { error } = await signIn.sso({
                 strategy: "oauth_google",
-                redirectUrl: callbackUrl.toString(),
-                redirectCallbackUrl: callbackUrl.toString(),
+                redirectUrl: callbackPath,
+                redirectCallbackUrl: callbackPath,
             });
 
             if (error) throw error;
