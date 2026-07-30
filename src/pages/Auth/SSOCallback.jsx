@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useClerk } from "@clerk/react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
@@ -22,6 +22,7 @@ const SSOCallback = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
+    const selectedRole = searchParams.get("role");
 
     const [step, setStep] = useState("loading"); // "loading" | "pick-role" | "done" | "error"
     const [pendingToken, setPendingToken] = useState(null);
@@ -51,7 +52,9 @@ const SSOCallback = () => {
 
                 const response = await axiosInstance.post(API_PATHS.AUTH.CLERK_AUTH, {
                     clerkToken,
-                    // no role yet — backend will tell us if one is required
+                    ...(selectedRole
+                        ? { role: selectedRole }
+                        : {}),
                 });
 
                 const { token, user } = response.data;
@@ -81,7 +84,7 @@ const SSOCallback = () => {
         };
 
         exchangeToken();
-    }, [session]);
+    }, [login, navigate, selectedRole, session]);
 
     // Step 3 — user picks role (first-time Google sign-in only)
     const handleRoleSelect = async (role) => {

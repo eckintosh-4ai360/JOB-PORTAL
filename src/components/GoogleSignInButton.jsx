@@ -1,29 +1,31 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useSignIn } from "@clerk/react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import axiosInstance from "../utils/axiosInstance";
-import { API_PATHS } from "../utils/apiPath";
-import { useAuth } from "../context/AuthContext";
 
 // GoogleSignInButton
 const GoogleSignInButton = ({ role = null, label = "Continue with Google" }) => {
     const { signIn, isLoaded } = useSignIn();
-    const { login } = useAuth();
-    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
     const handleGoogleSignIn = async () => {
-        if (!isLoaded) return;
+        if (loading) return;
+
+        if (!isLoaded || !signIn) {
+            toast.error("Google sign-in is still loading. Please try again in a moment.");
+            return;
+        }
+
         setLoading(true);
 
         try {
+            const callbackUrl = new URL("/sso-callback", window.location.origin);
+            if (role) callbackUrl.searchParams.set("role", role);
+
             await signIn.authenticateWithRedirect({
                 strategy: "oauth_google",
-                redirectUrl: `${window.location.origin}/sso-callback`,
-                redirectUrlComplete: `${window.location.origin}/sso-callback`,
+                redirectUrl: callbackUrl.toString(),
+                redirectUrlComplete: callbackUrl.toString(),
             });
-            // Page redirects 
         } catch (err) {
             console.error("Google sign-in error:", err);
             toast.error("Google sign-in failed. Please try again.");
@@ -35,7 +37,8 @@ const GoogleSignInButton = ({ role = null, label = "Continue with Google" }) => 
         <button
             type="button"
             onClick={handleGoogleSignIn}
-            disabled={loading || !isLoaded}
+            disabled={loading}
+            aria-busy={loading}
             className="w-full flex items-center justify-center space-x-3 border border-gray-200 hover:border-gray-300 hover:bg-gray-50 py-2.5 rounded-xl transition-all font-semibold text-sm text-gray-700 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
         >
             {loading ? (
