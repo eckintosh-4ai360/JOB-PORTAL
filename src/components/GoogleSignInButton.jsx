@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useSignIn } from "@clerk/react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import axiosInstance from "../../utils/axiosInstance";
-import { API_PATHS } from "../../utils/apiPath";
-import { useAuth } from "../../context/AuthContext";
+import axiosInstance from "../utils/axiosInstance";
+import { API_PATHS } from "../utils/apiPath";
+import { useAuth } from "../context/AuthContext";
 
 // GoogleSignInButton
 const GoogleSignInButton = ({ role = null, label = "Continue with Google" }) => {
