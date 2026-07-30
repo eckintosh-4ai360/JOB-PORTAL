@@ -4,13 +4,13 @@ import { toast } from "react-hot-toast";
 
 // GoogleSignInButton
 const GoogleSignInButton = ({ role = null, label = "Continue with Google" }) => {
-    const { signIn, isLoaded } = useSignIn();
+    const { signIn } = useSignIn();
     const [loading, setLoading] = useState(false);
 
     const handleGoogleSignIn = async () => {
         if (loading) return;
 
-        if (!isLoaded || !signIn) {
+        if (!signIn) {
             toast.error("Google sign-in is still loading. Please try again in a moment.");
             return;
         }
