@@ -1,6 +1,14 @@
 const Application = require("../models/Application");
 const Job = require("../models/Job");
+const User = require("../models/User");
 const { uploadToCloudinary, uploadToLocalDisk } = require("../middlewares/uploadMiddleware");
+const {
+    sendApplicationSubmittedEmail,
+    sendUnderReviewEmail,
+    sendInterviewScheduledEmail,
+    sendOfferEmail,
+    sendRejectionEmail,
+} = require("../utils/emailService");
 
 // @desc    Apply for a job (authenticated users OR guests)
 // @route   POST /api/applications/:jobId
@@ -103,6 +111,17 @@ const applyForJob = async (req, res) => {
         }
 
         const application = await Application.create(applicationData);
+
+        // ── Send confirmation email to applicant ───────────────────────────────
+        const jobForEmail = await Job.findById(req.params.jobId).select("title");
+        const recipientEmail = isLoggedIn ? req.user.email : applicationData.guestEmail;
+        const recipientName  = isLoggedIn ? req.user.name  : applicationData.guestName;
+
+        sendApplicationSubmittedEmail({
+            to:            recipientEmail,
+            applicantName: recipientName,
+            jobTitle:      jobForEmail?.title || "the position",
+        });
 
         res.status(201).json({ message: "Application submitted successfully", application });
     } catch (error) {
@@ -263,6 +282,31 @@ const updateApplicationStatus = async (req, res) => {
 
         application.status = status;
         await application.save();
+
+        // ── Send status notification email to applicant ────────────────────────
+        let recipientEmail, recipientName;
+
+        if (application.applicant) {
+            const user = await User.findById(application.applicant).select("name email");
+            recipientEmail = user?.email;
+            recipientName  = user?.name || "Applicant";
+        } else {
+            recipientEmail = application.guestEmail;
+            recipientName  = application.guestName || "Applicant";
+        }
+
+        if (recipientEmail) {
+            const emailPayload = {
+                to:            recipientEmail,
+                applicantName: recipientName,
+                jobTitle:      job.title,
+            };
+
+            if (status === "Under Review")  sendUnderReviewEmail(emailPayload);
+            if (status === "Interviewing")  sendInterviewScheduledEmail({ ...emailPayload, interview: application.interview });
+            if (status === "Offered")       sendOfferEmail(emailPayload);
+            if (status === "Rejected")      sendRejectionEmail(emailPayload);
+        }
 
         res.status(200).json({ message: "Application status updated", application });
     } catch (error) {
