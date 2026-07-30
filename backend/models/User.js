@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     companyLogo: String,
 }, {timestamps: true});
 
-// Encrypt password before saving — skip if no password (OAuth users)
+// Encrypt password before saving
 userSchema.pre("save", async function () {
     if (!this.password || !this.isModified("password")) return;
 
@@ -34,4 +34,4 @@ userSchema.methods.matchPassword = function(enteredPassword){
     return bcrypt.compare(enteredPassword, this.password);
 }; 
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("User", userSchema);

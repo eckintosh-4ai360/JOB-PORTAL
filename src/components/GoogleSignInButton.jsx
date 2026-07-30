@@ -6,21 +6,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPath";
 import { useAuth } from "../../context/AuthContext";
 
-/**
- * GoogleSignInButton
- *
- * Props:
- *   role  — "jobseeker" | "employer" | null
- *           Pass null to auto-detect from existing account.
- *           Pass a role for brand-new Google sign-ups (e.g. on the signup page).
- *
- * Flow:
- *   1. Clerk opens a Google OAuth popup (signIn.authenticateWithRedirect)
- *   2. After Google confirms, Clerk calls back to /sso-callback
- *   3. We get the Clerk session token, send it to our backend /api/auth/clerk
- *   4. Backend verifies, finds/creates the MongoDB user, returns our JWT
- *   5. We store the JWT in AuthContext just like email/password login
- */
+// GoogleSignInButton
 const GoogleSignInButton = ({ role = null, label = "Continue with Google" }) => {
     const { signIn, isLoaded } = useSignIn();
     const { login } = useAuth();
@@ -37,7 +23,7 @@ const GoogleSignInButton = ({ role = null, label = "Continue with Google" }) => 
                 redirectUrl: `${window.location.origin}/sso-callback`,
                 redirectUrlComplete: `${window.location.origin}/sso-callback`,
             });
-            // Page redirects — code below won't run until after redirect back
+            // Page redirects 
         } catch (err) {
             console.error("Google sign-in error:", err);
             toast.error("Google sign-in failed. Please try again.");
