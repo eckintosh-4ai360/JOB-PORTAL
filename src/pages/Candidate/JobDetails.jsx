@@ -37,8 +37,8 @@ const JobDetails = () => {
   const [customResumeFile, setCustomResumeFile] = useState(null);
   const [isSubmittingApp, setIsSubmittingApp] = useState(false);
 
-  // Cover letter option: "type" or "upload"
-  const [coverLetterOption, setCoverLetterOption] = useState("type");
+  // Cover letter option: "none", "type", or "upload"
+  const [coverLetterOption, setCoverLetterOption] = useState("none");
   const [coverLetterFile, setCoverLetterFile] = useState(null);
 
   // Guest applicant fields
@@ -46,15 +46,13 @@ const JobDetails = () => {
   const [guestEmail, setGuestEmail] = useState("");
   const [guestPhone, setGuestPhone] = useState("");
 
-  // Fetch job details (public). Only fetch saved/applied status when logged in.
+  // Fetch job details (public
   useEffect(() => {
     const fetchJobDetails = async () => {
       setIsLoading(true);
       try {
-        // Job details are public — always fetch
         const requests = [axiosInstance.get(API_PATHS.JOBS.GET_JOB_BY_ID(jobId))];
 
-        // Saved & application status require authentication
         if (isAuthenticated) {
           requests.push(
             axiosInstance.get(API_PATHS.JOBS.GET_SAVED_JOBS),
@@ -97,7 +95,7 @@ const JobDetails = () => {
     }
   }, [jobId, navigate, isAuthenticated]);
 
-  // Toggle Save Job — requires authentication
+  // Toggle Save Job
   const handleToggleSave = async () => {
     if (!isAuthenticated) {
       navigate("/login", { state: { from: { pathname: `/job/${jobId}` } } });
@@ -124,14 +122,13 @@ const JobDetails = () => {
     }
   };
 
-  // Open apply modal — always opens, no login redirect
+  // Open apply modal 
   const handleApplyClick = () => {
-    // Reset all fields when opening the modal
     setGuestName("");
     setGuestEmail("");
     setGuestPhone("");
     setCoverLetter("");
-    setCoverLetterOption("type");
+    setCoverLetterOption("none");
     setCoverLetterFile(null);
     setCustomResumeFile(null);
     setResumeOption(isAuthenticated ? "profile" : "custom");
@@ -143,7 +140,7 @@ const JobDetails = () => {
     e.preventDefault();
     if (isSubmittingApp) return;
 
-    // ── Validation ──────────────────────────────────────────────────
+    // Validation 
     if (!isAuthenticated) {
       // Guest validation
       if (!guestName.trim()) {
@@ -181,7 +178,9 @@ const JobDetails = () => {
 
     try {
       const formData = new FormData();
-      formData.append("coverLetter", coverLetterOption === "type" ? coverLetter : "");
+      if (coverLetterOption === "type" && coverLetter.trim()) {
+        formData.append("coverLetter", coverLetter.trim());
+      }
       if (coverLetterOption === "upload" && coverLetterFile) {
         formData.append("coverLetterFile", coverLetterFile);
       }
@@ -211,7 +210,7 @@ const JobDetails = () => {
       setShowApplyModal(false);
       setCoverLetter("");
       setCoverLetterFile(null);
-      setCoverLetterOption("type");
+      setCoverLetterOption("none");
       setCustomResumeFile(null);
       setGuestName("");
       setGuestEmail("");
@@ -259,7 +258,7 @@ const JobDetails = () => {
           </button>
         </div>
 
-        {/* ── Header details card ────────────────────────────────────────── */}
+        {/* Header details card  */}
         <div className="rounded-2xl border border-gray-100 bg-white p-6 sm:p-8 shadow-sm space-y-6">
           <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6">
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-center sm:text-left">
@@ -361,7 +360,7 @@ const JobDetails = () => {
           </div>
         </div>
 
-        {/* ── Main content grid: details + sidebar ───────────────────────── */}
+        {/*Main content grid: details + sidebar */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
           
           {/* Details (Left 2 cols) */}
@@ -435,7 +434,7 @@ const JobDetails = () => {
         </div>
       </main>
 
-      {/* ── Apply Modal ─────────────────────────────────────────────────── */}
+      {/* Apply Modal  */}
       {showApplyModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
           <div
@@ -463,7 +462,7 @@ const JobDetails = () => {
             {/* Modal Form */}
             <form onSubmit={handleApplySubmit} className="p-6 space-y-4 overflow-y-auto max-h-[calc(100vh-12rem)]">
 
-              {/* ── Guest Info Fields (only when not logged in) ──────────── */}
+              {/* Guest Info Fields (only when not logged in)*/}
               {!isAuthenticated && (
                 <div className="space-y-3">
                   <div className="rounded-xl bg-gradient-to-r from-indigo-50 to-violet-50 border border-indigo-100 px-4 py-3 flex items-start gap-3">
@@ -529,7 +528,7 @@ const JobDetails = () => {
                 </div>
               )}
 
-              {/* ── Resume Section ──────────────────────────────────────── */}
+              {/*Resume Section*/}
               {isAuthenticated ? (
                 /* Logged-in: Resume option toggle */
                 <div className="space-y-2.5">
@@ -619,8 +618,21 @@ const JobDetails = () => {
               {/* Cover Letter Section */}
               <div className="space-y-2.5">
                 <label className="text-sm font-bold text-gray-700">Cover Letter (Optional)</label>
-                {/* Toggle: Type vs Upload */}
-                <div className="grid grid-cols-2 gap-3">
+                {/* Toggle: Skip, Type, or Upload */}
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                  <button
+                    type="button"
+                    onClick={() => setCoverLetterOption("none")}
+                    className={`flex flex-col items-center gap-1.5 rounded-xl p-3 border-2 text-xs font-bold transition ${
+                      coverLetterOption === "none"
+                        ? "bg-indigo-50 border-indigo-600 text-indigo-700 shadow-xs"
+                        : "bg-gray-50 border-gray-100 text-gray-400 hover:border-gray-200 hover:text-gray-600"
+                    }`}
+                  >
+                    <CheckCircle2 className="h-4.5 w-4.5" />
+                    Skip
+                  </button>
+
                   <button
                     type="button"
                     onClick={() => setCoverLetterOption("type")}
@@ -649,7 +661,11 @@ const JobDetails = () => {
                 </div>
 
                 {/* Type mode */}
-                {coverLetterOption === "type" ? (
+                {coverLetterOption === "none" ? (
+                  <p className="rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-xs text-gray-500">
+                    No cover letter will be attached.
+                  </p>
+                ) : coverLetterOption === "type" ? (
                   <textarea
                     value={coverLetter}
                     onChange={(e) => setCoverLetter(e.target.value)}
@@ -679,7 +695,7 @@ const JobDetails = () => {
                 )}
               </div>
 
-              {/* ── Optional Account Prompt (guest only) ─────────────────── */}
+              {/* Optional Account Prompt (guest only) */}
               {!isAuthenticated && (
                 <div className="rounded-xl bg-gradient-to-r from-slate-50 to-gray-50 border border-gray-100 px-4 py-3 flex items-center gap-3">
                   <UserPlus className="h-5 w-5 text-indigo-500 shrink-0" />

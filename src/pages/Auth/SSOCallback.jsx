@@ -1,145 +1,78 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useClerk, useSignIn, useSignUp } from "@clerk/react";
+import React, { useEffect, useState } from "react";
+import { useClerk } from "@clerk/react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPath";
 import { useAuth } from "../../context/AuthContext";
 
-/**
- * SSOCallback
- *
- * Clerk redirects here after Google completes OAuth.
- * We:
- *   1. Finalize the Clerk sign-in or sign-up resource
- *   2. Get the session token from Clerk
- *   3. POST it to our backend /api/auth/clerk
- *   4. If the user is brand-new, we show a role selector first
- *   5. Store JWT in our AuthContext and navigate by role
- */
+// SSOCallback
+
 const SSOCallback = () => {
-    const clerk = useClerk();
-    const { signIn } = useSignIn();
-    const { signUp } = useSignUp();
+    const { handleRedirectCallback, session } = useClerk();
     const { login } = useAuth();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const selectedRole = searchParams.get("role");
 
-    const hasRun = useRef(false);
     const [step, setStep] = useState("loading"); // "loading" | "pick-role" | "done" | "error"
     const [pendingToken, setPendingToken] = useState(null);
     const [errorMsg, setErrorMsg] = useState("");
 
-    const exchangeSession = useCallback(async (clerkSession) => {
-        if (!clerkSession) {
-            throw new Error("No Clerk session was created.");
-        }
-
-        try {
-            const clerkToken = await clerkSession.getToken();
-            const response = await axiosInstance.post(API_PATHS.AUTH.CLERK_AUTH, {
-                clerkToken,
-                ...(selectedRole ? { role: selectedRole } : {}),
-            });
-
-            const { token, user } = response.data;
-            login(user, token);
-            toast.success(`Welcome, ${user.name}!`);
-
-            navigate(
-                user.role === "employer" ? "/employer-dashboard" : "/find-jobs",
-                { replace: true },
-            );
-        } catch (err) {
-            const data = err.response?.data;
-
-            if (data?.requiresRole) {
-                const clerkToken = await clerkSession.getToken();
-                setPendingToken(clerkToken);
-                setStep("pick-role");
-                return;
-            }
-
-            throw new Error(data?.message || "Authentication failed. Please try again.");
-        }
-    }, [login, navigate, selectedRole]);
-
-    const finalizeResource = useCallback(async (resource) => {
-        const { error } = await resource.finalize({
-            navigate: async ({ session }) => {
-                await exchangeSession(session);
-            },
-        });
-
-        if (error) throw error;
-    }, [exchangeSession]);
-
-    // Complete the Clerk Core 3 flow before exchanging the session with our API.
+    // Step 1 — complete Clerk OAuth redirect
     useEffect(() => {
-        if (!clerk.loaded || !signIn || !signUp || hasRun.current) return;
-        hasRun.current = true;
-
         const complete = async () => {
             try {
-                if (signIn.status === "complete") {
-                    await finalizeResource(signIn);
-                    return;
-                }
-
-                if (signUp.isTransferable) {
-                    await signIn.create({ transfer: true });
-                    if (signIn.status === "complete") {
-                        await finalizeResource(signIn);
-                        return;
-                    }
-                }
-
-                if (signIn.isTransferable) {
-                    await signUp.create({ transfer: true });
-                    if (signUp.status === "complete") {
-                        await finalizeResource(signUp);
-                        return;
-                    }
-
-                    setErrorMsg("Google signup needs additional information before it can continue.");
-                    setStep("error");
-                    return;
-                }
-
-                if (["needs_second_factor", "needs_new_password", "needs_client_trust"].includes(signIn.status)) {
-                    setErrorMsg("Google sign-in needs additional verification. Please try again.");
-                    setStep("error");
-                    return;
-                }
-
-                const existingSessionId = signIn.existingSession?.sessionId || signUp.existingSession?.sessionId;
-                if (existingSessionId) {
-                    await clerk.setActive({
-                        session: existingSessionId,
-                        navigate: async ({ session }) => {
-                            await exchangeSession(session);
-                        },
-                    });
-                    return;
-                }
-
-                // Recover a Clerk session left active by a previous incomplete callback.
-                if (clerk.session) {
-                    await exchangeSession(clerk.session);
-                    return;
-                }
-
-                throw new Error(`Google sign-in did not complete (${signIn.status}).`);
+                await handleRedirectCallback();
             } catch (err) {
                 console.error("Clerk redirect callback error:", err);
-                setErrorMsg(err?.longMessage || err?.message || "Google sign-in failed. Please try again.");
+                setErrorMsg("Google sign-in failed. Please try again.");
                 setStep("error");
             }
         };
-
         complete();
-    }, [clerk, exchangeSession, finalizeResource, signIn, signUp]);
+    }, [handleRedirectCallback]);
+
+    // Step 2 — once Clerk session is ready, exchange for JWT
+    useEffect(() => {
+        if (!session) return;
+
+        const exchangeToken = async () => {
+            try {
+                const clerkToken = await session.getToken();
+
+                const response = await axiosInstance.post(API_PATHS.AUTH.CLERK_AUTH, {
+                    clerkToken,
+                    // no role yet — backend will tell us if one is required
+                });
+
+                const { token, user } = response.data;
+                login(user, token);
+                toast.success(`Welcome, ${user.name}!`);
+
+                // Redirect based on role
+                if (user.role === "employer") {
+                    navigate("/employer-dashboard", { replace: true });
+                } else {
+                    navigate("/find-jobs", { replace: true });
+                }
+            } catch (err) {
+                const data = err.response?.data;
+
+                if (data?.requiresRole) {
+                    // Brand-new user — store token and ask for role
+                    const clerkToken = await session.getToken();
+                    setPendingToken(clerkToken);
+                    setStep("pick-role");
+                } else {
+                    console.error("Backend auth error:", err);
+                    setErrorMsg(data?.message || "Authentication failed. Please try again.");
+                    setStep("error");
+                }
+            }
+        };
+
+        exchangeToken();
+    }, [session]);
 
     // Step 3 — user picks role (first-time Google sign-in only)
     const handleRoleSelect = async (role) => {
