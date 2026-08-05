@@ -1,15 +1,18 @@
 const nodemailer = require("nodemailer");
 
-// reusable transporter using Gmail App Password (family: 4 forces IPv4 for Render compatibility)
+// reusable transporter using Gmail App Password (port 587 + STARTTLS + family:4 for Render cloud compatibility)
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
+    port: 587,
+    secure: false, // upgrades to TLS via STARTTLS
     auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_APP_PASSWORD,
     },
     family: 4,
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000,
 });
 
 // send a single email
