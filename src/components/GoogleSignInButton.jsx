@@ -17,6 +17,7 @@ const GoogleSignInButton = ({ role = null, label = "Continue with Google" }) => 
             const callbackUrl = new URL("/sso-callback", window.location.origin);
             if (role) callbackUrl.searchParams.set("role", role);
             const callbackPath = `${callbackUrl.pathname}${callbackUrl.search}`;
+            const callbackHref = callbackUrl.toString();
 
             if (clerk.session) {
                 setLoading(true);
@@ -33,8 +34,8 @@ const GoogleSignInButton = ({ role = null, label = "Continue with Google" }) => 
 
             const { error } = await signIn.sso({
                 strategy: "oauth_google",
-                redirectUrl: callbackPath,
-                redirectCallbackUrl: callbackPath,
+                redirectUrl: callbackHref,
+                redirectCallbackUrl: callbackHref,
             });
 
             if (error) throw error;

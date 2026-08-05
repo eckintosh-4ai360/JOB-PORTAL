@@ -1,17 +1,25 @@
 const nodemailer = require("nodemailer");
 
-// reusable transporter using Gmail App Password
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_APP_PASSWORD,
-    },
-});
+const getTransporter = () => {
+    const { GMAIL_USER, GMAIL_APP_PASSWORD } = process.env;
+
+    if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
+        throw new Error("Missing GMAIL_USER or GMAIL_APP_PASSWORD environment variable");
+    }
+
+    return nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: GMAIL_USER,
+            pass: GMAIL_APP_PASSWORD,
+        },
+    });
+};
 
 // send a single email
 const sendEmail = async ({ to, subject, html }) => {
     try {
+        const transporter = getTransporter();
         await transporter.sendMail({
             from: `"Job Portal" <${process.env.GMAIL_USER}>`,
             to,

@@ -5,7 +5,11 @@ import App from './App.jsx'
 import { AuthProvider } from './context/AuthContext.jsx'
 import { ClerkProvider } from '@clerk/react'
 
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || "pk_test_ZGlzdGluY3QtYXJhY2huaWQtMjYuY2xlcmsuYWNjb3VudHMuZGV2JA";
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
+if (!PUBLISHABLE_KEY) {
+  throw new Error("Missing VITE_CLERK_PUBLISHABLE_KEY");
+}
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
