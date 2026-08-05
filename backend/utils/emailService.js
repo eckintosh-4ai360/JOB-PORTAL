@@ -26,6 +26,25 @@ const sendEmail = async ({ to, subject, html }) => {
 
 // EMAIL TEMPLATES
 
+// Sent when a user creates a new account.
+const sendAccountCreatedEmail = async ({ to, name, role }) => {
+    await sendEmail({
+        to,
+        subject: "Welcome to Job Portal",
+        html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; background: #f9f9f9; border-radius: 8px;">
+                <h2 style="color: #2563eb;">Welcome to Job Portal!</h2>
+                <p>Hi <strong>${name || "there"}</strong>,</p>
+                <p>Your account has been created successfully.</p>
+                ${role ? `<p>You are signed up as a <strong>${role}</strong>.</p>` : ""}
+                <p>You can now browse roles, manage your profile, and keep track of your activity on the platform.</p>
+                <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
+                <p style="color: #6b7280; font-size: 14px;">This is an automated message from Job Portal. Please do not reply to this email.</p>
+            </div>
+        `,
+    });
+};
+
 // Sent to the applicant when they first submit their application.
 const sendApplicationSubmittedEmail = async ({ to, applicantName, jobTitle }) => {
     await sendEmail({
@@ -39,6 +58,25 @@ const sendApplicationSubmittedEmail = async ({ to, applicantName, jobTitle }) =>
                 <p>The employer will review your application and get back to you. You can expect an update on your application status.</p>
                 <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
                 <p style="color: #6b7280; font-size: 14px;">This is an automated message from Job Portal. Please do not reply to this email.</p>
+            </div>
+        `,
+    });
+};
+
+// Generic status update email used for any application status update that does not
+// have a more specific template.
+const sendApplicationStatusUpdatedEmail = async ({ to, applicantName, jobTitle, status }) => {
+    await sendEmail({
+        to,
+        subject: `Application Status Updated - ${jobTitle}`,
+        html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; background: #f9f9f9; border-radius: 8px;">
+                <h2 style="color: #2563eb;">Application Status Updated</h2>
+                <p>Hi <strong>${applicantName}</strong>,</p>
+                <p>Your application for <strong>${jobTitle}</strong> has been updated.</p>
+                <p>Current status: <strong>${status}</strong></p>
+                <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
+                <p style="color: #6b7280; font-size: 14px;">This is an automated message from Job Portal.</p>
             </div>
         `,
     });
@@ -125,7 +163,9 @@ const sendRejectionEmail = async ({ to, applicantName, jobTitle }) => {
 };
 
 module.exports = {
+    sendAccountCreatedEmail,
     sendApplicationSubmittedEmail,
+    sendApplicationStatusUpdatedEmail,
     sendUnderReviewEmail,
     sendInterviewScheduledEmail,
     sendOfferEmail,

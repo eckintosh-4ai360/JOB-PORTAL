@@ -4,6 +4,7 @@ const User = require("../models/User");
 const { uploadToCloudinary, uploadToLocalDisk } = require("../middlewares/uploadMiddleware");
 const {
     sendApplicationSubmittedEmail,
+    sendApplicationStatusUpdatedEmail,
     sendUnderReviewEmail,
     sendInterviewScheduledEmail,
     sendOfferEmail,
@@ -302,10 +303,17 @@ const updateApplicationStatus = async (req, res) => {
                 jobTitle:      job.title,
             };
 
-            if (status === "Under Review")  sendUnderReviewEmail(emailPayload);
-            if (status === "Interviewing")  sendInterviewScheduledEmail({ ...emailPayload, interview: application.interview });
-            if (status === "Offered")       sendOfferEmail(emailPayload);
-            if (status === "Rejected")      sendRejectionEmail(emailPayload);
+            if (status === "Under Review") {
+                sendUnderReviewEmail(emailPayload);
+            } else if (status === "Interviewing") {
+                sendInterviewScheduledEmail({ ...emailPayload, interview: application.interview });
+            } else if (status === "Offered") {
+                sendOfferEmail(emailPayload);
+            } else if (status === "Rejected") {
+                sendRejectionEmail(emailPayload);
+            } else {
+                sendApplicationStatusUpdatedEmail({ ...emailPayload, status });
+            }
         }
 
         res.status(200).json({ message: "Application status updated", application });

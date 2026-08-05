@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const { createClerkClient, verifyToken } = require("@clerk/backend");
+const { sendAccountCreatedEmail } = require("../utils/emailService");
 
 const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
 
@@ -16,6 +17,12 @@ exports.register = async (req, res) => {
         const userExist = await User.findOne({email});
         if(userExist) return res.status(400).json({message: "User already exists"});
         const user = await User.create({name, email, password, avatar, role});
+
+        sendAccountCreatedEmail({
+            to: user.email,
+            name: user.name,
+            role: user.role,
+        });
 
         res.status(201).json({
             token: genarateToken(user._id),
@@ -110,6 +117,7 @@ exports.clerkAuth = async (req, res) => {
 
         // Find existing user by clerkId or email, or create a new one
         let user = await User.findOne({ $or: [{ clerkId: clerkUser.id }, { email }] });
+        let isNewUser = false;
 
         if (user) {
             // Update clerkId if missing (e.g. email-account user now signs in with Google)
@@ -132,6 +140,15 @@ exports.clerkAuth = async (req, res) => {
                 avatar,
                 role,
                 password: null,
+            });
+            isNewUser = true;
+        }
+
+        if (isNewUser) {
+            sendAccountCreatedEmail({
+                to: user.email,
+                name: user.name,
+                role: user.role,
             });
         }
 
