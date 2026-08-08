@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import DashboardLayout from "../../components/layout/dashboardLayout";
 import { InputField, SelectField, TextAreaField } from "../../components/input/InputField";
+import { LocationPicker } from "../../components/input/LocationPicker";
 import JobPostingPreview from "../../components/cards/JobPostingPreview";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPath";
@@ -39,6 +40,8 @@ const JOB_TYPE_OPTIONS = [
 const INITIAL_FORM = {
   title:          "",
   location:       "",
+  latitude:       null,
+  longitude:      null,
   category:       "",
   customCategory: "",
   jobType:        "",
@@ -126,6 +129,8 @@ const JobPostingForm = () => {
         description:    form.description,
         requirements:   form.requirements,
         location:       form.location,
+        latitude:       form.latitude || undefined,
+        longitude:      form.longitude || undefined,
         category:       form.category,
         customCategory: form.category === "other" ? form.customCategory : undefined,
         type:           form.jobType,          // ← schema field is "type"
@@ -206,14 +211,18 @@ const JobPostingForm = () => {
               error={errors.title}
             />
 
-            <InputField
-              label="Location"
-              name="location"
-              icon={MapPin}
-              placeholder="e.g., Accra, Ghana"
+            <LocationPicker
+              label="Job Location / Business Address"
+              required
               value={form.location}
-              onChange={handleChange}
+              latitude={form.latitude}
+              longitude={form.longitude}
+              onChange={({ location, latitude, longitude }) => {
+                setForm((prev) => ({ ...prev, location, latitude, longitude }));
+                if (errors.location) setErrors((prev) => ({ ...prev, location: "" }));
+              }}
               error={errors.location}
+              placeholder="e.g., Accra Mall, East Legon, Accra or search Google Locator"
             />
 
             {/* Category + Job Type — side by side on sm+ */}

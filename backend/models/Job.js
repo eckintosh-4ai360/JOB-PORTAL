@@ -5,6 +5,8 @@ const jobSchema = new mongoose.Schema({
     description: {type: String, required: true},
     requirements: {type: String, required: true},
     location: {type: String},
+    latitude: {type: Number},
+    longitude: {type: Number},
     category: {type: String},
     customCategory: {type: String},
     type: {

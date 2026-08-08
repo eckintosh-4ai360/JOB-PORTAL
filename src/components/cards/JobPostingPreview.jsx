@@ -1,6 +1,6 @@
 import {
   ArrowLeft, MapPin, Clock, Building2,
-  Users, CheckCircle2, Calendar,
+  Users, CheckCircle2, Calendar, ExternalLink,
 } from "lucide-react";
 
 // ─── GHS icon (reused from form) 
@@ -91,10 +91,24 @@ const JobPostingPreview = ({ form, onClose }) => {
                 {form.title || <span className="text-gray-300">Job Title</span>}
               </h1>
               {form.location && (
-                <p className="mt-1.5 flex items-center gap-1.5 text-sm text-gray-500">
-                  <MapPin className="h-4 w-4 text-gray-400" />
-                  {form.location}
-                </p>
+                <div className="mt-1.5 flex items-center gap-2 text-sm text-gray-500">
+                  <span className="flex items-center gap-1.5">
+                    <MapPin className="h-4 w-4 text-indigo-500" />
+                    {form.location}
+                  </span>
+                  <a
+                    href={
+                      form.latitude && form.longitude
+                        ? `https://www.google.com/maps/search/?api=1&query=${form.latitude},${form.longitude}`
+                        : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(form.location)}`
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-xs font-bold text-indigo-600 hover:underline bg-indigo-50 px-2 py-0.5 rounded-full"
+                  >
+                    Google Locator <ExternalLink className="h-3 w-3" />
+                  </a>
+                </div>
               )}
             </div>
             {/* Company logo placeholder */}

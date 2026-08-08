@@ -424,6 +424,48 @@ const JobDetails = () => {
               )}
             </div>
 
+            {/* Location & Google Map Card */}
+            {job.location && (
+              <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm space-y-3.5">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-bold text-gray-900 flex items-center gap-1.5">
+                    <MapPin className="h-4 w-4 text-indigo-600" />
+                    Business Location
+                  </h3>
+                  <a
+                    href={
+                      job.latitude && job.longitude
+                        ? `https://www.google.com/maps/search/?api=1&query=${job.latitude},${job.longitude}`
+                        : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(job.location)}`
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[11px] font-bold text-indigo-600 hover:underline flex items-center gap-1"
+                  >
+                    Google Maps <ExternalLink className="h-3 w-3" />
+                  </a>
+                </div>
+
+                <p className="text-xs font-semibold text-gray-700">{job.location}</p>
+
+                <div className="h-44 w-full rounded-xl overflow-hidden border border-gray-100 bg-slate-50">
+                  <iframe
+                    title="Business Location Map"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    allowFullScreen
+                    src={
+                      job.latitude && job.longitude
+                        ? `https://maps.google.com/maps?q=${job.latitude},${job.longitude}&z=14&output=embed`
+                        : `https://maps.google.com/maps?q=${encodeURIComponent(job.location)}&z=14&output=embed`
+                    }
+                  />
+                </div>
+              </div>
+            )}
+
             {/* Safety Tips Card */}
             <div className="rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 p-5">
               <div className="flex items-center gap-2 mb-2.5">

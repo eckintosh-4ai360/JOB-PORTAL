@@ -11,6 +11,7 @@ import DashboardLayout from "../../components/layout/dashboardLayout";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPath";
 import { InputField, SelectField, TextAreaField } from "../../components/input/InputField";
+import { LocationPicker } from "../../components/input/LocationPicker";
 
 // ─── Static option lists for editor ──────────────────────────────────────────
 const CATEGORY_OPTIONS = [
@@ -164,6 +165,8 @@ const ManageJobs = () => {
     setEditForm({
       title: job.title || "",
       location: job.location || "",
+      latitude: job.latitude || null,
+      longitude: job.longitude || null,
       category: job.category || "",
       customCategory: job.customCategory || "",
       jobType: job.type || "", // DB stores as type, form uses jobType
@@ -221,6 +224,8 @@ const ManageJobs = () => {
         description: editForm.description,
         requirements: editForm.requirements,
         location: editForm.location,
+        latitude: editForm.latitude || undefined,
+        longitude: editForm.longitude || undefined,
         category: editForm.category,
         customCategory: editForm.category === "other" ? editForm.customCategory : undefined,
         type: editForm.jobType, // mapped correctly to schema 'type'
@@ -597,14 +602,18 @@ const ManageJobs = () => {
                 error={editErrors.title}
               />
 
-              <InputField
-                label="Location"
-                name="location"
-                icon={MapPin}
-                placeholder="e.g. Accra, Ghana"
+              <LocationPicker
+                label="Location / Business Address"
+                required
                 value={editForm.location}
-                onChange={handleEditChange}
+                latitude={editForm.latitude}
+                longitude={editForm.longitude}
+                onChange={({ location, latitude, longitude }) => {
+                  setEditForm((prev) => ({ ...prev, location, latitude, longitude }));
+                  if (editErrors.location) setEditErrors((prev) => ({ ...prev, location: "" }));
+                }}
                 error={editErrors.location}
+                placeholder="e.g. Accra, Ghana or search Google Locator"
               />
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
