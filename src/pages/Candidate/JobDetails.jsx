@@ -283,7 +283,7 @@ const JobDetails = () => {
                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 mt-3 text-xs text-gray-400">
                   <span className="flex items-center gap-1"><MapPin className="h-3.5 w-3.5" />{job.location}</span>
                   <span className="h-1.5 w-1.5 rounded-full bg-gray-300" />
-                  <span className="flex items-center gap-1"><Briefcase className="h-3.5 w-3.5" />{job.type}</span>
+                  <span className="flex items-center gap-1"><Briefcase className="h-3.5 w-3.5" />{job.type === "Other" && job.customJobType ? job.customJobType : job.type}</span>
                   <span className="h-1.5 w-1.5 rounded-full bg-gray-300" />
                   <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />Posted {moment(job.createdAt).fromNow()}</span>
                 </div>
@@ -341,7 +341,7 @@ const JobDetails = () => {
               </div>
               <div>
                 <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Category</p>
-                <p className="text-sm font-bold text-gray-800 capitalize">{job.category}</p>
+                <p className="text-sm font-bold text-gray-800 capitalize">{job.category === "other" && job.customCategory ? job.customCategory : job.category}</p>
               </div>
             </div>
 
@@ -350,11 +350,18 @@ const JobDetails = () => {
                 <Shield className="h-4.5 w-4.5 text-indigo-600" />
               </div>
               <div>
-                <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Status</p>
-                <p className="text-sm font-bold text-emerald-600 flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                  Accepting Candidates
-                </p>
+                <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">{job.deadline ? "Deadline" : "Status"}</p>
+                {job.deadline ? (
+                  <p className="text-sm font-bold text-amber-600 flex items-center gap-1.5">
+                    <Calendar className="h-3.5 w-3.5" />
+                    {new Date(job.deadline).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+                  </p>
+                ) : (
+                  <p className="text-sm font-bold text-emerald-600 flex items-center gap-1.5">
+                    <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                    Accepting Candidates
+                  </p>
+                )}
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
-﻿import {
+import {
   ArrowLeft, MapPin, Clock, Building2,
-  Users, CheckCircle2,
+  Users, CheckCircle2, Calendar,
 } from "lucide-react";
 
 // ─── GHS icon (reused from form) 
@@ -56,6 +56,14 @@ const formatSalary = (min, max) => {
 const JobPostingPreview = ({ form, onClose }) => {
   const salaryText = formatSalary(form.salaryMin, form.salaryMax);
 
+  // Resolve display labels for category and job type
+  const categoryLabel = form.category === "other" && form.customCategory
+    ? form.customCategory
+    : form.category;
+  const jobTypeLabel = form.jobType === "Other" && form.customJobType
+    ? form.customJobType
+    : form.jobType;
+
   return (
     /* Full-screen slide-over */
     <div className="fixed inset-0 z-50 flex items-start justify-end bg-black/40 backdrop-blur-sm">
@@ -97,16 +105,22 @@ const JobPostingPreview = ({ form, onClose }) => {
 
           {/* ── Badges      */}
           <div className="flex flex-wrap gap-2">
-            {form.category && (
-              <Badge color="blue">{form.category}</Badge>
+            {categoryLabel && (
+              <Badge color="blue">{categoryLabel}</Badge>
             )}
-            {form.jobType && (
-              <Badge color="violet">{form.jobType}</Badge>
+            {jobTypeLabel && (
+              <Badge color="violet">{jobTypeLabel}</Badge>
             )}
             <Badge color="gray">
               <Clock className="h-3 w-3" />
               Posted today
             </Badge>
+            {form.deadline && (
+              <Badge color="green">
+                <Calendar className="h-3 w-3" />
+                Deadline: {new Date(form.deadline).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+              </Badge>
+            )}
           </div>
 
           {/* ── Salary banner  */}

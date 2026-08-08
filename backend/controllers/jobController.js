@@ -5,7 +5,7 @@ const Job = require("../models/Job");
 // @access  Private (Employer only)
 const createJob = async (req, res) => {
     try {
-        const { title, description, requirements, location, category, type, salaryMin, salaryMax, companyLogo } = req.body;
+        const { title, description, requirements, location, category, customCategory, type, customJobType, salaryMin, salaryMax, companyLogo, deadline } = req.body;
 
         if (req.user.role !== "employer") {
             return res.status(403).json({ message: "Only employers can post jobs" });
@@ -17,7 +17,10 @@ const createJob = async (req, res) => {
             requirements,
             location,
             category,
+            customCategory: category === "other" ? customCategory : undefined,
             type,
+            customJobType: type === "Other" ? customJobType : undefined,
+            deadline: deadline || undefined,
             salaryMin,
             salaryMax,
             companyLogo,

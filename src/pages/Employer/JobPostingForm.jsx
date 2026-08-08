@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
   Briefcase, MapPin, Users, FileText,
-  Send, Eye, AlertCircle,
+  Send, Eye, AlertCircle, Calendar,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -32,18 +32,22 @@ const JOB_TYPE_OPTIONS = [
   { value: "Contract",    label: "Contract" },
   { value: "Internship",  label: "Internship" },
   { value: "Remote",      label: "Remote" },
+  { value: "Other",       label: "Other" },
 ];
 
 // ─── Initial form state ───────────────────────────────────────────────────────
 const INITIAL_FORM = {
-  title:        "",
-  location:     "",
-  category:     "",
-  jobType:      "",
-  description:  "",
-  requirements: "",
-  salaryMin:    "",
-  salaryMax:    "",
+  title:          "",
+  location:       "",
+  category:       "",
+  customCategory: "",
+  jobType:        "",
+  customJobType:  "",
+  description:    "",
+  requirements:   "",
+  salaryMin:      "",
+  salaryMax:      "",
+  deadline:       "",
 };
 
 // ─── Section wrapper ──────────────────────────────────────────────────────────
@@ -87,7 +91,11 @@ const JobPostingForm = () => {
     if (!form.title.trim())        newErrors.title        = "Job title is required.";
     if (!form.location.trim())     newErrors.location     = "Location is required.";
     if (!form.category)            newErrors.category     = "Please select a category.";
+    if (form.category === "other" && !form.customCategory.trim())
+      newErrors.customCategory = "Please specify your category.";
     if (!form.jobType)             newErrors.jobType      = "Please select a job type.";
+    if (form.jobType === "Other" && !form.customJobType.trim())
+      newErrors.customJobType = "Please specify the job type.";
     if (!form.description.trim())  newErrors.description  = "Job description is required.";
     if (!form.requirements.trim()) newErrors.requirements = "Requirements are required.";
     if (form.salaryMin && form.salaryMax) {
@@ -114,14 +122,17 @@ const JobPostingForm = () => {
       // Map form fields → schema fields
       // DB: `type` (required, title-case enum), `salaryMin`, `salaryMax` (flat numbers)
       const payload = {
-        title:        form.title,
-        description:  form.description,
-        requirements: form.requirements,
-        location:     form.location,
-        category:     form.category,
-        type:         form.jobType,          // ← schema field is "type"
-        salaryMin:    Number(form.salaryMin) || undefined,
-        salaryMax:    Number(form.salaryMax) || undefined,
+        title:          form.title,
+        description:    form.description,
+        requirements:   form.requirements,
+        location:       form.location,
+        category:       form.category,
+        customCategory: form.category === "other" ? form.customCategory : undefined,
+        type:           form.jobType,          // ← schema field is "type"
+        customJobType:  form.jobType === "Other" ? form.customJobType : undefined,
+        salaryMin:      Number(form.salaryMin) || undefined,
+        salaryMax:      Number(form.salaryMax) || undefined,
+        deadline:       form.deadline || undefined,
       };
       await axiosInstance.post(API_PATHS.JOBS.POST_JOB, payload);
       toast.success("Job posted successfully!");
@@ -230,6 +241,46 @@ const JobPostingForm = () => {
                 error={errors.jobType}
               />
             </div>
+
+            {/* Conditional "Other" specification fields */}
+            {form.category === "other" && (
+              <InputField
+                label="Specify Category"
+                name="customCategory"
+                required
+                icon={Users}
+                placeholder="e.g., Agriculture, Logistics…"
+                value={form.customCategory}
+                onChange={handleChange}
+                error={errors.customCategory}
+              />
+            )}
+
+            {form.jobType === "Other" && (
+              <InputField
+                label="Specify Job Type"
+                name="customJobType"
+                required
+                icon={Briefcase}
+                placeholder="e.g., Freelance, Volunteer…"
+                value={form.customJobType}
+                onChange={handleChange}
+                error={errors.customJobType}
+              />
+            )}
+
+            {/* Application Deadline */}
+            <InputField
+              label="Application Deadline"
+              name="deadline"
+              type="date"
+              icon={Calendar}
+              placeholder="Select closing date"
+              value={form.deadline}
+              onChange={handleChange}
+              error={errors.deadline}
+              hint="The date when this job listing stops accepting applications"
+            />
           </FormSection>
 
           <Divider />

@@ -3,7 +3,7 @@ import {
   Briefcase, Plus, Search, Edit3, XCircle, Trash2,
   AlertCircle, Users, CheckCircle, ChevronDown, Loader2,
   MapPin, DollarSign, Send, Eye, X, ArrowUpDown,
-  ChevronLeft, ChevronRight,
+  ChevronLeft, ChevronRight, Calendar,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -32,6 +32,7 @@ const JOB_TYPE_OPTIONS = [
   { value: "Contract",    label: "Contract" },
   { value: "Internship",  label: "Internship" },
   { value: "Remote",      label: "Remote" },
+  { value: "Other",       label: "Other" },
 ];
 
 // Currency badge component
@@ -164,11 +165,14 @@ const ManageJobs = () => {
       title: job.title || "",
       location: job.location || "",
       category: job.category || "",
+      customCategory: job.customCategory || "",
       jobType: job.type || "", // DB stores as type, form uses jobType
+      customJobType: job.customJobType || "",
       description: job.description || "",
       requirements: job.requirements || "",
       salaryMin: job.salaryMin || "",
       salaryMax: job.salaryMax || "",
+      deadline: job.deadline ? new Date(job.deadline).toISOString().split("T")[0] : "",
     });
     setEditErrors({});
   };
@@ -186,7 +190,11 @@ const ManageJobs = () => {
     if (!editForm.title?.trim()) errors.title = "Job title is required.";
     if (!editForm.location?.trim()) errors.location = "Location is required.";
     if (!editForm.category) errors.category = "Please select a category.";
+    if (editForm.category === "other" && !editForm.customCategory?.trim())
+      errors.customCategory = "Please specify your category.";
     if (!editForm.jobType) errors.jobType = "Please select a job type.";
+    if (editForm.jobType === "Other" && !editForm.customJobType?.trim())
+      errors.customJobType = "Please specify the job type.";
     if (!editForm.description?.trim()) errors.description = "Job description is required.";
     if (!editForm.requirements?.trim()) errors.requirements = "Requirements are required.";
     if (editForm.salaryMin && editForm.salaryMax) {
@@ -214,9 +222,12 @@ const ManageJobs = () => {
         requirements: editForm.requirements,
         location: editForm.location,
         category: editForm.category,
+        customCategory: editForm.category === "other" ? editForm.customCategory : undefined,
         type: editForm.jobType, // mapped correctly to schema 'type'
+        customJobType: editForm.jobType === "Other" ? editForm.customJobType : undefined,
         salaryMin: Number(editForm.salaryMin) || undefined,
         salaryMax: Number(editForm.salaryMax) || undefined,
+        deadline: editForm.deadline || undefined,
       };
 
       await axiosInstance.put(API_PATHS.JOBS.UPDATE_JOB(editingJob._id), payload);
@@ -620,6 +631,46 @@ const ManageJobs = () => {
                   error={editErrors.jobType}
                 />
               </div>
+
+              {/* Conditional "Other" specification fields */}
+              {editForm.category === "other" && (
+                <InputField
+                  label="Specify Category"
+                  name="customCategory"
+                  required
+                  icon={Users}
+                  placeholder="e.g., Agriculture, Logistics…"
+                  value={editForm.customCategory}
+                  onChange={handleEditChange}
+                  error={editErrors.customCategory}
+                />
+              )}
+
+              {editForm.jobType === "Other" && (
+                <InputField
+                  label="Specify Job Type"
+                  name="customJobType"
+                  required
+                  icon={Briefcase}
+                  placeholder="e.g., Freelance, Volunteer…"
+                  value={editForm.customJobType}
+                  onChange={handleEditChange}
+                  error={editErrors.customJobType}
+                />
+              )}
+
+              {/* Application Deadline */}
+              <InputField
+                label="Application Deadline"
+                name="deadline"
+                type="date"
+                icon={Calendar}
+                placeholder="Select closing date"
+                value={editForm.deadline}
+                onChange={handleEditChange}
+                error={editErrors.deadline}
+                hint="The date when this job listing stops accepting applications"
+              />
 
               <TextAreaField
                 label="Job Description"
