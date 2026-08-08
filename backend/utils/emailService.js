@@ -1,29 +1,18 @@
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
-// reusable transporter using Gmail App Password (port 587 + STARTTLS + family:4 for Render cloud compatibility)
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false, // upgrades to TLS via STARTTLS
-    auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_APP_PASSWORD,
-    },
-    family: 4,
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 15000,
-});
+// Resend sends over HTTPS, unlike SMTP (port 587/465/25) which Render blocks outbound
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // send a single email
 const sendEmail = async ({ to, subject, html }) => {
     try {
-        await transporter.sendMail({
-            from: `"Job Portal" <${process.env.GMAIL_USER}>`,
+        const { error } = await resend.emails.send({
+            from: process.env.EMAIL_FROM || "Job Portal <onboarding@resend.dev>",
             to,
             subject,
             html,
         });
+        if (error) throw new Error(error.message);
         console.log(`📧 Email sent to ${to}: ${subject}`);
     } catch (error) {
         console.error("Failed to send email:", error.message);
