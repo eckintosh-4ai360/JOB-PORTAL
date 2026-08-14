@@ -2,23 +2,11 @@ import React from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-/**
- * ProtectedRoute
- *
- * Guards routes that require authentication, and optionally a specific role.
- *
- * Props:
- *  - requiredRole  (string, optional) — e.g. "employer" | "candidate"
- *                  When omitted, any authenticated user is allowed.
- *  - redirectTo    (string, optional) — where to send unauthenticated users.
- *                  Defaults to "/login".
- */
 const ProtectedRoute = ({ requiredRole, redirectTo = "/login" }) => {
   const { isAuthenticated, user, loading } = useAuth();
   const location = useLocation();
 
-  // While the auth context is resolving from localStorage, render nothing
-  // to avoid a flash-redirect on page refresh.
+  // While the auth context is resolving from localStorage, render nothing to avoid a flash-redirect on page refresh.
   if (loading) return null;
 
   // Not logged in → redirect to login, preserving intended destination

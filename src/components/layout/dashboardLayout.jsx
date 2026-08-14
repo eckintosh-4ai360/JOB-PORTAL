@@ -101,7 +101,7 @@ const DashboardLayout = ({ children, activeMenu }) => {
         />
       )}
 
-      {/* ── Sidebar ────────────────────────────────────────────────────────── */}
+      {/*  Sidebar   */}
       <aside
         className={`${
           isMobile
@@ -174,7 +174,7 @@ const DashboardLayout = ({ children, activeMenu }) => {
         </div>
       </aside>
 
-      {/* ── Main Inset Card Container ────────────────────────────────────── */}
+      {/*  Main Inset Card Container   */}
       <div
         className={`flex-1 bg-[#f8faf9] flex flex-col overflow-hidden ${
           isMobile ? "rounded-none h-full" : "rounded-[24px] border border-white/5 h-[calc(100vh-24px)]"

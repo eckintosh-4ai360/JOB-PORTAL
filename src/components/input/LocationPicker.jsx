@@ -156,7 +156,7 @@ export const LocationPicker = ({
     }
   };
 
-  // ── MAP MODAL LOGIC ────────────────────────────────────────────────────────
+  //  MAP MODAL LOGIC 
   const openModal = () => {
     setModalQuery(query || "");
     if (selectedCoords) {

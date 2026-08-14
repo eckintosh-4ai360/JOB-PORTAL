@@ -13,7 +13,7 @@ import { API_PATHS } from "../../utils/apiPath";
 import { useAuth } from "../../context/AuthContext";
 import moment from "moment";
 
-// ─── Constants ───────────────────────────────────────────────────────────────
+//  Constants 
 const JOB_TYPES = [
   { value: "Full-Time", label: "Full-Time" },
   { value: "Part-Time", label: "Part-Time" },
@@ -40,7 +40,7 @@ const GhsIcon = () => (
   <span className="text-xs font-extrabold text-gray-400 mr-0.5">GH₵</span>
 );
 
-// ─── Status Badge ─────────────────────────────────────────────────────────────
+//   Status Badge   
 const STATUS_CONFIGS = {
   Applied: "bg-slate-100 text-slate-700 ring-1 ring-slate-200",
   "Under Review": "bg-blue-50 text-blue-700 ring-1 ring-blue-200",
@@ -49,7 +49,7 @@ const STATUS_CONFIGS = {
   Rejected: "bg-red-50 text-red-600 ring-1 ring-red-200",
 };
 
-// ─── Main Component ───────────────────────────────────────────────────────────
+// Main Component   
 const CandidateDashboard = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
@@ -75,7 +75,7 @@ const CandidateDashboard = () => {
   const [totalJobs, setTotalJobs] = useState(0);
   const limit = 6;
 
-  // ── Fetch Jobs, Saved State, and Applications ──────────────────────────────
+  //  Fetch Jobs, Saved State, and Applications   
   const fetchDashboardData = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -145,7 +145,7 @@ const CandidateDashboard = () => {
     fetchDashboardData();
   }, [fetchDashboardData]);
 
-  // ── Toggle Bookmark Saved Job ──────────────────────────────────────────────
+  //  Toggle Bookmark Saved Job   
   const handleToggleSave = async (jobId) => {
     if (!isAuthenticated) {
       navigate("/login", { state: { from: { pathname: "/find-jobs" } } });
@@ -181,7 +181,7 @@ const CandidateDashboard = () => {
     }
   };
 
-  // ── Filter Handlers ────────────────────────────────────────────────────────
+  //  Filter Handlers 
   const handleTypeChange = (typeVal) => {
     setSelectedTypes((prev) =>
       prev.includes(typeVal) ? prev.filter((t) => t !== typeVal) : [typeVal] // API currently filters single type
@@ -218,7 +218,7 @@ const CandidateDashboard = () => {
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
 
-        {/* ── Hero Search Box ──────────────────────────────────────────────── */}
+        {/*  Hero Search Box  */}
         <div className="rounded-2xl border border-indigo-50 bg-white p-6 shadow-sm space-y-4">
           <div className="max-w-xl">
             <h1 className="text-2xl font-bold text-gray-900">Find Your Dream Job</h1>
@@ -262,10 +262,10 @@ const CandidateDashboard = () => {
           </form>
         </div>
 
-        {/* ── Main content grid ───────────────────────────────────────────── */}
+        {/*  Main content grid  */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
           
-          {/* Left panel: Filters Sidebar ───────────────────────────────────── */}
+          {/* Left panel: Filters Sidebar  */}
           <aside className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm space-y-6">
             <div className="flex items-center justify-between border-b border-gray-50 pb-3">
               <div className="flex items-center gap-1.5 font-bold text-gray-900">
@@ -335,7 +335,7 @@ const CandidateDashboard = () => {
             </div>
           </aside>
 
-          {/* Right panel: Jobs Listings ────────────────────────────────────── */}
+          {/* Right panel: Jobs Listings   */}
           <section className="lg:col-span-3 space-y-5">
             <div className="flex items-center justify-between text-xs font-semibold text-gray-400">
               <span>Showing {sortedJobs.length} of {totalJobs} jobs available</span>

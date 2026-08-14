@@ -7,7 +7,7 @@ const protect = async (req, res, next) => {
         let token = req.headers.authorization
 
         if(token && token.startsWith("Bearer")){
-            token = token.split(" ")[1];//Exttract the token
+            token = token.split(" ")[1];          //Exttract the token
 
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             req.user = await User.findById(decoded.id).select("-password");
@@ -32,7 +32,7 @@ const optionalAuth = async (req, res, next) => {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             req.user = await User.findById(decoded.id).select("-password");
         }
-        // If no token or invalid token, req.user stays undefined — that's fine
+        // If no token or invalid token, req.user stays undefined
     } catch (error) {
         // Token was present but invalid — silently continue as guest
         req.user = null;

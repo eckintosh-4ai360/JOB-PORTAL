@@ -11,11 +11,11 @@ import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPath";
 import { useAuth } from "../../context/AuthContext";
 
-// ─── Avatar Initials  
+//  Avatar Initials  
 const getInitials = (name = "") =>
   name.split(" ").slice(0, 2).map((w) => w[0]?.toUpperCase()).join("") || "?";
 
-// ─── Stat Card    
+//  Stat Card    
 const StatCard = ({ icon: Icon, label, value, color }) => {
   const colors = {
     indigo: "bg-indigo-50 text-indigo-600",
@@ -36,7 +36,7 @@ const StatCard = ({ icon: Icon, label, value, color }) => {
   );
 };
 
-// ─── Info Row (view mode) 
+//  Info Row (view mode) 
 const InfoRow = ({ icon: Icon, label, value, placeholder = "Not set" }) => (
   <div className="flex items-start gap-3 py-3 border-b border-gray-50 last:border-none">
     <div className="mt-0.5 h-8 w-8 shrink-0 flex items-center justify-center rounded-lg bg-slate-50">
@@ -51,7 +51,7 @@ const InfoRow = ({ icon: Icon, label, value, placeholder = "Not set" }) => (
   </div>
 );
 
-// ─── Input Field 
+//  Input Field 
 const FormField = ({ label, required, icon: Icon, error, children }) => (
   <div className="flex flex-col gap-1.5">
     <label className="text-sm font-semibold text-gray-700">
@@ -73,7 +73,7 @@ const FormField = ({ label, required, icon: Icon, error, children }) => (
 const inputCls = (hasIcon, error) =>
   `w-full rounded-xl border ${error ? "border-red-300 focus:ring-red-400/20 focus:border-red-400" : "border-gray-200 focus:border-indigo-400 focus:ring-indigo-400/20"} bg-white text-sm text-gray-900 placeholder:text-gray-400 outline-none transition-all duration-200 focus:ring-2 py-3 ${hasIcon ? "pl-10 pr-4" : "px-4"}`;
 
-// ─── Main Component 
+//  Main Component 
 const EmployerProfilePage = () => {
   const { user, updateUser } = useAuth();
   const avatarInputRef = useRef(null);
@@ -120,7 +120,7 @@ const EmployerProfilePage = () => {
     return errs;
   };
 
-  // ── Image Upload Handler 
+  //  Image Upload Handler 
   const handleImageUpload = async (file, field) => {
     if (!file) return;
     const maxSize = 5 * 1024 * 1024; // 5 MB
@@ -156,7 +156,7 @@ const EmployerProfilePage = () => {
     }
   };
 
-  // ── Save Profile 
+  //  Save Profile 
   const handleSave = async () => {
     const errs = validate();
     if (Object.keys(errs).length > 0) {
@@ -210,7 +210,7 @@ const EmployerProfilePage = () => {
     <DashboardLayout activeMenu="company-profile">
       <div className="max-w-5xl mx-auto space-y-6 pb-12">
 
-        {/* ── Page Header  */}
+        {/*  Page Header  */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Company Profile</h1>
@@ -255,7 +255,7 @@ const EmployerProfilePage = () => {
           </div>
         </div>
 
-        {/* ── Hero Profile Banner  */}
+        {/*  Hero Profile Banner  */}
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-secondary via-secondary to-indigo-900 px-8 py-8 shadow-xl">
           {/* Decorative blobs */}
           <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-indigo-500/20 blur-3xl" />
@@ -368,7 +368,7 @@ const EmployerProfilePage = () => {
           </div>
         </div>
 
-        {/* ── Content Grid  */}
+        {/*  Content Grid  */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
 
           {/* Left: Personal + Company Info  */}

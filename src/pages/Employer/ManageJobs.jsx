@@ -13,7 +13,7 @@ import { API_PATHS } from "../../utils/apiPath";
 import { InputField, SelectField, TextAreaField } from "../../components/input/InputField";
 import { LocationPicker } from "../../components/input/LocationPicker";
 
-// ─── Static option lists for editor ──────────────────────────────────────────
+// ─ Static option lists for editor 
 const CATEGORY_OPTIONS = [
   { value: "technology",    label: "Technology & Software" },
   { value: "design",        label: "Design & Creative" },
@@ -262,7 +262,7 @@ const ManageJobs = () => {
   return (
     <DashboardLayout activeMenu="manage-jobs">
       <div className="max-w-7xl mx-auto space-y-6 pb-12">
-        {/* ── Header Row ────────────────────────────────────────────────── */}
+        {/*  Header Row  */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Job Management</h1>
@@ -279,7 +279,7 @@ const ManageJobs = () => {
           </button>
         </div>
 
-        {/* ── Search and Filter Controls ────────────────────────────────── */}
+        {/*  Search and Filter Controls  */}
         <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
           <div className="relative w-full md:max-w-md">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -322,7 +322,7 @@ const ManageJobs = () => {
           Showing {sortedJobs.length} of {jobs.length} job{jobs.length !== 1 ? "s" : ""}
         </div>
 
-        {/* ── Main content grid/table ───────────────────────────────────── */}
+        {/*  Main content grid/table ─ */}
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-32 gap-4 rounded-2xl border border-gray-100 bg-white">
             <Loader2 className="h-8 w-8 text-primary animate-spin" />
@@ -502,7 +502,7 @@ const ManageJobs = () => {
               })}
             </div>
 
-            {/* ── Pagination Footer Controls ──────────────────────────────── */}
+            {/*  Pagination Footer Controls  */}
             {totalPages > 1 && (
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-gray-100 bg-white px-6 py-4 rounded-b-2xl">
                 <div className="text-xs text-gray-500 font-medium">
@@ -571,7 +571,7 @@ const ManageJobs = () => {
         )}
       </div>
 
-      {/* ── Edit Job Modal ──────────────────────────────────────────────── */}
+      {/*  Edit Job Modal  */}
       {editingJob && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl border border-gray-100 bg-white p-6 shadow-2xl animate-in fade-in zoom-in duration-200">
@@ -760,7 +760,7 @@ const ManageJobs = () => {
         </div>
       )}
 
-      {/* ── Delete Confirmation Dialog ──────────────────────────────────── */}
+      {/*  Delete Confirmation Dialog  */}
       {deletingJobId && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-3xl border border-gray-100 bg-white p-6 shadow-2xl animate-in fade-in zoom-in duration-200">

@@ -1,7 +1,7 @@
 import { Clock, Briefcase, CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import moment from "moment";
 
-// ── Status config ─────────────────────────────────────────────────────────────
+//Status config 
 const STATUS_CONFIG = {
   applied: {
     label: "Applied",
@@ -41,7 +41,7 @@ const STATUS_CONFIG = {
   },
 };
 
-// ── Colour palette for avatar background (index-based) ───────────────────────
+// Colour palette for avatar background (index-based) 
 const AVATAR_GRADIENTS = [
   "from-indigo-400 to-violet-500",
   "from-blue-400 to-cyan-500",

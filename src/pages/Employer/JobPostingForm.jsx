@@ -12,7 +12,7 @@ import JobPostingPreview from "../../components/cards/JobPostingPreview";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPath";
 
-// ─── Static option lists ──────────────────────────────────────────────────────
+//  Static option lists 
 const CATEGORY_OPTIONS = [
   { value: "technology",    label: "Technology & Software" },
   { value: "design",        label: "Design & Creative" },
@@ -36,7 +36,7 @@ const JOB_TYPE_OPTIONS = [
   { value: "Other",       label: "Other" },
 ];
 
-// ─── Initial form state ───────────────────────────────────────────────────────
+//  Initial form state ─
 const INITIAL_FORM = {
   title:          "",
   location:       "",
@@ -53,7 +53,7 @@ const INITIAL_FORM = {
   deadline:       "",
 };
 
-// ─── Section wrapper ──────────────────────────────────────────────────────────
+//  Section wrapper ─
 const FormSection = ({ title, children }) => (
   <div className="space-y-5">
     <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400">
@@ -63,15 +63,15 @@ const FormSection = ({ title, children }) => (
   </div>
 );
 
-// ─── GHS currency badge (used as icon prop in InputField) ────────────────────
+//  GHS currency badge (used as icon prop in InputField) 
 const GhsIcon = () => (
   <span className="text-xs font-bold text-gray-400 leading-none">GH₵</span>
 );
 
-// ─── Divider ──────────────────────────────────────────────────────────────────
+//  Divider 
 const Divider = () => <div className="h-px bg-gray-100" />;
 
-// ─── Main component ───────────────────────────────────────────────────────────
+//  Main component 
 const JobPostingForm = () => {
   const navigate = useNavigate();
 
@@ -80,7 +80,7 @@ const JobPostingForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [preview, setPreview] = useState(false);
 
-  // ── Generic change handler ────────────────────────────────────────────────
+  //  Generic change handler 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -88,7 +88,7 @@ const JobPostingForm = () => {
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  // ── Validation ────────────────────────────────────────────────────────────
+  //  Validation 
   const validate = () => {
     const newErrors = {};
     if (!form.title.trim())        newErrors.title        = "Job title is required.";
@@ -109,7 +109,7 @@ const JobPostingForm = () => {
     return newErrors;
   };
 
-  // ── Submit ────────────────────────────────────────────────────────────────
+  //  Submit ─
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
@@ -154,7 +154,7 @@ const JobPostingForm = () => {
 
   return (
     <DashboardLayout activeMenu="post-job">
-      {/* ── Preview overlay ──────────────────────────────────────────────── */}
+      {/*  Preview overlay  */}
       {preview && (
         <JobPostingPreview
           form={form}
@@ -164,7 +164,7 @@ const JobPostingForm = () => {
 
       <div className="mx-auto max-w-3xl pb-16">
 
-        {/* ── Page header ─────────────────────────────────────────────────── */}
+        {/*  Page header  */}
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Post a New Job</h1>
@@ -182,7 +182,7 @@ const JobPostingForm = () => {
           </button>
         </div>
 
-        {/* ── Validation summary banner ────────────────────────────────────── */}
+        {/*  Validation summary banner  */}
         {errorCount > 0 && (
           <div className="mb-6 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4">
             <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-500" />
@@ -192,13 +192,13 @@ const JobPostingForm = () => {
           </div>
         )}
 
-        {/* ── Form card ───────────────────────────────────────────────────── */}
+        {/*  Form card  */}
         <form
           onSubmit={handleSubmit}
           className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8 space-y-8"
           noValidate
         >
-          {/* ── Basic Info ──────────────────────────────────────────────── */}
+          {/*  Basic Info  */}
           <FormSection title="Basic Information">
             <InputField
               label="Job Title"
@@ -294,7 +294,7 @@ const JobPostingForm = () => {
 
           <Divider />
 
-          {/* ── Description & Requirements ──────────────────────────────── */}
+          {/*  Description & Requirements  */}
           <FormSection title="Job Details">
             <TextAreaField
               label="Job Description"
@@ -322,7 +322,7 @@ const JobPostingForm = () => {
 
           <Divider />
 
-          {/* ── Salary ──────────────────────────────────────────────────── */}
+          {/*  Salary ─ */}
           <FormSection title="Compensation">
             <div>
               <p className="mb-1.5 text-sm font-medium text-gray-700">
@@ -356,7 +356,7 @@ const JobPostingForm = () => {
             </div>
           </FormSection>
 
-          {/* ── Submit ──────────────────────────────────────────────────── */}
+          {/*  Submit ─ */}
           <button
             type="submit"
             disabled={isSubmitting}

@@ -13,7 +13,7 @@ import { API_PATHS } from "../../utils/apiPath";
 import { useAuth } from "../../context/AuthContext";
 import moment from "moment";
 
-// ─── Status Config for Candidate Applications ──────────────────────────────
+//   Status Config for Candidate Applications   
 const STATUS_CONFIG = {
   Applied: {
     label: "Applied",
@@ -37,7 +37,7 @@ const STATUS_CONFIG = {
   },
 };
 
-// ─── Info Row ────────────────────────────────────────────────────────────────
+//   Info Row   
 const InfoRow = ({ icon: Icon, label, value }) => (
   <div className="flex items-start gap-3 py-3 border-b border-gray-50 last:border-none">
     <div className="mt-0.5 h-8 w-8 shrink-0 flex items-center justify-center rounded-lg bg-slate-50">
@@ -52,7 +52,7 @@ const InfoRow = ({ icon: Icon, label, value }) => (
   </div>
 );
 
-// ─── Form Field Helper ───────────────────────────────────────────────────────
+//   Form Field Helper  
 const FormField = ({ label, required, icon: Icon, error, children }) => (
   <div className="flex flex-col gap-1.5">
     <label className="text-sm font-semibold text-gray-700">
@@ -78,7 +78,7 @@ const inputCls = (hasIcon, error) =>
     hasIcon ? "pl-10 pr-4" : "px-4"
   }`;
 
-// ─── Main Component ───────────────────────────────────────────────────────────
+//   Main Component   
 const UserProfile = () => {
   const { user, updateUser } = useAuth();
   const navigate = useNavigate();
@@ -147,7 +147,7 @@ const UserProfile = () => {
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  // ── Upload Avatar Photo ────────────────────────────────────────────────────
+  //  Upload Avatar Photo   
   const handleAvatarUpload = async (file) => {
     if (!file) return;
     const maxSize = 5 * 1024 * 1024;
@@ -182,7 +182,7 @@ const UserProfile = () => {
     }
   };
 
-  // ── Upload Resume PDF ──────────────────────────────────────────────────────
+  //  Upload Resume PDF  
   const handleResumeUpload = async (file) => {
     if (!file) return;
     if (file.type !== "application/pdf") {
@@ -227,7 +227,7 @@ const UserProfile = () => {
     }
   };
 
-  // ── Delete Resume ──────────────────────────────────────────────────────────
+  //  Delete Resume  
   const handleDeleteResume = async () => {
     if (!window.confirm("Are you sure you want to delete your resume?")) return;
 
@@ -252,7 +252,7 @@ const UserProfile = () => {
     }
   };
 
-  // ── Save Profile Name ──────────────────────────────────────────────────────
+  //   Save Profile Name  
   const handleSave = async () => {
     if (!form.name.trim()) {
       setErrors({ name: "Your name is required." });
@@ -301,7 +301,7 @@ const UserProfile = () => {
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
 
-        {/* ── Page Header ──────────────────────────────────────────────────── */}
+        {/*  Page Header   */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">My Profile</h1>
@@ -346,7 +346,7 @@ const UserProfile = () => {
           </div>
         </div>
 
-        {/* ── Profile Banner ────────────────────────────────────────────────── */}
+        {/*    Profile Banner    */}
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-750 to-indigo-900 px-8 py-8 shadow-xl">
           {/* Decorative shapes */}
           <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
@@ -429,10 +429,10 @@ const UserProfile = () => {
           </div>
         </div>
 
-        {/* ── Content Grid ─────────────────────────────────────────────────── */}
+        {/*    Content Grid    */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
 
-          {/* Left Panel: Forms & Uploads ──────────────────────────────────── */}
+          {/* Left Panel: Forms & Uploads   */}
           <div className="lg:col-span-3 space-y-5">
             
             {/* Personal Details Card */}
@@ -627,7 +627,7 @@ const UserProfile = () => {
 
           </div>
 
-          {/* Right Panel: Sidebars ────────────────────────────────────────── */}
+          {/* Right Panel: Sidebars    */}
           <div className="lg:col-span-2 space-y-5">
             
             {/* Completeness bar */}
@@ -716,7 +716,7 @@ const UserProfile = () => {
 
       </main>
       
-      {/* ── Candidate Interview Details Modal ──────────────────────────────── */}
+      {/*    Candidate Interview Details Modal   */}
     {isInterviewModalOpen && selectedInterviewApp?.interview && (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
         <div className="bg-white rounded-2xl max-w-lg w-full border border-gray-100 shadow-2xl p-6 relative overflow-hidden animate-in fade-in zoom-in duration-200">

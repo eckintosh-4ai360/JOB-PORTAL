@@ -12,7 +12,7 @@ import ApplicantDashboardCard from "../../components/cards/ApplicantDashboardCar
 import { useAuth } from "../../context/AuthContext";
 import { RECENT_JOBS, RECENT_APPLICATIONS } from "../../utils/data";
 
-// ── Stat Card 
+//  Stat Card 
 const StatCard = ({ title, value, icon: Icon, trendValue, trendUp, color = "blue", delay = 0 }) => {
   const gradients = {
     blue:   "from-blue-500 via-blue-600 to-indigo-600",
@@ -58,7 +58,7 @@ const StatCard = ({ title, value, icon: Icon, trendValue, trendUp, color = "blue
   );
 };
 
-// ── Quick Action Button 
+//  Quick Action Button 
 const QuickAction = ({ icon: Icon, label, description, onClick, color = "blue" }) => {
   const colors = {
     blue:   "bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white",
@@ -84,7 +84,7 @@ const QuickAction = ({ icon: Icon, label, description, onClick, color = "blue" }
   );
 };
 
-// ── Inline Loader 
+//  Inline Loader 
 const InlineLoader = () => (
   <div className="flex flex-col items-center justify-center py-32 gap-4">
     <div className="relative h-14 w-14">
@@ -97,7 +97,7 @@ const InlineLoader = () => (
   </div>
 );
 
-// ── Main Component 
+//  Main Component 
 export const EmployerDashboard = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -144,7 +144,7 @@ export const EmployerDashboard = () => {
       ) : (
         <div className="max-w-7xl mx-auto space-y-8 pb-12">
 
-          {/* ── Welcome Banner  */}
+          {/*  Welcome Banner  */}
           <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-secondary via-secondary to-secondary px-8 py-7 shadow-xl">
             {/* Decorative blobs */}
             <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-blue-500/20 blur-3xl" />
@@ -173,7 +173,7 @@ export const EmployerDashboard = () => {
             </div>
           </div>
 
-          {/* ── Stat Cards  */}
+          {/*  Stat Cards  */}
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             <StatCard
               title="Active Jobs"
@@ -204,7 +204,7 @@ export const EmployerDashboard = () => {
             />
           </div>
 
-          {/* ── Content Grid  */}
+          {/*  Content Grid  */}
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
 
             {/* Left column — Jobs + Applications stacked */}

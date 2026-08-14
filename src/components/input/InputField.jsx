@@ -1,7 +1,7 @@
 
 import { ChevronDown } from "lucide-react";
 
-// ─── shared label + error wrapper ────────────────────────────────────────────
+// shared label + error wrapper 
 const FieldWrapper = ({ label, required, hint, error, children }) => (
   <div className="flex flex-col gap-1.5">
     {label && (
@@ -18,13 +18,13 @@ const FieldWrapper = ({ label, required, hint, error, children }) => (
   </div>
 );
 
-// ─── shared ring classes ──────────────────────────────────────────────────────
+// shared ring classes 
 const base =
   "w-full rounded-xl border border-gray-200 bg-white text-sm text-gray-900 " +
   "placeholder:text-gray-400 outline-none transition-all duration-200 " +
   "focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20";
 
-// ─── InputField ───────────────────────────────────────────────────────────────
+//InputField 
 export const InputField = ({
   label,
   required,
@@ -64,7 +64,7 @@ export const InputField = ({
   </FieldWrapper>
 );
 
-// ─── SelectField ──────────────────────────────────────────────────────────────
+// SelectField 
 export const SelectField = ({
   label,
   required,
@@ -114,7 +114,7 @@ export const SelectField = ({
   </FieldWrapper>
 );
 
-// ─── TextAreaField ────────────────────────────────────────────────────────────
+//  TextAreaField 
 export const TextAreaField = ({
   label,
   required,

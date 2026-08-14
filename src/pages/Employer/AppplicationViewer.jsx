@@ -13,7 +13,7 @@ import DashboardLayout from "../../components/layout/dashboardLayout";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPath";
 
-// ─── Status Config ───────────────────────────────────────────────────────────
+//   Status Config  
 const STATUS_CONFIG = {
   Applied: {
     label: "Applied",
@@ -65,7 +65,7 @@ const STATUS_CONFIG = {
 
 const STATUS_OPTIONS = ["Applied", "Under Review", "Interviewing", "Offered", "Rejected"];
 
-// ─── Avatar Gradients ────────────────────────────────────────────────────────
+//   Avatar Gradients  
 const AVATAR_GRADIENTS = [
   "from-indigo-400 to-violet-500",
   "from-blue-400 to-cyan-500",
@@ -78,7 +78,7 @@ const AVATAR_GRADIENTS = [
 const getInitials = (name = "") =>
   name.split(" ").slice(0, 2).map((w) => w[0]?.toUpperCase()).join("") || "?";
 
-// ─── Status Badge ─────────────────────────────────────────────────────────────
+//  Status Badge 
 const StatusBadge = ({ status, size = "sm" }) => {
   const cfg = STATUS_CONFIG[status] ?? STATUS_CONFIG["Applied"];
   const Icon = cfg.icon;
@@ -94,7 +94,7 @@ const StatusBadge = ({ status, size = "sm" }) => {
   );
 };
 
-// ─── Inline Loader ────────────────────────────────────────────────────────────
+//   Inline Loader  
 const InlineLoader = ({ message = "Loading…" }) => (
   <div className="flex flex-col items-center justify-center py-24 gap-4">
     <div className="relative h-14 w-14">
@@ -107,7 +107,7 @@ const InlineLoader = ({ message = "Loading…" }) => (
   </div>
 );
 
-// ─── Empty State ──────────────────────────────────────────────────────────────
+//   Empty State  
 const EmptyState = ({ title, description, icon: Icon = Inbox }) => (
   <div className="flex flex-col items-center justify-center py-24 text-center px-4">
     <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-50">
@@ -118,7 +118,7 @@ const EmptyState = ({ title, description, icon: Icon = Inbox }) => (
   </div>
 );
 
-// ─── Applicant List Item ──────────────────────────────────────────────────────
+//   Applicant List Item  
 const ApplicantListItem = ({ app, index, isSelected, onClick }) => {
   const name = app.applicantName || app.applicant?.name || "Unknown Applicant";
   const initials = getInitials(name);
@@ -162,7 +162,7 @@ const ApplicantListItem = ({ app, index, isSelected, onClick }) => {
   );
 };
 
-// ─── Info Row ─────────────────────────────────────────────────────────────────
+//   Info Row   
 const InfoRow = ({ icon: Icon, label, value }) => (
   <div className="flex items-start gap-3 py-2.5 border-b border-gray-50 last:border-none">
     <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-indigo-50">
@@ -175,7 +175,7 @@ const InfoRow = ({ icon: Icon, label, value }) => (
   </div>
 );
 
-// ─── Main Component ───────────────────────────────────────────────────────────
+//   Main Component   
 const ApplicationViewer = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -192,7 +192,7 @@ const ApplicationViewer = () => {
   const [isSchedulingModalOpen, setIsSchedulingModalOpen] = useState(false);
   const [interviewDetails, setInterviewDetails] = useState({ date: "", time: "", location: "", notes: "" });
 
-  // ── Fetch Applications ─────────────────────────────────────────────────────
+  //   Fetch Applications   
   const fetchApplications = useCallback(async () => {
     if (!jobId) return;
     setIsLoading(true);
@@ -215,7 +215,7 @@ const ApplicationViewer = () => {
     fetchApplications();
   }, [fetchApplications]);
 
-  // ── Filter Logic ───────────────────────────────────────────────────────────
+  //   Filter Logic   
   const filtered = applications.filter((app) => {
     const name = (app.applicantName || app.applicant?.name || "").toLowerCase();
     const email = (app.applicantEmail || app.applicant?.email || "").toLowerCase();
@@ -225,13 +225,13 @@ const ApplicationViewer = () => {
     return matchesSearch && matchesStatus;
   });
 
-  // ── Summary counts ─────────────────────────────────────────────────────────
+  //   Summary counts   
   const counts = STATUS_OPTIONS.reduce((acc, s) => {
     acc[s] = applications.filter((a) => a.status === s).length;
     return acc;
   }, {});
 
-  // ── Update Status ──────────────────────────────────────────────────────────
+  //   Update Status   
   const handleUpdateStatus = async (newStatus) => {
     if (!selectedApp || newStatus === selectedApp.status) return;
     setIsUpdatingStatus(true);
@@ -255,7 +255,7 @@ const ApplicationViewer = () => {
     }
   };
   
-  // ── Schedule/Update Interview ─────────────────────────────────────────────
+  //   Schedule/Update Interview  
   const handleScheduleSubmit = async (e) => {
     e.preventDefault();
     if (!interviewDetails.date || !interviewDetails.time || !interviewDetails.location) {
@@ -298,7 +298,7 @@ const ApplicationViewer = () => {
     }
   };
 
-  // ── Job Info (from first application) ─────────────────────────────────────
+  //   Job Info (from first application)  
   const jobInfo = applications[0]?.job;
   const selectedIndex = filtered.findIndex((a) => a._id === selectedApp?._id);
   const selectedGradient = AVATAR_GRADIENTS[selectedIndex % AVATAR_GRADIENTS.length];
@@ -320,7 +320,7 @@ const ApplicationViewer = () => {
     <DashboardLayout activeMenu="manage-jobs">
       <div className="h-[calc(100vh-8rem)] flex flex-col gap-0 max-w-7xl mx-auto">
 
-        {/* ── Top Bar ──────────────────────────────────────────────────────── */}
+        {/*    Top Bar   */}
         <div className="mb-5 flex flex-col sm:flex-row sm:items-center gap-4">
           <button
             onClick={() => navigate("/manage-jobs")}
@@ -372,7 +372,7 @@ const ApplicationViewer = () => {
           </div>
         </div>
 
-        {/* ── Status Filter Pills ───────────────────────────────────────────── */}
+        {/*    Status Filter Pills   */}
         <div className="mb-4 flex items-center gap-2 flex-wrap">
           {["All", ...STATUS_OPTIONS].map((s) => {
             const count = s === "All" ? applications.length : (counts[s] || 0);
@@ -404,7 +404,7 @@ const ApplicationViewer = () => {
           })}
         </div>
 
-        {/* ── Main Split Layout ─────────────────────────────────────────────── */}
+        {/*    Main Split Layout   */}
         {isLoading ? (
           <div className="flex-1 rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
             <InlineLoader message="Loading applications…" />
@@ -420,7 +420,7 @@ const ApplicationViewer = () => {
         ) : (
           <div className="flex-1 overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm flex min-h-0">
 
-            {/* ── Left Panel: Applicant List ─────────────────────────────── */}
+            {/*    Left Panel: Applicant List    */}
             <div className="w-[300px] xl:w-[340px] shrink-0 border-r border-gray-100 flex flex-col overflow-hidden">
               {/* Search bar */}
               <div className="p-3 border-b border-gray-100">
@@ -474,7 +474,7 @@ const ApplicationViewer = () => {
               </div>
             </div>
 
-            {/* ── Right Panel: Detail View ───────────────────────────────── */}
+            {/*  Right Panel: Detail View  */}
             {selectedApp ? (
               <div className="flex-1 overflow-y-auto min-w-0">
                 {/* Detail Header */}
@@ -517,7 +517,7 @@ const ApplicationViewer = () => {
                 {/* Detail Body */}
                 <div className="px-7 py-6 space-y-6">
 
-                  {/* ── Change Status ──────────────────────────────────────── */}
+                  {/*  Change Status ─ */}
                   <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
                     <div className="flex items-center gap-2 mb-4">
                       <SlidersHorizontal className="h-4 w-4 text-gray-400" />
@@ -566,7 +566,7 @@ const ApplicationViewer = () => {
                     </div>
                   </div>
 
-                  {/* ── Scheduled Interview Details ───────────────────────── */}
+                  {/*  Scheduled Interview Details ─ */}
                   {selectedApp.status === "Interviewing" && selectedApp.interview && (
                     <div className="rounded-2xl border border-amber-100 bg-amber-50/20 p-5 shadow-sm relative overflow-hidden">
                       <div className="absolute top-0 right-0 p-4 hidden md:block">
@@ -642,7 +642,7 @@ const ApplicationViewer = () => {
                     </div>
                   )}
 
-                  {/* ── Two-col Grid ───────────────────────────────────────── */}
+                  {/*  Two-col Grid  */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
 
                     {/* Applicant Info */}
@@ -715,7 +715,7 @@ const ApplicationViewer = () => {
                     </div>
                   </div>
 
-                  {/* ── Cover Letter ───────────────────────────────────────── */}
+                  {/*  Cover Letter  */}
                   {(selectedApp.coverLetter || selectedApp.coverLetterFile) && (
                     <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
                       <div className="flex items-center gap-2 mb-3">
@@ -767,7 +767,7 @@ const ApplicationViewer = () => {
                     </div>
                   )}
 
-                  {/* ── Timeline ───────────────────────────────────────────── */}
+                  {/*  Timeline  */}
                   <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
                     <div className="flex items-center gap-2 mb-4">
                       <Clock className="h-4 w-4 text-gray-400" />
@@ -820,7 +820,7 @@ const ApplicationViewer = () => {
         )}
       </div>
 
-      {/* ── Scheduling Modal ───────────────────────────────────────────── */}
+      {/*  Scheduling Modal  */}
       {isSchedulingModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
           <div className="bg-white rounded-2xl max-w-lg w-full border border-gray-100 shadow-2xl p-6 relative overflow-hidden animate-in fade-in zoom-in duration-200">

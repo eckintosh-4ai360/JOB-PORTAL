@@ -3,12 +3,12 @@ import {
   Users, CheckCircle2, Calendar, ExternalLink,
 } from "lucide-react";
 
-// ─── GHS icon (reused from form) 
+// GHS icon (reused from form) 
 const GhsIcon = () => (
   <span className="text-base font-bold text-white leading-none">GH₵</span>
 );
 
-// ─── Badge chip 
+// Badge chip 
 const Badge = ({ children, color = "blue" }) => {
   const styles = {
     blue:   "bg-blue-50   text-blue-600  border border-blue-200",
@@ -23,7 +23,7 @@ const Badge = ({ children, color = "blue" }) => {
   );
 };
 
-// ─── Section with left accent bar
+//  Section with left accent bar
 const PreviewSection = ({ title, children }) => (
   <div>
     <div className="mb-3 flex items-center gap-3">
@@ -34,7 +34,7 @@ const PreviewSection = ({ title, children }) => (
   </div>
 );
 
-// ─── Text block 
+// Text block 
 const TextBlock = ({ text }) => (
   <div className="rounded-xl border border-gray-100 bg-gray-50/60 px-5 py-4">
     <p className="whitespace-pre-wrap text-sm leading-7 text-gray-600">
@@ -43,7 +43,7 @@ const TextBlock = ({ text }) => (
   </div>
 );
 
-// ─── Derived helpers
+// Derived helpers
 const formatSalary = (min, max) => {
   if (!min && !max) return null;
   const fmt = (n) => Number(n).toLocaleString("en-GH");
@@ -52,7 +52,7 @@ const formatSalary = (min, max) => {
   return          `Up to GH₵ ${fmt(max)} per year`;
 };
 
-// ─── Main component 
+// Main component 
 const JobPostingPreview = ({ form, onClose }) => {
   const salaryText = formatSalary(form.salaryMin, form.salaryMax);
 
@@ -69,7 +69,7 @@ const JobPostingPreview = ({ form, onClose }) => {
     <div className="fixed inset-0 z-50 flex items-start justify-end bg-black/40 backdrop-blur-sm">
       <div className="h-full w-full max-w-2xl overflow-y-auto bg-white shadow-2xl animate-in slide-in-from-right duration-300">
 
-        {/* ── Header bar  */}
+        {/*Header bar  */}
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-100 bg-white px-6 py-4">
           <h2 className="text-base font-bold text-gray-900">Job Preview</h2>
           <button
@@ -81,10 +81,10 @@ const JobPostingPreview = ({ form, onClose }) => {
           </button>
         </div>
 
-        {/* ── Body  */}
+        {/*Body  */}
         <div className="space-y-7 px-6 py-6">
 
-          {/* ── Job title + location  */}
+          {/* Job title + location  */}
           <div className="flex items-start justify-between gap-4">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
@@ -111,13 +111,13 @@ const JobPostingPreview = ({ form, onClose }) => {
                 </div>
               )}
             </div>
-            {/* Company logo placeholder */}
+            {/* Company logo  */}
             <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-gray-100 bg-gray-50 shadow-sm">
               <Building2 className="h-8 w-8 text-gray-300" />
             </div>
           </div>
 
-          {/* ── Badges      */}
+          {/* Badges  */}
           <div className="flex flex-wrap gap-2">
             {categoryLabel && (
               <Badge color="blue">{categoryLabel}</Badge>
@@ -137,7 +137,7 @@ const JobPostingPreview = ({ form, onClose }) => {
             )}
           </div>
 
-          {/* ── Salary banner  */}
+          {/* Salary banner  */}
           {salaryText ? (
             <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-5">
               {/* Decorative blob */}
@@ -167,12 +167,12 @@ const JobPostingPreview = ({ form, onClose }) => {
             </div>
           )}
 
-          {/* ── About this role  */}
+          {/* About this role  */}
           <PreviewSection title="About This Role">
             <TextBlock text={form.description} />
           </PreviewSection>
 
-          {/* ── Requirements  */}
+          {/* Requirements  */}
           <PreviewSection title="What We're Looking For">
             <TextBlock text={form.requirements} />
             {form.requirements && (
@@ -183,7 +183,7 @@ const JobPostingPreview = ({ form, onClose }) => {
             )}
           </PreviewSection>
 
-          {/* ── Divider note  */}
+          {/* Divider note  */}
           <div className="rounded-xl border border-amber-100 bg-amber-50 px-4 py-3">
             <p className="text-xs text-amber-700">
               <strong>This is a preview only.</strong> Go back to edit before publishing your job.

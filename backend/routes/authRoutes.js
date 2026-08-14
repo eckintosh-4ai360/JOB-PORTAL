@@ -9,7 +9,7 @@ const router = express.Router();
 // Placeholder test route
 router.post("/register", register);
 router.post("/login", login);
-router.post("/clerk", clerkAuth);      // ← Google OAuth via Clerk
+router.post("/clerk", clerkAuth);      // Google OAuth via Clerk
 router.get("/me", protect, getMe);
 
 router.post("/upload-image", upload.single("image"), async (req, res) => {
