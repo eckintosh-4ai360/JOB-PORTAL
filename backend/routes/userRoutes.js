@@ -4,6 +4,11 @@ const {
     deleteResume,
     getPublicProfile,
 } = require("../controllers/userController");
+const {
+    getDocuments,
+    uploadDocument,
+    deleteDocument,
+} = require("../controllers/documentController");
 const { protect } = require("../middlewares/authMiddleware");
 
 const upload = require("../middlewares/uploadMiddleware");
@@ -14,6 +19,11 @@ const router = express.Router();
 // protected routes
 router.put("/profile", protect, updateProfile);
 router.delete("/resume", protect, deleteResume);
+
+// documents (CV, certificates, etc.)
+router.get("/documents", protect, getDocuments);
+router.post("/documents", protect, upload.single("file"), uploadDocument);
+router.delete("/documents/:docId", protect, deleteDocument);
 router.post("/upload-resume", protect, upload.single("resume"), async (req, res) => {
     try {
         if (!req.file) {

@@ -10,6 +10,17 @@ const userSchema = new mongoose.Schema({
     avatar: String,
     resume: String,
 
+    documents: [{
+        name: String,
+        url: String,
+        category: {type: String, enum: ["Resume", "Cover Letter", "Certificate", "ID Document", "Other"], default: "Other"},
+        fileType: String,
+        size: Number,
+        publicId: String,      // Cloudinary public_id, for clean deletion
+        resourceType: String,  // "image" | "raw" — needed by cloudinary.uploader.destroy
+        uploadedAt: {type: Date, default: Date.now},
+    }],
+
     // Clerk's unique user ID — set for Google/OAuth sign-ins
     clerkId: {type: String, default: null, index: true},
 

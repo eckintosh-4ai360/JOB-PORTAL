@@ -13,6 +13,7 @@ import SSOCallback from "./pages/Auth/SSOCallback";
 
 import CandidateDashboard from "./pages/Candidate/CandidateDashboard";
 import UserProfile from "./pages/Candidate/UserProfile";
+import MyDocuments from "./pages/Candidate/MyDocuments";
 import SavedJobs from "./pages/Candidate/SavedJobs";
 import JobDetails from "./pages/Candidate/JobDetails";
 import EmployerDashboard from "./pages/Employer/EmployerDashboard";
@@ -42,6 +43,7 @@ export const App = () => {
           <Route element={<ProtectedRoute requiredRole="jobseeker" />}>
             <Route path="/saved-jobs" element={<SavedJobs/>} />
             <Route path="/profile" element={<UserProfile/>} />
+            <Route path="/documents" element={<MyDocuments/>} />
           </Route>
 
           {/* employer-only routes — login required */}

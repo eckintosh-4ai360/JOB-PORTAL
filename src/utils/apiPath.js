@@ -37,7 +37,13 @@ export const API_PATHS = {
 
   IMAGE: {
     UPLOAD_IMAGE: "/api/auth/upload-image",  // upload profile image
-    
-}
+
+},
+
+  DOCUMENTS: {
+    GET_DOCUMENTS: "/api/user/documents",
+    UPLOAD_DOCUMENT: "/api/user/documents",
+    DELETE_DOCUMENT: (id) => `/api/user/documents/${id}`,
+  },
 };
 

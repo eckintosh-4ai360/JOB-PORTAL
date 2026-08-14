@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import {
   User2, Mail, FileText, Edit3, Save, X, Camera,
-  Shield, Check, Loader2, Briefcase, Star, Trash2,
-  Eye, Download, Bookmark, Clock, ArrowRight, ExternalLink,
+  Shield, Check, Loader2, Briefcase, Star,
+  Bookmark, Clock, ArrowRight, ExternalLink,
   ChevronRight, AlertCircle, Inbox, Plus, Calendar,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -83,13 +83,10 @@ const UserProfile = () => {
   const { user, updateUser } = useAuth();
   const navigate = useNavigate();
   const avatarInputRef = useRef(null);
-  const resumeInputRef = useRef(null);
 
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
-  const [isUploadingResume, setIsUploadingResume] = useState(false);
-  const [isDeletingResume, setIsDeletingResume] = useState(false);
 
   // Profile data stats
   const [myApplications, setMyApplications] = useState([]);
@@ -102,7 +99,6 @@ const UserProfile = () => {
   const [form, setForm] = useState({
     name: "",
     avatar: "",
-    resume: "",
   });
   const [errors, setErrors] = useState({});
 
@@ -112,7 +108,6 @@ const UserProfile = () => {
       setForm({
         name: user.name || "",
         avatar: user.avatar || "",
-        resume: user.resume || "",
       });
       fetchStats();
     }
@@ -182,77 +177,7 @@ const UserProfile = () => {
     }
   };
 
-  //  Upload Resume PDF  
-  const handleResumeUpload = async (file) => {
-    if (!file) return;
-    if (file.type !== "application/pdf") {
-      toast.error("Only PDF files are allowed for resumes.");
-      return;
-    }
-    const maxSize = 10 * 1024 * 1024; // 10 MB
-    if (file.size > maxSize) {
-      toast.error("Resume must be under 10 MB.");
-      return;
-    }
-
-    setIsUploadingResume(true);
-    const id = toast.loading("Uploading resume PDF…");
-
-    try {
-      const formData = new FormData();
-      formData.append("resume", file);
-
-      const res = await axiosInstance.post(API_PATHS.AUTH.UPLOAD_RESUME, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      const url = res.data?.resumeUrl;
-      if (!url) throw new Error("No resumeUrl returned");
-
-      // Save to user profile on the backend immediately
-      const profileUpdateRes = await axiosInstance.put(API_PATHS.AUTH.UPDATE_PROFILE, {
-        resume: url,
-      });
-
-      updateUser(profileUpdateRes.data);
-      setForm((prev) => ({ ...prev, resume: url }));
-      toast.dismiss(id);
-      toast.success("Resume uploaded and saved to profile!");
-    } catch (err) {
-      toast.dismiss(id);
-      console.error(err);
-      toast.error("Resume upload failed.");
-    } finally {
-      setIsUploadingResume(false);
-    }
-  };
-
-  //  Delete Resume  
-  const handleDeleteResume = async () => {
-    if (!window.confirm("Are you sure you want to delete your resume?")) return;
-
-    setIsDeletingResume(true);
-    const id = toast.loading("Deleting resume…");
-
-    try {
-      await axiosInstance.delete(API_PATHS.AUTH.DELETE_RESUME, {
-        data: { resumeUrl: form.resume },
-      });
-
-      updateUser({ ...user, resume: "" });
-      setForm((prev) => ({ ...prev, resume: "" }));
-      toast.dismiss(id);
-      toast.success("Resume deleted successfully!");
-    } catch (err) {
-      toast.dismiss(id);
-      console.error(err);
-      toast.error("Failed to delete resume.");
-    } finally {
-      setIsDeletingResume(false);
-    }
-  };
-
-  //   Save Profile Name  
+  //   Save Profile Name
   const handleSave = async () => {
     if (!form.name.trim()) {
       setErrors({ name: "Your name is required." });
@@ -288,7 +213,6 @@ const UserProfile = () => {
       setForm({
         name: user.name || "",
         avatar: user.avatar || "",
-        resume: user.resume || "",
       });
     }
   };
@@ -478,88 +402,39 @@ const UserProfile = () => {
               )}
             </div>
 
-            {/* Resume CV Card */}
+            {/* Documents Summary Card */}
             <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm flex flex-col">
               <div className="flex items-center gap-2 mb-4">
                 <div className="h-8 w-8 rounded-lg bg-emerald-50 flex items-center justify-center">
                   <FileText className="h-4 w-4 text-emerald-600" />
                 </div>
-                <h3 className="text-base font-bold text-gray-900">Resume / CV</h3>
+                <h3 className="text-base font-bold text-gray-900">Documents</h3>
               </div>
 
-              {form.resume ? (
-                <div className="flex flex-col sm:flex-row items-center gap-4 rounded-xl border-2 border-dashed border-emerald-100 bg-emerald-50/20 p-5 text-center sm:text-left">
-                  <div className="h-12 w-12 rounded-xl bg-emerald-100 flex items-center justify-center shrink-0">
-                    <FileText className="h-6 w-6 text-emerald-600" />
-                  </div>
-                  
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-semibold text-gray-800 truncate">Resume_Document.pdf</p>
-                    <p className="text-xs text-gray-400 mt-0.5 truncate break-all">{form.resume}</p>
-                  </div>
+              <div className="flex flex-col sm:flex-row items-center gap-4 rounded-xl border-2 border-dashed border-emerald-100 bg-emerald-50/20 p-5 text-center sm:text-left">
+                <div className="h-12 w-12 rounded-xl bg-emerald-100 flex items-center justify-center shrink-0">
+                  <FileText className="h-6 w-6 text-emerald-600" />
+                </div>
 
-                  <div className="flex gap-2 shrink-0">
-                    <a
-                      href={form.resume}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center h-9 w-9 rounded-lg bg-white border border-gray-200 text-gray-500 hover:text-indigo-600 hover:border-indigo-100 hover:bg-indigo-50/50 shadow-sm transition"
-                      title="View Resume"
-                    >
-                      <Eye className="h-4.5 w-4.5" />
-                    </a>
-                    <a
-                      href={form.resume}
-                      download
-                      className="inline-flex items-center justify-center h-9 w-9 rounded-lg bg-white border border-gray-200 text-gray-500 hover:text-indigo-600 hover:border-indigo-100 hover:bg-indigo-50/50 shadow-sm transition"
-                      title="Download Resume"
-                    >
-                      <Download className="h-4.5 w-4.5" />
-                    </a>
-                    <button
-                      onClick={handleDeleteResume}
-                      disabled={isDeletingResume}
-                      className="inline-flex items-center justify-center h-9 w-9 rounded-lg bg-white border border-gray-200 text-gray-500 hover:text-red-600 hover:border-red-100 hover:bg-red-50/50 shadow-sm transition"
-                      title="Delete Resume"
-                    >
-                      {isDeletingResume ? (
-                        <Loader2 className="h-4.5 w-4.5 animate-spin" />
-                      ) : (
-                        <Trash2 className="h-4.5 w-4.5" />
-                      )}
-                    </button>
-                  </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-semibold text-gray-800">
+                    {user?.resume ? "Your resume is uploaded" : "No resume uploaded yet"}
+                  </p>
+                  <p className="text-xs text-gray-400 mt-0.5">
+                    {user?.resume
+                      ? "Ready for 1-click applications."
+                      : "Upload your resume and other documents to apply faster."}
+                  </p>
                 </div>
-              ) : (
-                <div
-                  onClick={() => resumeInputRef.current?.click()}
-                  className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-indigo-100 bg-indigo-50/30 p-8 text-center gap-3 cursor-pointer hover:border-indigo-300 hover:bg-indigo-50/50 transition duration-200 group"
+
+                <button
+                  onClick={() => navigate("/documents")}
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-sm shadow-indigo-100 hover:bg-indigo-700 transition shrink-0"
                 >
-                  <input
-                    ref={resumeInputRef}
-                    type="file"
-                    accept="application/pdf"
-                    className="hidden"
-                    onChange={(e) => handleResumeUpload(e.target.files?.[0])}
-                  />
-                  {isUploadingResume ? (
-                    <div className="h-12 w-12 rounded-xl bg-indigo-100 flex items-center justify-center animate-pulse">
-                      <Loader2 className="h-6 w-6 text-indigo-600 animate-spin" />
-                    </div>
-                  ) : (
-                    <div className="h-12 w-12 rounded-xl bg-indigo-100 flex items-center justify-center group-hover:scale-105 transition duration-200">
-                      <FileText className="h-6 w-6 text-indigo-600" />
-                    </div>
-                  )}
-                  <div>
-                    <p className="text-sm font-semibold text-indigo-600">Upload your Resume</p>
-                    <p className="text-xs text-gray-400 mt-1">PDF format only (Max 10 MB)</p>
-                  </div>
-                  <button className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-4 py-2 text-xs font-semibold text-white shadow-sm shadow-indigo-100 hover:bg-indigo-700 transition">
-                    Choose File
-                  </button>
-                </div>
-              )}
+                  Manage Documents
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </button>
+              </div>
             </div>
 
             {/* Applications Activity Card */}
