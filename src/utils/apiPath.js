@@ -33,6 +33,7 @@ export const API_PATHS = {
     GET_APPLICANT: (id) => `/api/applications/job/${id}`,
     UPDATE_STATUS: (id) => `/api/applications/${id}/status`,
     GET_MY_APPLICATIONS: "/api/applications/my-applications",
+    WITHDRAW_APPLICATION: (id) => `/api/applications/${id}`,
   },
 
   IMAGE: {

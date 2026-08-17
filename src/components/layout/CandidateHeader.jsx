@@ -72,12 +72,12 @@ const CandidateHeader = () => {
               <Link
                 to="/documents"
                 className={`px-4 py-2 text-sm font-semibold rounded-xl transition-all ${
-                  isActive("/documents")
-                    ? "bg-indigo-50 text-indigo-700"
+                  isActive("/documents") || isActive("/my-applications")
+                    ? "bg-indigo-50 text-indigo-700 font-bold"
                     : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
                 }`}
               >
-                My Documents
+                My Applications & Docs
               </Link>
             )}
           </nav>

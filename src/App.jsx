@@ -44,6 +44,7 @@ export const App = () => {
             <Route path="/saved-jobs" element={<SavedJobs/>} />
             <Route path="/profile" element={<UserProfile/>} />
             <Route path="/documents" element={<MyDocuments/>} />
+            <Route path="/my-applications" element={<MyDocuments/>} />
           </Route>
 
           {/* employer-only routes — login required */}
