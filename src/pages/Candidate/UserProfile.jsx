@@ -17,52 +17,52 @@ import moment from "moment";
 const STATUS_CONFIG = {
   Applied: {
     label: "Applied",
-    badge: "bg-slate-100 text-slate-700 ring-1 ring-slate-200",
+    badge: "bg-slate-100 text-slate-700 ring-1 ring-slate-200 dark:bg-slate-500/10 dark:text-slate-400 dark:ring-slate-500/30",
   },
   "Under Review": {
     label: "Under Review",
-    badge: "bg-blue-50 text-blue-700 ring-1 ring-blue-200",
+    badge: "bg-blue-50 text-blue-700 ring-1 ring-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:ring-blue-500/30",
   },
   Interviewing: {
     label: "Interviewing",
-    badge: "bg-amber-50 text-amber-700 ring-1 ring-amber-200",
+    badge: "bg-amber-50 text-amber-700 ring-1 ring-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:ring-amber-500/30",
   },
   Offered: {
     label: "Offered",
-    badge: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-250",
+    badge: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-250 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/30",
   },
   Rejected: {
     label: "Rejected",
-    badge: "bg-red-50 text-red-600 ring-1 ring-red-200",
+    badge: "bg-red-50 text-red-600 ring-1 ring-red-200 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-500/30",
   },
 };
 
 //   Info Row   
 const InfoRow = ({ icon: Icon, label, value }) => (
-  <div className="flex items-start gap-3 py-3 border-b border-gray-50 last:border-none">
-    <div className="mt-0.5 h-8 w-8 shrink-0 flex items-center justify-center rounded-lg bg-slate-50">
-      <Icon className="h-4 w-4 text-gray-400" />
+  <div className="flex items-start gap-3 py-3 border-b border-gray-50 dark:border-gray-800 last:border-none">
+    <div className="mt-0.5 h-8 w-8 shrink-0 flex items-center justify-center rounded-lg bg-slate-50 dark:bg-gray-800">
+      <Icon className="h-4 w-4 text-gray-400 dark:text-gray-500" />
     </div>
     <div className="min-w-0 flex-1">
-      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">{label}</p>
-      <p className={`mt-0.5 text-sm font-medium break-all ${value ? "text-gray-800" : "text-gray-300 italic"}`}>
+      <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide">{label}</p>
+      <p className={`mt-0.5 text-sm font-medium break-all ${value ? "text-gray-800 dark:text-gray-100" : "text-gray-300 dark:text-gray-600 italic"}`}>
         {value || "Not set"}
       </p>
     </div>
   </div>
 );
 
-//   Form Field Helper  
+//   Form Field Helper
 const FormField = ({ label, required, icon: Icon, error, children }) => (
   <div className="flex flex-col gap-1.5">
-    <label className="text-sm font-semibold text-gray-700">
+    <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
       {label}
       {required && <span className="ml-0.5 text-red-500">*</span>}
     </label>
     <div className="relative">
       {Icon && (
         <div className="pointer-events-none absolute inset-y-0 left-3.5 flex items-center">
-          <Icon className="h-4 w-4 text-gray-400" />
+          <Icon className="h-4 w-4 text-gray-400 dark:text-gray-500" />
         </div>
       )}
       {children}
@@ -73,8 +73,8 @@ const FormField = ({ label, required, icon: Icon, error, children }) => (
 
 const inputCls = (hasIcon, error) =>
   `w-full rounded-xl border ${
-    error ? "border-red-300 focus:ring-red-400/20 focus:border-red-400" : "border-gray-200 focus:border-indigo-400 focus:ring-indigo-400/20"
-  } bg-white text-sm text-gray-900 placeholder:text-gray-400 outline-none transition-all duration-200 focus:ring-2 py-3 ${
+    error ? "border-red-300 focus:ring-red-400/20 focus:border-red-400" : "border-gray-200 dark:border-gray-700 focus:border-indigo-400 focus:ring-indigo-400/20"
+  } bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 outline-none transition-all duration-200 focus:ring-2 py-3 ${
     hasIcon ? "pl-10 pr-4" : "px-4"
   }`;
 
@@ -220,7 +220,7 @@ const UserProfile = () => {
   const initials = form.name ? form.name.split(" ").slice(0, 2).map((w) => w[0]?.toUpperCase()).join("") : "?";
 
   return (
-    <div className="min-h-screen bg-slate-50/50 flex flex-col">
+    <div className="min-h-screen bg-slate-50/50 dark:bg-gray-950 flex flex-col">
       <CandidateHeader />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
@@ -228,8 +228,8 @@ const UserProfile = () => {
         {/*  Page Header   */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">My Profile</h1>
-            <p className="mt-1 text-sm text-gray-400">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">My Profile</h1>
+            <p className="mt-1 text-sm text-gray-400 dark:text-gray-500">
               Manage your personal dashboard, resume, and profile details
             </p>
           </div>
@@ -240,7 +240,7 @@ const UserProfile = () => {
                 <button
                   onClick={handleCancel}
                   disabled={isSaving}
-                  className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition-all disabled:opacity-60"
+                  className="flex items-center gap-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-sm font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all disabled:opacity-60"
                 >
                   <X className="h-4 w-4" />
                   Cancel
@@ -360,12 +360,12 @@ const UserProfile = () => {
           <div className="lg:col-span-3 space-y-5">
             
             {/* Personal Details Card */}
-            <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+            <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm">
               <div className="flex items-center gap-2 mb-5">
-                <div className="h-8 w-8 rounded-lg bg-indigo-50 flex items-center justify-center">
-                  <User2 className="h-4 w-4 text-indigo-600" />
+                <div className="h-8 w-8 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center">
+                  <User2 className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                 </div>
-                <h3 className="text-base font-bold text-gray-900">Personal Information</h3>
+                <h3 className="text-base font-bold text-gray-900 dark:text-gray-100">Personal Information</h3>
               </div>
 
               {isEditing ? (
@@ -386,9 +386,9 @@ const UserProfile = () => {
                       type="email"
                       value={user?.email || ""}
                       disabled
-                      className={`${inputCls(true, false)} cursor-not-allowed bg-gray-50 text-gray-400`}
+                      className={`${inputCls(true, false)} cursor-not-allowed bg-gray-50 dark:bg-gray-800/50 text-gray-400 dark:text-gray-500`}
                     />
-                    <p className="mt-1 text-xs text-gray-400 flex items-center gap-1">
+                    <p className="mt-1 text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1">
                       <AlertCircle className="h-3 w-3" />
                       Email address cannot be changed.
                     </p>
@@ -403,24 +403,24 @@ const UserProfile = () => {
             </div>
 
             {/* Documents Summary Card */}
-            <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm flex flex-col">
+            <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm flex flex-col">
               <div className="flex items-center gap-2 mb-4">
-                <div className="h-8 w-8 rounded-lg bg-emerald-50 flex items-center justify-center">
-                  <FileText className="h-4 w-4 text-emerald-600" />
+                <div className="h-8 w-8 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center">
+                  <FileText className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                 </div>
-                <h3 className="text-base font-bold text-gray-900">Documents</h3>
+                <h3 className="text-base font-bold text-gray-900 dark:text-gray-100">Documents</h3>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center gap-4 rounded-xl border-2 border-dashed border-emerald-100 bg-emerald-50/20 p-5 text-center sm:text-left">
-                <div className="h-12 w-12 rounded-xl bg-emerald-100 flex items-center justify-center shrink-0">
-                  <FileText className="h-6 w-6 text-emerald-600" />
+              <div className="flex flex-col sm:flex-row items-center gap-4 rounded-xl border-2 border-dashed border-emerald-100 dark:border-emerald-500/20 bg-emerald-50/20 dark:bg-emerald-500/5 p-5 text-center sm:text-left">
+                <div className="h-12 w-12 rounded-xl bg-emerald-100 dark:bg-emerald-500/10 flex items-center justify-center shrink-0">
+                  <FileText className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
                 </div>
 
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-semibold text-gray-800">
+                  <p className="text-sm font-semibold text-gray-800 dark:text-gray-100">
                     {user?.resume ? "Your resume is uploaded" : "No resume uploaded yet"}
                   </p>
-                  <p className="text-xs text-gray-400 mt-0.5">
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
                     {user?.resume
                       ? "Ready for 1-click applications."
                       : "Upload your resume and other documents to apply faster."}
@@ -438,17 +438,17 @@ const UserProfile = () => {
             </div>
 
             {/* Applications Activity Card */}
-            <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+            <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 rounded-lg bg-blue-50 flex items-center justify-center">
-                    <Clock className="h-4 w-4 text-blue-600" />
+                  <div className="h-8 w-8 rounded-lg bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center">
+                    <Clock className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                   </div>
-                  <h3 className="text-base font-bold text-gray-900">Recent Applications</h3>
+                  <h3 className="text-base font-bold text-gray-900 dark:text-gray-100">Recent Applications</h3>
                 </div>
                 <button
                   onClick={() => navigate("/find-jobs")}
-                  className="text-xs font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1"
+                  className="text-xs font-bold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 flex items-center gap-1"
                 >
                   Find more jobs <ArrowRight className="h-3 w-3" />
                 </button>
@@ -456,21 +456,21 @@ const UserProfile = () => {
 
               {myApplications.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-10 text-center">
-                  <Inbox className="h-8 w-8 text-gray-300 mb-2" />
-                  <p className="text-sm font-medium text-gray-500">No applications submitted yet</p>
-                  <p className="text-xs text-gray-400 mt-0.5">Your active job applications will appear here.</p>
+                  <Inbox className="h-8 w-8 text-gray-300 dark:text-gray-600 mb-2" />
+                  <p className="text-sm font-medium text-gray-500 dark:text-gray-400">No applications submitted yet</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Your active job applications will appear here.</p>
                 </div>
               ) : (
-                <div className="divide-y divide-gray-100">
+                <div className="divide-y divide-gray-100 dark:divide-gray-800">
                   {myApplications.slice(0, 4).map((app) => {
                     const statusCfg = STATUS_CONFIG[app.status] || STATUS_CONFIG.Applied;
                     const companyName = app.job?.company?.companyName || app.job?.company?.name || "Company";
                     return (
                       <div key={app._id} className="py-3.5 flex items-center justify-between gap-4 first:pt-0 last:pb-0">
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-bold text-gray-800 truncate">{app.job?.title || "Position"}</p>
-                          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1 text-xs text-gray-400">
-                            <span className="font-semibold text-gray-500">{companyName}</span>
+                          <p className="text-sm font-bold text-gray-800 dark:text-gray-100 truncate">{app.job?.title || "Position"}</p>
+                          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1 text-xs text-gray-400 dark:text-gray-500">
+                            <span className="font-semibold text-gray-500 dark:text-gray-400">{companyName}</span>
                             <span>•</span>
                             <span>{app.job?.location || "Location"}</span>
                             <span>•</span>
@@ -482,7 +482,7 @@ const UserProfile = () => {
                                 setSelectedInterviewApp(app);
                                 setIsInterviewModalOpen(true);
                               }}
-                              className="mt-2.5 inline-flex items-center gap-1.5 rounded-lg border border-amber-200 bg-amber-50/30 hover:bg-amber-50 px-2.5 py-1 text-[11px] font-bold text-amber-700 transition"
+                              className="mt-2.5 inline-flex items-center gap-1.5 rounded-lg border border-amber-200 dark:border-amber-500/30 bg-amber-50/30 dark:bg-amber-500/10 hover:bg-amber-50 dark:hover:bg-amber-500/20 px-2.5 py-1 text-[11px] font-bold text-amber-700 dark:text-amber-400 transition"
                             >
                               <Calendar className="h-3 w-3 text-amber-500" />
                               View Interview Schedule
@@ -506,10 +506,10 @@ const UserProfile = () => {
           <div className="lg:col-span-2 space-y-5">
             
             {/* Completeness bar */}
-            <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+            <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 shadow-sm">
               <div className="flex items-center gap-2 mb-4">
                 <Star className="h-4 w-4 text-amber-400" />
-                <h3 className="text-sm font-bold text-gray-900">Profile Completeness</h3>
+                <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100">Profile Completeness</h3>
               </div>
 
               {(() => {
@@ -525,15 +525,15 @@ const UserProfile = () => {
                 return (
                   <>
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-2xl font-bold text-gray-900">{pct}%</span>
+                      <span className="text-2xl font-bold text-gray-900 dark:text-gray-100">{pct}%</span>
                       <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${
-                        pct === 100 ? "bg-emerald-50 text-emerald-600" : "bg-amber-50 text-amber-600"
+                        pct === 100 ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400" : "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400"
                       }`}>
                         {pct === 100 ? "Ready to Apply!" : "Needs work"}
                       </span>
                     </div>
 
-                    <div className="h-2 w-full rounded-full bg-gray-100 overflow-hidden mb-4">
+                    <div className="h-2 w-full rounded-full bg-gray-100 dark:bg-gray-800 overflow-hidden mb-4">
                       <div
                         className={`h-full rounded-full transition-all duration-750 ${
                           pct === 100 ? "bg-emerald-500" : "bg-indigo-600"
@@ -546,15 +546,15 @@ const UserProfile = () => {
                       {checkList.map((c) => (
                         <div key={c.label} className="flex items-center gap-2.5">
                           <div className={`h-5 w-5 shrink-0 rounded-full flex items-center justify-center ${
-                            c.done ? "bg-emerald-100" : "bg-gray-100"
+                            c.done ? "bg-emerald-100 dark:bg-emerald-500/10" : "bg-gray-100 dark:bg-gray-800"
                           }`}>
                             {c.done ? (
-                              <Check className="h-3 w-3 text-emerald-600" />
+                              <Check className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
                             ) : (
-                              <X className="h-3 w-3 text-gray-400" />
+                              <X className="h-3 w-3 text-gray-400 dark:text-gray-500" />
                             )}
                           </div>
-                          <span className={`text-xs font-medium ${c.done ? "text-gray-700" : "text-gray-400"}`}>
+                          <span className={`text-xs font-medium ${c.done ? "text-gray-700 dark:text-gray-300" : "text-gray-400 dark:text-gray-500"}`}>
                             {c.label}
                           </span>
                         </div>
@@ -566,10 +566,10 @@ const UserProfile = () => {
             </div>
 
             {/* Quick Tips */}
-            <div className="rounded-2xl bg-gradient-to-br from-indigo-50 to-violet-50 border border-indigo-100 p-5">
+            <div className="rounded-2xl bg-gradient-to-br from-indigo-50 to-violet-50 dark:from-indigo-500/10 dark:to-violet-500/10 border border-indigo-100 dark:border-indigo-500/20 p-5">
               <div className="flex items-center gap-2 mb-3">
                 <Star className="h-4 w-4 text-indigo-500" />
-                <p className="text-sm font-bold text-indigo-700">Quick Tips</p>
+                <p className="text-sm font-bold text-indigo-700 dark:text-indigo-400">Quick Tips</p>
               </div>
               <ul className="space-y-2.5">
                 {[
@@ -577,7 +577,7 @@ const UserProfile = () => {
                   "Keep your profile photo up to date",
                   "Track the status of your active applications in real-time",
                 ].map((tip, i) => (
-                  <li key={i} className="flex items-start gap-2 text-xs text-indigo-600">
+                  <li key={i} className="flex items-start gap-2 text-xs text-indigo-600 dark:text-indigo-400">
                     <ChevronRight className="h-3.5 w-3.5 shrink-0 mt-0.5" />
                     {tip}
                   </li>
@@ -594,59 +594,59 @@ const UserProfile = () => {
       {/*    Candidate Interview Details Modal   */}
     {isInterviewModalOpen && selectedInterviewApp?.interview && (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-        <div className="bg-white rounded-2xl max-w-lg w-full border border-gray-100 shadow-2xl p-6 relative overflow-hidden animate-in fade-in zoom-in duration-200">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl max-w-lg w-full border border-gray-100 dark:border-gray-800 shadow-2xl p-6 relative overflow-hidden animate-in fade-in zoom-in duration-200">
           <button
             onClick={() => {
               setIsInterviewModalOpen(false);
               setSelectedInterviewApp(null);
             }}
-            className="absolute right-4 top-4 text-gray-400 hover:text-gray-600 transition"
+            className="absolute right-4 top-4 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition"
           >
             <X className="h-5 w-5" />
           </button>
-          
+
           <div className="flex items-center gap-2.5 mb-5">
-            <div className="h-9 w-9 bg-amber-50 rounded-xl flex items-center justify-center">
-              <Calendar className="h-5 w-5 text-amber-600" />
+            <div className="h-9 w-9 bg-amber-50 dark:bg-amber-500/10 rounded-xl flex items-center justify-center">
+              <Calendar className="h-5 w-5 text-amber-600 dark:text-amber-400" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-gray-900">Interview Scheduled</h3>
-              <p className="text-xs text-gray-400">For position: <span className="font-semibold text-indigo-650">{selectedInterviewApp.job?.title}</span></p>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Interview Scheduled</h3>
+              <p className="text-xs text-gray-400 dark:text-gray-500">For position: <span className="font-semibold text-indigo-650 dark:text-indigo-400">{selectedInterviewApp.job?.title}</span></p>
             </div>
           </div>
 
           <div className="space-y-4">
-            <div className="bg-slate-50/50 rounded-xl p-4 border border-slate-100 flex items-center gap-3">
-              <div className="h-10 w-10 bg-indigo-50 rounded-xl flex items-center justify-center shrink-0">
-                <Briefcase className="h-5 w-5 text-indigo-500" />
+            <div className="bg-slate-50/50 dark:bg-gray-800/50 rounded-xl p-4 border border-slate-100 dark:border-gray-800 flex items-center gap-3">
+              <div className="h-10 w-10 bg-indigo-50 dark:bg-indigo-500/10 rounded-xl flex items-center justify-center shrink-0">
+                <Briefcase className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />
               </div>
               <div className="min-w-0">
-                <p className="text-xs font-medium text-gray-400">Employer / Company</p>
-                <p className="text-sm font-bold text-gray-800 truncate">
+                <p className="text-xs font-medium text-gray-400 dark:text-gray-500">Employer / Company</p>
+                <p className="text-sm font-bold text-gray-800 dark:text-gray-100 truncate">
                   {selectedInterviewApp.job?.company?.companyName || selectedInterviewApp.job?.company?.name || "Company Name"}
                 </p>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-slate-50/50 rounded-xl p-3.5 border border-slate-100">
-                <p className="text-[10px] uppercase font-bold text-gray-400">Date</p>
-                <p className="mt-1 text-sm font-semibold text-gray-800">
+              <div className="bg-slate-50/50 dark:bg-gray-800/50 rounded-xl p-3.5 border border-slate-100 dark:border-gray-800">
+                <p className="text-[10px] uppercase font-bold text-gray-400 dark:text-gray-500">Date</p>
+                <p className="mt-1 text-sm font-semibold text-gray-800 dark:text-gray-100">
                   {moment(selectedInterviewApp.interview.date).format("MMM D, YYYY")}
                 </p>
               </div>
-              <div className="bg-slate-50/50 rounded-xl p-3.5 border border-slate-100">
-                <p className="text-[10px] uppercase font-bold text-gray-400">Time</p>
-                <p className="mt-1 text-sm font-semibold text-gray-800">
+              <div className="bg-slate-50/50 dark:bg-gray-800/50 rounded-xl p-3.5 border border-slate-100 dark:border-gray-800">
+                <p className="text-[10px] uppercase font-bold text-gray-400 dark:text-gray-500">Time</p>
+                <p className="mt-1 text-sm font-semibold text-gray-800 dark:text-gray-100">
                   {selectedInterviewApp.interview.time}
                 </p>
               </div>
             </div>
 
-            <div className="bg-slate-50/50 rounded-xl p-4 border border-slate-100">
-              <p className="text-[10px] uppercase font-bold text-gray-400 mb-1">Location / Joining Link</p>
+            <div className="bg-slate-50/50 dark:bg-gray-800/50 rounded-xl p-4 border border-slate-100 dark:border-gray-800">
+              <p className="text-[10px] uppercase font-bold text-gray-400 dark:text-gray-500 mb-1">Location / Joining Link</p>
               <div className="flex items-center justify-between gap-3 min-w-0">
-                <p className="text-sm font-semibold text-gray-805 truncate break-all">
+                <p className="text-sm font-semibold text-gray-805 dark:text-gray-100 truncate break-all">
                   {selectedInterviewApp.interview.location}
                 </p>
                 {selectedInterviewApp.interview.location?.startsWith("http") ? (
@@ -665,7 +665,7 @@ const UserProfile = () => {
                       navigator.clipboard.writeText(selectedInterviewApp.interview.location);
                       toast.success("Location copied to clipboard!");
                     }}
-                    className="text-xs font-semibold text-indigo-650 hover:text-indigo-700 hover:underline shrink-0"
+                    className="text-xs font-semibold text-indigo-650 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 hover:underline shrink-0"
                   >
                     Copy
                   </button>
@@ -674,21 +674,21 @@ const UserProfile = () => {
             </div>
 
             {selectedInterviewApp.interview.notes && (
-              <div className="bg-slate-50/50 rounded-xl p-4 border border-slate-100">
-                <p className="text-[10px] uppercase font-bold text-gray-400 mb-1.5">Employer's Instructions</p>
-                <p className="text-xs text-gray-600 leading-relaxed whitespace-pre-wrap">
+              <div className="bg-slate-50/50 dark:bg-gray-800/50 rounded-xl p-4 border border-slate-100 dark:border-gray-800">
+                <p className="text-[10px] uppercase font-bold text-gray-400 dark:text-gray-500 mb-1.5">Employer's Instructions</p>
+                <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
                   {selectedInterviewApp.interview.notes}
                 </p>
               </div>
             )}
 
-            <div className="pt-3 border-t border-gray-150/70 flex justify-end">
+            <div className="pt-3 border-t border-gray-150/70 dark:border-gray-800 flex justify-end">
               <button
                 onClick={() => {
                   setIsInterviewModalOpen(false);
                   setSelectedInterviewApp(null);
                 }}
-                className="rounded-xl bg-gray-100 hover:bg-gray-200 px-5 py-2.5 text-xs font-semibold text-gray-700 transition"
+                className="rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 px-5 py-2.5 text-xs font-semibold text-gray-700 dark:text-gray-300 transition"
               >
                 Close
               </button>

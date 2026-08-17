@@ -6,37 +6,37 @@ const STATUS_CONFIG = {
   applied: {
     label: "Applied",
     icon: Clock,
-    classes: "bg-slate-50 text-slate-600 ring-1 ring-slate-200",
+    classes: "bg-slate-50 text-slate-600 ring-1 ring-slate-200 dark:bg-slate-500/10 dark:text-slate-400 dark:ring-slate-500/30",
     spin: false,
   },
   "under review": {
     label: "Under Review",
     icon: Loader2,
-    classes: "bg-blue-50 text-blue-600 ring-1 ring-blue-200",
+    classes: "bg-blue-50 text-blue-600 ring-1 ring-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:ring-blue-500/30",
     spin: true,
   },
   interviewing: {
     label: "Interviewing",
     icon: Clock,
-    classes: "bg-amber-50 text-amber-600 ring-1 ring-amber-200",
+    classes: "bg-amber-50 text-amber-600 ring-1 ring-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:ring-amber-500/30",
     spin: false,
   },
   offered: {
     label: "Offered",
     icon: CheckCircle2,
-    classes: "bg-emerald-50 text-emerald-600 ring-1 ring-emerald-200",
+    classes: "bg-emerald-50 text-emerald-600 ring-1 ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/30",
     spin: false,
   },
   rejected: {
     label: "Rejected",
     icon: XCircle,
-    classes: "bg-red-50 text-red-500 ring-1 ring-red-200",
+    classes: "bg-red-50 text-red-500 ring-1 ring-red-200 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-500/30",
     spin: false,
   },
   pending: {
     label: "Pending",
     icon: Clock,
-    classes: "bg-slate-50 text-slate-600 ring-1 ring-slate-200",
+    classes: "bg-slate-50 text-slate-600 ring-1 ring-slate-200 dark:bg-slate-500/10 dark:text-slate-400 dark:ring-slate-500/30",
     spin: false,
   },
 };
@@ -67,7 +67,7 @@ const ApplicantDashboardCard = ({ applicant, position, time, status = "pending",
   const timeLabel = time ? moment(time).fromNow() : "—";
 
   return (
-    <div className="group flex items-center gap-3.5 rounded-xl p-3 transition-all duration-200 hover:bg-slate-50">
+    <div className="group flex items-center gap-3.5 rounded-xl p-3 transition-all duration-200 hover:bg-slate-50 dark:hover:bg-gray-800">
       {/* Avatar */}
       <div
         className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${gradient} text-sm font-bold text-white shadow-sm`}
@@ -77,15 +77,15 @@ const ApplicantDashboardCard = ({ applicant, position, time, status = "pending",
 
       {/* Info */}
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors duration-200">
+        <p className="truncate text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-indigo-600 transition-colors duration-200">
           {applicant || "Unknown Applicant"}
         </p>
-        <div className="mt-0.5 flex items-center gap-2 text-xs text-gray-400">
+        <div className="mt-0.5 flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500">
           <span className="flex items-center gap-1 truncate max-w-[130px]">
             <Briefcase className="h-3 w-3 shrink-0" />
             {position || "—"}
           </span>
-          <span className="h-1 w-1 shrink-0 rounded-full bg-gray-300" />
+          <span className="h-1 w-1 shrink-0 rounded-full bg-gray-300 dark:bg-gray-600" />
           <span className="flex items-center gap-1 shrink-0">
             <Clock className="h-3 w-3" />
             {timeLabel}

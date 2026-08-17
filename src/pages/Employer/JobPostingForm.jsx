@@ -56,7 +56,7 @@ const INITIAL_FORM = {
 //  Section wrapper ─
 const FormSection = ({ title, children }) => (
   <div className="space-y-5">
-    <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400">
+    <h2 className="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">
       {title}
     </h2>
     {children}
@@ -65,11 +65,11 @@ const FormSection = ({ title, children }) => (
 
 //  GHS currency badge (used as icon prop in InputField) 
 const GhsIcon = () => (
-  <span className="text-xs font-bold text-gray-400 leading-none">GH₵</span>
+  <span className="text-xs font-bold text-gray-400 dark:text-gray-500 leading-none">GH₵</span>
 );
 
-//  Divider 
-const Divider = () => <div className="h-px bg-gray-100" />;
+//  Divider
+const Divider = () => <div className="h-px bg-gray-100 dark:bg-gray-800" />;
 
 //  Main component 
 const JobPostingForm = () => {
@@ -167,15 +167,15 @@ const JobPostingForm = () => {
         {/*  Page header  */}
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Post a New Job</h1>
-            <p className="mt-1 text-sm text-gray-500">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Post a New Job</h1>
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
               Fill out the form below to create your job posting
             </p>
           </div>
           <button
             type="button"
             onClick={() => setPreview((v) => !v)}
-            className="flex shrink-0 items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-all hover:border-blue-300 hover:text-blue-600 hover:shadow-md"
+            className="flex shrink-0 items-center gap-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 shadow-sm transition-all hover:border-blue-300 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 hover:shadow-md"
           >
             <Eye className="h-4 w-4" />
             {preview ? "Edit" : "Preview"}
@@ -184,9 +184,9 @@ const JobPostingForm = () => {
 
         {/*  Validation summary banner  */}
         {errorCount > 0 && (
-          <div className="mb-6 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4">
-            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-500" />
-            <p className="text-sm text-red-600">
+          <div className="mb-6 flex items-start gap-3 rounded-xl border border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 p-4">
+            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-500 dark:text-red-400" />
+            <p className="text-sm text-red-600 dark:text-red-400">
               Please fix <strong>{errorCount}</strong> error{errorCount > 1 ? "s" : ""} before publishing.
             </p>
           </div>
@@ -195,7 +195,7 @@ const JobPostingForm = () => {
         {/*  Form card  */}
         <form
           onSubmit={handleSubmit}
-          className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8 space-y-8"
+          className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm sm:p-8 space-y-8"
           noValidate
         >
           {/*  Basic Info  */}
@@ -325,8 +325,8 @@ const JobPostingForm = () => {
           {/*  Salary ─ */}
           <FormSection title="Compensation">
             <div>
-              <p className="mb-1.5 text-sm font-medium text-gray-700">
-                Salary Range <span className="text-red-500">*</span>
+              <p className="mb-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">
+                Salary Range <span className="text-red-500 dark:text-red-400">*</span>
               </p>
               <div className="grid grid-cols-2 gap-4">
                 <InputField
@@ -350,7 +350,7 @@ const JobPostingForm = () => {
                   error={errors.salaryMax}
                 />
               </div>
-              <p className="mt-1.5 text-xs text-gray-400">
+              <p className="mt-1.5 text-xs text-gray-400 dark:text-gray-500">
                 Annual salary in GHS. Leave blank if not disclosed.
               </p>
             </div>

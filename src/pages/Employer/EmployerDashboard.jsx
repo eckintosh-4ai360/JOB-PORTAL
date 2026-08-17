@@ -29,7 +29,7 @@ const StatCard = ({ title, value, icon: Icon, trendValue, trendUp, color = "blue
 
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${gradients[color]} p-6 text-white shadow-lg ${glows[color]}`}
+      className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${gradients[color]} p-6 text-white  ${glows[color]}`}
       style={{ animationDelay: `${delay}ms` }}
     >
       {/* Decorative circles */}
@@ -70,16 +70,16 @@ const QuickAction = ({ icon: Icon, label, description, onClick, color = "blue" }
   return (
     <button
       onClick={onClick}
-      className="group flex items-center gap-4 rounded-xl border border-gray-100 bg-white p-4 text-left transition-all duration-200 hover:border-transparent hover:shadow-md w-full"
+      className="group flex items-center gap-4 rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-4 text-left transition-all duration-200 hover:border-transparent hover:shadow-md w-full"
     >
       <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-all duration-200 ${colors[color]}`}>
         <Icon className="h-5 w-5" />
       </div>
       <div className="min-w-0">
-        <p className="text-sm font-semibold text-gray-900">{label}</p>
-        <p className="mt-0.5 truncate text-xs text-gray-400">{description}</p>
+        <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{label}</p>
+        <p className="mt-0.5 truncate text-xs text-gray-400 dark:text-gray-500">{description}</p>
       </div>
-      <ArrowRight className="ml-auto h-4 w-4 shrink-0 text-gray-300 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-gray-600" />
+      <ArrowRight className="ml-auto h-4 w-4 shrink-0 text-gray-300 dark:text-gray-600 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-gray-600 dark:group-hover:text-gray-300" />
     </button>
   );
 };
@@ -93,7 +93,7 @@ const InlineLoader = () => (
         <Briefcase className="h-6 w-6 text-blue-600" />
       </div>
     </div>
-    <p className="text-sm font-medium text-gray-400">Loading your dashboard…</p>
+    <p className="text-sm font-medium text-gray-400 dark:text-gray-500">Loading your dashboard…</p>
   </div>
 );
 
@@ -214,12 +214,12 @@ export const EmployerDashboard = () => {
               <JobDashboardCard jobs={recentJobs} />
 
               {/* Recent Applications */}
-              <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+              <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm">
                 {/* Header */}
                 <div className="mb-4 flex items-center justify-between">
                   <div>
-                    <h3 className="text-base font-bold text-gray-900">Recent Applications</h3>
-                    <p className="mt-0.5 text-xs text-gray-400">Latest candidate applications</p>
+                    <h3 className="text-base font-bold text-gray-900 dark:text-gray-100">Recent Applications</h3>
+                    <p className="mt-0.5 text-xs text-gray-400 dark:text-gray-500">Latest candidate applications</p>
                   </div>
                   <button
                     onClick={() => navigate("/applicants")}
@@ -232,14 +232,14 @@ export const EmployerDashboard = () => {
                 {/* List */}
                 {recentApplications.length === 0 ? (
                   <div className="flex flex-col items-center justify-center py-10 text-center">
-                    <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-50">
-                      <Users className="h-7 w-7 text-indigo-400" />
+                    <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-50 dark:bg-indigo-500/10">
+                      <Users className="h-7 w-7 text-indigo-400 dark:text-indigo-400" />
                     </div>
-                    <p className="text-sm font-medium text-gray-600">No applications yet</p>
-                    <p className="mt-1 text-xs text-gray-400">Applications will appear here once candidates apply</p>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-300">No applications yet</p>
+                    <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">Applications will appear here once candidates apply</p>
                   </div>
                 ) : (
-                  <div className="divide-y divide-gray-50">
+                  <div className="divide-y divide-gray-50 dark:divide-gray-800">
                     {recentApplications.slice(0, 5).map((data, index) => (
                       <ApplicantDashboardCard
                         key={index}
@@ -257,10 +257,10 @@ export const EmployerDashboard = () => {
 
             {/* Right column — Quick Actions */}
             <div className="flex flex-col gap-4">
-              <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+              <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm">
                 <div className="mb-4 flex items-center gap-2">
-                  <BarChart3 className="h-4 w-4 text-gray-400" />
-                  <h3 className="text-base font-bold text-gray-900">Quick Actions</h3>
+                  <BarChart3 className="h-4 w-4 text-gray-400 dark:text-gray-500" />
+                  <h3 className="text-base font-bold text-gray-900 dark:text-gray-100">Quick Actions</h3>
                 </div>
                 <div className="flex flex-col gap-3">
                   <QuickAction
@@ -295,22 +295,22 @@ export const EmployerDashboard = () => {
               </div>
 
               {/* Stats summary card */}
-              <div className="rounded-2xl bg-gradient-to-br from-indigo-50 to-violet-50 border border-indigo-100 p-5">
-                <p className="text-xs font-semibold text-indigo-500 uppercase tracking-wide mb-3">At a Glance</p>
+              <div className="rounded-2xl bg-gradient-to-br from-indigo-50 to-violet-50 dark:from-indigo-500/10 dark:to-violet-500/10 border border-indigo-100 dark:border-indigo-500/30 p-5">
+                <p className="text-xs font-semibold text-indigo-500 dark:text-indigo-400 uppercase tracking-wide mb-3">At a Glance</p>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-500">Active Jobs</span>
-                    <span className="text-sm font-bold text-gray-900">{counts.totalActiveJobs ?? 0}</span>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">Active Jobs</span>
+                    <span className="text-sm font-bold text-gray-900 dark:text-gray-100">{counts.totalActiveJobs ?? 0}</span>
                   </div>
-                  <div className="h-px bg-indigo-100" />
+                  <div className="h-px bg-indigo-100 dark:bg-indigo-500/20" />
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-500">Total Applicants</span>
-                    <span className="text-sm font-bold text-gray-900">{counts.totalApplicants ?? 0}</span>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">Total Applicants</span>
+                    <span className="text-sm font-bold text-gray-900 dark:text-gray-100">{counts.totalApplicants ?? 0}</span>
                   </div>
-                  <div className="h-px bg-indigo-100" />
+                  <div className="h-px bg-indigo-100 dark:bg-indigo-500/20" />
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-500">Hiring Rate</span>
-                    <span className="text-sm font-bold text-gray-900">{counts.hiringRate ?? 0}%</span>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">Hiring Rate</span>
+                    <span className="text-sm font-bold text-gray-900 dark:text-gray-100">{counts.hiringRate ?? 0}%</span>
                   </div>
                 </div>
               </div>

@@ -11,6 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { NAVIGATION_MENU } from "../../utils/data";
 import ProfileDropdown from "./ProfileDropdown";
+import ThemeToggle from "./ThemeToggle";
 
 const NavigationItem = ({ item, isActive, onClick, isCollapsed }) => {
   const Icon = item.icon;
@@ -176,44 +177,47 @@ const DashboardLayout = ({ children, activeMenu }) => {
 
       {/*  Main Inset Card Container   */}
       <div
-        className={`flex-1 bg-[#f8faf9] flex flex-col overflow-hidden ${
+        className={`flex-1 bg-[#f8faf9] dark:bg-gray-950 flex flex-col overflow-hidden ${
           isMobile ? "rounded-none h-full" : "rounded-[24px] border border-white/5 h-[calc(100vh-24px)]"
         }`}
       >
         {/* Inner Top Navbar */}
-        <header className="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-8 shrink-0">
+        <header className="h-16 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between px-8 shrink-0">
           <div className="flex items-center gap-4">
             {isMobile && (
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="p-2 rounded-lg bg-gray-50 hover:bg-gray-100 text-gray-600 border border-gray-150 transition-colors"
+                className="p-2 rounded-lg bg-gray-50 hover:bg-gray-100 text-gray-600 border border-gray-150 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 dark:border-gray-700 transition-colors"
               >
                 <Menu className="h-5 w-5" />
               </button>
             )}
 
             <div>
-              <h2 className="text-lg font-bold text-secondary tracking-tight">
+              <h2 className="text-lg font-bold text-secondary dark:text-gray-100 tracking-tight">
                 {activeNavItem === "employer-dashboard" ? "Hiring Dashboard" : NAVIGATION_MENU.find(m => m.id === activeNavItem)?.name || "Dashboard"}
               </h2>
             </div>
           </div>
 
           {/* Profile Dropdown */}
-          <div className="relative" ref={dropdownRef}>
-            <ProfileDropdown
-              isOpen={profileDropdownOpen}
-              onToggle={() => setProfileDropdownOpen(!profileDropdownOpen)}
-              avatar={user?.avatar || ""}
-              companyName={user?.name || ""}
-              email={user?.email || ""}
-              onLogout={logout}
-            />
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <div className="relative" ref={dropdownRef}>
+              <ProfileDropdown
+                isOpen={profileDropdownOpen}
+                onToggle={() => setProfileDropdownOpen(!profileDropdownOpen)}
+                avatar={user?.avatar || ""}
+                companyName={user?.name || ""}
+                email={user?.email || ""}
+                onLogout={logout}
+              />
+            </div>
           </div>
         </header>
 
         {/* Nested Page Content */}
-        <main className="flex-1 p-8 overflow-y-auto bg-slate-50/50">
+        <main className="flex-1 p-8 overflow-y-auto bg-slate-50/50 dark:bg-gray-950">
           {children}
         </main>
       </div>

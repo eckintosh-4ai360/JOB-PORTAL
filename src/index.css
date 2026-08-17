@@ -5,6 +5,7 @@
 
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --font-display: "Sora", sans-serif;
@@ -24,5 +25,10 @@
     color: var(--color-secondary);
     accent-color: var(--color-primary);
     overflow-x: hidden;
+  }
+
+  .dark body {
+    background-color: #0b0f14;
+    color: #e5e7eb;
   }
 }

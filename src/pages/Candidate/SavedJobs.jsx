@@ -12,7 +12,7 @@ import moment from "moment";
 
 // Currency helper
 const GhsIcon = () => (
-  <span className="text-xs font-extrabold text-gray-400 mr-0.5">GH₵</span>
+  <span className="text-xs font-extrabold text-gray-400 dark:text-gray-500 mr-0.5">GH₵</span>
 );
 
 export const SavedJobs = () => {
@@ -63,35 +63,35 @@ export const SavedJobs = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/50 flex flex-col">
+    <div className="min-h-screen bg-slate-50/50 dark:bg-gray-950 flex flex-col">
       <CandidateHeader />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-        
+
         {/* Page Header */}
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
             <Bookmark className="h-6 w-6 text-indigo-600 fill-current" />
             Saved Jobs
           </h1>
-          <p className="mt-1 text-sm text-gray-400">
+          <p className="mt-1 text-sm text-gray-400 dark:text-gray-500">
             Keep track of opportunities you have bookmarked for later
           </p>
         </div>
 
         {/* Saved Jobs List */}
         {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-32 gap-4 rounded-2xl border border-gray-100 bg-white">
+          <div className="flex flex-col items-center justify-center py-32 gap-4 rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
             <Loader2 className="h-8 w-8 text-indigo-600 animate-spin" />
-            <p className="text-sm font-medium text-gray-400">Loading your saved jobs list…</p>
+            <p className="text-sm font-medium text-gray-400 dark:text-gray-500">Loading your saved jobs list…</p>
           </div>
         ) : savedJobs.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 text-center rounded-2xl border border-gray-100 bg-white shadow-xs px-4">
-            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-50">
+          <div className="flex flex-col items-center justify-center py-24 text-center rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-xs px-4">
+            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-50 dark:bg-indigo-500/10">
               <Inbox className="h-8 w-8 text-indigo-400" />
             </div>
-            <h3 className="text-lg font-bold text-gray-900">No saved jobs</h3>
-            <p className="mt-1.5 text-sm text-gray-500 max-w-sm">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">No saved jobs</h3>
+            <p className="mt-1.5 text-sm text-gray-500 dark:text-gray-400 max-w-sm">
               You haven't bookmarked any jobs yet. Browse available jobs and click the bookmark icon to save them.
             </p>
             <button
@@ -116,13 +116,13 @@ export const SavedJobs = () => {
                 <div
                   key={item._id}
                   onClick={() => navigate(`/job/${jobId}`)}
-                  className="group flex flex-col justify-between rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition hover:shadow-md hover:border-gray-200 cursor-pointer relative overflow-hidden"
+                  className="group flex flex-col justify-between rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 shadow-sm transition hover:shadow-md hover:border-gray-200 dark:hover:border-gray-700 cursor-pointer relative overflow-hidden"
                 >
                   {/* Header Row */}
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex gap-3">
                       {/* Logo */}
-                      <div className="h-11 w-11 rounded-xl bg-slate-50 flex items-center justify-center border border-slate-100 shrink-0">
+                      <div className="h-11 w-11 rounded-xl bg-slate-50 dark:bg-gray-800 flex items-center justify-center border border-slate-100 dark:border-gray-700 shrink-0">
                         {hasLogo ? (
                           <img
                             src={logoUrl}
@@ -130,15 +130,15 @@ export const SavedJobs = () => {
                             className="h-full w-full object-cover rounded-xl"
                           />
                         ) : (
-                          <Briefcase className="h-5 w-5 text-gray-400" />
+                          <Briefcase className="h-5 w-5 text-gray-400 dark:text-gray-500" />
                         )}
                       </div>
 
                       <div>
-                        <h3 className="font-bold text-gray-900 group-hover:text-indigo-600 transition-colors text-base line-clamp-1">
+                        <h3 className="font-bold text-gray-900 dark:text-gray-100 group-hover:text-indigo-600 transition-colors text-base line-clamp-1">
                           {job.title}
                         </h3>
-                        <p className="text-xs font-medium text-gray-400 mt-0.5 line-clamp-1">
+                        <p className="text-xs font-medium text-gray-400 dark:text-gray-500 mt-0.5 line-clamp-1">
                           {job.company?.companyName || job.company?.name || "SPG Member"}
                         </p>
                       </div>
@@ -148,7 +148,7 @@ export const SavedJobs = () => {
                     <button
                       disabled={isUnsavingId === jobId}
                       onClick={(e) => handleUnsave(e, jobId)}
-                      className="h-9 w-9 shrink-0 flex items-center justify-center rounded-lg border bg-indigo-50 border-indigo-150 text-indigo-600 hover:bg-red-50 hover:border-red-150 hover:text-red-600 transition"
+                      className="h-9 w-9 shrink-0 flex items-center justify-center rounded-lg border bg-indigo-50 border-indigo-150 text-indigo-600 hover:bg-red-50 hover:border-red-150 hover:text-red-600 dark:bg-indigo-500/10 dark:border-indigo-500/30 dark:text-indigo-400 dark:hover:bg-red-500/10 dark:hover:border-red-500/30 dark:hover:text-red-400 transition"
                       title="Remove Bookmark"
                     >
                       {isUnsavingId === jobId ? (
@@ -161,35 +161,35 @@ export const SavedJobs = () => {
 
                   {/* Metadata Tags */}
                   <div className="flex flex-wrap gap-1.5 mt-4">
-                    <span className="inline-flex items-center gap-1 rounded-full bg-slate-50 border border-slate-100 px-2.5 py-0.5 text-xs font-semibold text-gray-500">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-slate-50 border border-slate-100 px-2.5 py-0.5 text-xs font-semibold text-gray-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
                       <MapPin className="h-3 w-3" />
                       {job.location}
                     </span>
-                    <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50/50 border border-indigo-100/30 px-2.5 py-0.5 text-xs font-semibold text-indigo-600">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-indigo-50/50 border border-indigo-100/30 px-2.5 py-0.5 text-xs font-semibold text-indigo-600 dark:bg-indigo-500/10 dark:border-indigo-500/20 dark:text-indigo-400">
                       <Clock className="h-3 w-3" />
                       {job.type}
                     </span>
                   </div>
 
                   {/* Salary & Action button */}
-                  <div className="flex items-center justify-between border-t border-slate-50 pt-4 mt-4">
+                  <div className="flex items-center justify-between border-t border-slate-50 dark:border-gray-800 pt-4 mt-4">
                     <div>
-                      <p className="text-xs text-gray-400 uppercase tracking-wide font-semibold">Salary Range</p>
+                      <p className="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-wide font-semibold">Salary Range</p>
                       <div className="flex items-center mt-0.5">
                         <GhsIcon />
-                        <span className="text-sm font-extrabold text-gray-800">
+                        <span className="text-sm font-extrabold text-gray-800 dark:text-gray-100">
                           {job.salaryMin ? `${Math.round(job.salaryMin / 1000)}k` : "Open"}
                         </span>
                         {(job.salaryMin && job.salaryMax) && (
                           <>
-                            <span className="mx-1 text-gray-400 text-xs">-</span>
+                            <span className="mx-1 text-gray-400 dark:text-gray-500 text-xs">-</span>
                             <GhsIcon />
-                            <span className="text-sm font-extrabold text-gray-800">
+                            <span className="text-sm font-extrabold text-gray-800 dark:text-gray-100">
                               {`${Math.round(job.salaryMax / 1000)}k`}
                             </span>
                           </>
                         )}
-                        <span className="text-[10px] text-gray-400 ml-1">/mo</span>
+                        <span className="text-[10px] text-gray-400 dark:text-gray-500 ml-1">/mo</span>
                       </div>
                     </div>
 

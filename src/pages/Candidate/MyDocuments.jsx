@@ -30,14 +30,14 @@ const CATEGORIES = [
 
 // Visual styling for document categories
 const CATEGORY_STYLES = {
-  Resume: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200",
-  "Cover Letter": "bg-blue-50 text-blue-700 ring-1 ring-blue-200",
-  Certificate: "bg-amber-50 text-amber-700 ring-1 ring-amber-200",
-  "BECE Certificate": "bg-rose-50 text-rose-700 ring-1 ring-rose-200",
-  "WASSCE / High School Certificate": "bg-purple-50 text-purple-700 ring-1 ring-purple-200",
-  "Degree / Diploma Certificate": "bg-indigo-50 text-indigo-700 ring-1 ring-indigo-200",
-  "ID Document": "bg-violet-50 text-violet-700 ring-1 ring-violet-200",
-  Other: "bg-gray-100 text-gray-700 ring-1 ring-gray-200",
+  Resume: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/30",
+  "Cover Letter": "bg-blue-50 text-blue-700 ring-1 ring-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:ring-blue-500/30",
+  Certificate: "bg-amber-50 text-amber-700 ring-1 ring-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:ring-amber-500/30",
+  "BECE Certificate": "bg-rose-50 text-rose-700 ring-1 ring-rose-200 dark:bg-rose-500/10 dark:text-rose-400 dark:ring-rose-500/30",
+  "WASSCE / High School Certificate": "bg-purple-50 text-purple-700 ring-1 ring-purple-200 dark:bg-purple-500/10 dark:text-purple-400 dark:ring-purple-500/30",
+  "Degree / Diploma Certificate": "bg-indigo-50 text-indigo-700 ring-1 ring-indigo-200 dark:bg-indigo-500/10 dark:text-indigo-400 dark:ring-indigo-500/30",
+  "ID Document": "bg-violet-50 text-violet-700 ring-1 ring-violet-200 dark:bg-violet-500/10 dark:text-violet-400 dark:ring-violet-500/30",
+  Other: "bg-gray-100 text-gray-700 ring-1 ring-gray-200 dark:bg-gray-500/10 dark:text-gray-400 dark:ring-gray-500/30",
 };
 
 // Application Status Configurations
@@ -45,32 +45,32 @@ const STATUS_CONFIGS = {
   Applied: {
     label: "Applied",
     icon: Clock,
-    badge: "bg-slate-100 text-slate-700 ring-1 ring-slate-200",
+    badge: "bg-slate-100 text-slate-700 ring-1 ring-slate-200 dark:bg-slate-500/10 dark:text-slate-400 dark:ring-slate-500/30",
     dot: "bg-slate-400",
   },
   "Under Review": {
     label: "Under Review",
     icon: Loader2,
-    badge: "bg-blue-50 text-blue-700 ring-1 ring-blue-200",
+    badge: "bg-blue-50 text-blue-700 ring-1 ring-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:ring-blue-500/30",
     dot: "bg-blue-500",
     spin: true,
   },
   Interviewing: {
     label: "Interviewing",
     icon: Calendar,
-    badge: "bg-amber-50 text-amber-700 ring-1 ring-amber-200",
+    badge: "bg-amber-50 text-amber-700 ring-1 ring-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:ring-amber-500/30",
     dot: "bg-amber-500",
   },
   Offered: {
     label: "Offered",
     icon: CheckCircle2,
-    badge: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200",
+    badge: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/30",
     dot: "bg-emerald-500",
   },
   Rejected: {
     label: "Rejected",
     icon: XCircle,
-    badge: "bg-red-50 text-red-600 ring-1 ring-red-200",
+    badge: "bg-red-50 text-red-600 ring-1 ring-red-200 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-500/30",
     dot: "bg-red-500",
   },
 };
@@ -396,11 +396,11 @@ export const MyDocuments = () => {
   }, [documents, docCategoryFilter]);
 
   return (
-    <div className="min-h-screen bg-slate-50/60 flex flex-col font-sans text-slate-800 antialiased selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen bg-slate-50/60 dark:bg-gray-950 flex flex-col font-sans text-slate-800 dark:text-gray-300 antialiased selection:bg-indigo-500 selection:text-white">
       <CandidateHeader />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-7">
-        
+
         {/* PAGE HEADER */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
@@ -409,10 +409,10 @@ export const MyDocuments = () => {
                 <FileCheck className="h-5 w-5" />
               </div>
               <div>
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-gray-100 tracking-tight">
                   Applications & Documents
                 </h1>
-                <p className="text-sm text-gray-500 mt-0.5">
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
                   Manage your candidate credentials, track application statuses, and fulfill document requests.
                 </p>
               </div>
@@ -424,16 +424,16 @@ export const MyDocuments = () => {
             <button
               onClick={handleRefresh}
               disabled={isRefreshing}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-xs disabled:opacity-60"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3.5 py-2.5 text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600 transition-all shadow-xs disabled:opacity-60"
               title="Refresh Data"
             >
-              <RefreshCw className={`h-3.5 w-3.5 text-gray-500 ${isRefreshing ? "animate-spin" : ""}`} />
+              <RefreshCw className={`h-3.5 w-3.5 text-gray-500 dark:text-gray-400 ${isRefreshing ? "animate-spin" : ""}`} />
               Refresh
             </button>
 
             <button
               onClick={() => scrollToUpload()}
-              className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-bold text-white shadow-md shadow-indigo-200 hover:bg-indigo-700 transition-all hover:scale-[1.02] active:scale-100"
+              className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-xs font-bold text-white  hover:bg-indigo-700 transition-all hover:scale-[1.02] active:scale-100"
             >
               <Upload className="h-3.5 w-3.5" />
               Upload Document
@@ -448,42 +448,42 @@ export const MyDocuments = () => {
           <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-5">
             
             {/* Stat Card 1: Total Jobs Applied */}
-            <div className="rounded-2xl border border-gray-200/90 bg-white p-6 shadow-xs flex flex-col justify-between hover:border-gray-300 transition-colors">
+            <div className="rounded-2xl border border-gray-200/90 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-xs flex flex-col justify-between hover:border-gray-300 dark:hover:border-gray-700 transition-colors">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-bold text-gray-900 tracking-tight">
+                <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100 tracking-tight">
                   Total Jobs Applied
                 </h3>
-                <div className="h-8 w-8 rounded-lg bg-gray-50 flex items-center justify-center text-gray-500">
+                <div className="h-8 w-8 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-gray-500 dark:text-gray-400">
                   <Briefcase className="h-4 w-4" />
                 </div>
               </div>
               <div className="mt-3">
-                <span className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
+                <span className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-gray-100 tracking-tight">
                   {isLoading ? "—" : applications.length}
                 </span>
               </div>
             </div>
 
             {/* Stat Card 2: Applications to Submit Documents On */}
-            <div className="rounded-2xl border border-gray-200/90 bg-white p-6 shadow-xs flex flex-col justify-between hover:border-gray-300 transition-colors">
+            <div className="rounded-2xl border border-gray-200/90 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-xs flex flex-col justify-between hover:border-gray-300 dark:hover:border-gray-700 transition-colors">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
-                  <h3 className="text-sm font-bold text-gray-900 tracking-tight">
+                  <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100 tracking-tight">
                     Applications to Submit Documents On
                   </h3>
                   <div
-                    className="relative cursor-pointer text-gray-400 hover:text-gray-600"
+                    className="relative cursor-pointer text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
                     title="Applications in interview or review stages that require document verification"
                   >
                     <Info className="h-4 w-4" />
                   </div>
                 </div>
-                <div className="h-8 w-8 rounded-lg bg-gray-50 flex items-center justify-center text-gray-500">
+                <div className="h-8 w-8 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-gray-500 dark:text-gray-400">
                   <AlertCircle className="h-4 w-4" />
                 </div>
               </div>
               <div className="mt-3">
-                <span className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
+                <span className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-gray-100 tracking-tight">
                   {isLoading ? "—" : missingDocumentInfo.count}
                 </span>
               </div>
@@ -492,20 +492,20 @@ export const MyDocuments = () => {
           </div>
 
           {/* Right Column: Upcoming Interviews Spotlight Card */}
-          <div className="lg:col-span-7 rounded-2xl border border-gray-200/90 bg-white p-6 shadow-xs flex flex-col justify-between hover:border-gray-300 transition-colors">
+          <div className="lg:col-span-7 rounded-2xl border border-gray-200/90 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-xs flex flex-col justify-between hover:border-gray-300 dark:hover:border-gray-700 transition-colors">
             <div>
-              <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
-                <h3 className="text-sm font-bold text-gray-900 tracking-tight">
+              <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3 mb-4">
+                <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100 tracking-tight">
                   Upcoming Interviews
                 </h3>
-                <div className="h-8 w-8 rounded-lg bg-gray-50 flex items-center justify-center text-gray-500">
+                <div className="h-8 w-8 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center text-gray-500 dark:text-gray-400">
                   <Calendar className="h-4 w-4" />
                 </div>
               </div>
 
               {isLoading ? (
                 <div className="py-6 flex items-center justify-center">
-                  <Loader2 className="h-5 w-5 text-gray-400 animate-spin" />
+                  <Loader2 className="h-5 w-5 text-gray-400 dark:text-gray-500 animate-spin" />
                 </div>
               ) : upcomingInterviews.length > 0 ? (
                 <div className="space-y-3">
@@ -519,28 +519,28 @@ export const MyDocuments = () => {
                           setSelectedInterviewApp(app);
                           setIsInterviewModalOpen(true);
                         }}
-                        className="group flex items-start justify-between gap-3 p-3.5 rounded-xl bg-gray-50/70 hover:bg-indigo-50/60 border border-gray-100 hover:border-indigo-200 cursor-pointer transition"
+                        className="group flex items-start justify-between gap-3 p-3.5 rounded-xl bg-gray-50/70 dark:bg-gray-800/50 hover:bg-indigo-50/60 dark:hover:bg-indigo-500/10 border border-gray-100 dark:border-gray-800 hover:border-indigo-200 dark:hover:border-indigo-500/30 cursor-pointer transition"
                       >
                         <div className="flex items-start gap-3 min-w-0">
-                          <div className="mt-0.5 h-8 w-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-indigo-600 shrink-0">
+                          <div className="mt-0.5 h-8 w-8 rounded-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0">
                             <Calendar className="h-4 w-4" />
                           </div>
                           <div className="min-w-0">
-                            <p className="text-xs sm:text-sm font-bold text-gray-900 truncate">
+                            <p className="text-xs sm:text-sm font-bold text-gray-900 dark:text-gray-100 truncate">
                               {app.job?.title}{" "}
-                              <span className="font-semibold text-gray-500">
+                              <span className="font-semibold text-gray-500 dark:text-gray-400">
                                 @ {companyName} {app.job?.location ? `– ${app.job.location}` : ""}
                               </span>
                             </p>
-                            <p className="text-xs font-semibold text-indigo-600 mt-0.5">
+                            <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 mt-0.5">
                               {moment(app.interview.date).format("ddd, D MMM YYYY")}{" "}
                               {app.interview.time ? `at ${app.interview.time}` : ""}{" "}
-                              <span className="text-gray-400 font-normal">· (1st Interview)</span>
+                              <span className="text-gray-400 dark:text-gray-500 font-normal">· (1st Interview)</span>
                             </p>
                           </div>
                         </div>
 
-                        <span className="text-xs font-bold text-indigo-600 group-hover:translate-x-0.5 transition-transform shrink-0 flex items-center gap-1 mt-1">
+                        <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 group-hover:translate-x-0.5 transition-transform shrink-0 flex items-center gap-1 mt-1">
                           Details <ChevronRight className="h-3.5 w-3.5" />
                         </span>
                       </div>
@@ -549,10 +549,10 @@ export const MyDocuments = () => {
                 </div>
               ) : (
                 <div className="py-7 text-center">
-                  <p className="text-xs font-semibold text-gray-500">
+                  <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">
                     No scheduled interviews at this time
                   </p>
-                  <p className="text-[11px] text-gray-400 mt-0.5">
+                  <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5">
                     When employers schedule an interview, it will appear here.
                   </p>
                 </div>
@@ -560,7 +560,7 @@ export const MyDocuments = () => {
             </div>
 
             {upcomingInterviews.length > 0 && (
-              <p className="text-[11px] text-gray-400 mt-3 border-t border-gray-50 pt-2">
+              <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-3 border-t border-gray-50 dark:border-gray-800 pt-2">
                 Click any interview to access instructions, joining link, or copy location.
               </p>
             )}
@@ -570,44 +570,44 @@ export const MyDocuments = () => {
 
         {/* ACTION REQUIRED: SUBMIT MISSING DOCUMENTS BANNER */}
         {missingDocumentInfo.hasPendingAction && (
-          <div className="rounded-2xl border border-rose-200/90 bg-rose-50/40 p-5 sm:p-6 shadow-xs animate-in fade-in duration-200">
+          <div className="rounded-2xl border border-rose-200/90 dark:border-rose-500/20 bg-rose-50/40 dark:bg-rose-500/5 p-5 sm:p-6 shadow-xs animate-in fade-in duration-200">
             <div className="flex flex-col gap-4">
-              
+
               {/* Header */}
               <div className="flex items-center gap-2.5">
-                <div className="h-6 w-6 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold shrink-0">
+                <div className="h-6 w-6 rounded-full bg-slate-900 dark:bg-slate-700 text-white flex items-center justify-center text-xs font-bold shrink-0">
                   !
                 </div>
-                <h3 className="text-base font-extrabold text-gray-900 tracking-tight">
+                <h3 className="text-base font-extrabold text-gray-900 dark:text-gray-100 tracking-tight">
                   Action Required: Submit Missing Documents
                 </h3>
               </div>
 
               {/* Subtitle */}
-              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed max-w-3xl">
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl">
                 You have interview-stage applications that require additional documents. Please upload the missing documents to your profile to proceed.
               </p>
 
               {/* Application Row & Missing Pills */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
-                
+
                 <div className="space-y-2">
                   {missingDocumentInfo.actionableApps.map((app) => {
                     const company = app.job?.company;
                     const companyName = company?.companyName || company?.name || "Arch Holdings Limited";
                     return (
                       <div key={app._id} className="flex flex-wrap items-center gap-2 text-xs">
-                        <span className="flex items-center gap-1.5 font-bold text-gray-900">
-                          <Briefcase className="h-3.5 w-3.5 text-rose-600" />
+                        <span className="flex items-center gap-1.5 font-bold text-gray-900 dark:text-gray-100">
+                          <Briefcase className="h-3.5 w-3.5 text-rose-600 dark:text-rose-400" />
                           {app.job?.title}
                         </span>
-                        <span className="text-gray-500">@ {companyName}</span>
+                        <span className="text-gray-500 dark:text-gray-400">@ {companyName}</span>
                       </div>
                     );
                   })}
 
                   <div className="flex items-center gap-2 flex-wrap text-xs">
-                    <span className="font-bold text-rose-700">Missing:</span>
+                    <span className="font-bold text-rose-700 dark:text-rose-400">Missing:</span>
                     {missingDocumentInfo.missingPills.map((pill) => (
                       <button
                         key={pill}
@@ -616,7 +616,7 @@ export const MyDocuments = () => {
                           else if (pill.includes("ID")) scrollToUpload("ID Document");
                           else scrollToUpload("Resume");
                         }}
-                        className="inline-flex items-center gap-1 rounded-full border border-rose-300 bg-white hover:bg-rose-100/70 px-3 py-1 text-xs font-semibold text-rose-700 transition shadow-2xs"
+                        className="inline-flex items-center gap-1 rounded-full border border-rose-300 dark:border-rose-500/30 bg-white dark:bg-gray-900 hover:bg-rose-100/70 dark:hover:bg-rose-500/10 px-3 py-1 text-xs font-semibold text-rose-700 dark:text-rose-400 transition shadow-2xs"
                       >
                         {pill}
                       </button>
@@ -640,13 +640,13 @@ export const MyDocuments = () => {
         )}
 
         {/* MAIN SECTION TABS */}
-        <div className="flex items-center border-b border-gray-200">
+        <div className="flex items-center border-b border-gray-200 dark:border-gray-800">
           <button
             onClick={() => setActiveTab("all")}
             className={`pb-3.5 px-4 text-sm font-bold border-b-2 transition-all flex items-center gap-2 ${
               activeTab === "all"
-                ? "border-indigo-600 text-indigo-600"
-                : "border-transparent text-gray-500 hover:text-gray-900 hover:border-gray-300"
+                ? "border-indigo-600 text-indigo-600 dark:text-indigo-400"
+                : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:border-gray-300 dark:hover:border-gray-600"
             }`}
           >
             <Layers className="h-4 w-4" />
@@ -657,8 +657,8 @@ export const MyDocuments = () => {
             onClick={() => setActiveTab("applications")}
             className={`pb-3.5 px-4 text-sm font-bold border-b-2 transition-all flex items-center gap-2 ${
               activeTab === "applications"
-                ? "border-indigo-600 text-indigo-600"
-                : "border-transparent text-gray-500 hover:text-gray-900 hover:border-gray-300"
+                ? "border-indigo-600 text-indigo-600 dark:text-indigo-400"
+                : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:border-gray-300 dark:hover:border-gray-600"
             }`}
           >
             <Briefcase className="h-4 w-4" />
@@ -669,8 +669,8 @@ export const MyDocuments = () => {
             onClick={() => setActiveTab("documents")}
             className={`pb-3.5 px-4 text-sm font-bold border-b-2 transition-all flex items-center gap-2 ${
               activeTab === "documents"
-                ? "border-indigo-600 text-indigo-600"
-                : "border-transparent text-gray-500 hover:text-gray-900 hover:border-gray-300"
+                ? "border-indigo-600 text-indigo-600 dark:text-indigo-400"
+                : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:border-gray-300 dark:hover:border-gray-600"
             }`}
           >
             <FileText className="h-4 w-4" />
@@ -681,23 +681,23 @@ export const MyDocuments = () => {
       
         {/* SECTION 1: APPLICATIONS HISTORY TABLE & TRACKER */}
         {(activeTab === "all" || activeTab === "applications") && (
-          <div className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
-            
+          <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm overflow-hidden">
+
             {/* Table Header & Filter Bar */}
-            <div className="p-5 sm:p-6 border-b border-gray-100 space-y-4">
+            <div className="p-5 sm:p-6 border-b border-gray-100 dark:border-gray-800 space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h2 className="text-lg font-extrabold text-gray-900">
+                  <h2 className="text-lg font-extrabold text-gray-900 dark:text-gray-100">
                     Applications History
                   </h2>
-                  <p className="text-xs text-gray-400 mt-0.5">
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
                     Track the lifecycle, interview dates, and status of your submissions.
                   </p>
                 </div>
 
                 {/* Search Bar */}
                 <div className="relative sm:w-72">
-                  <Search className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Search className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-gray-500" />
                   <input
                     type="text"
                     value={searchQuery}
@@ -706,12 +706,12 @@ export const MyDocuments = () => {
                       setAppPage(1);
                     }}
                     placeholder="Search by role or company…"
-                    className="w-full rounded-xl border border-gray-200 bg-white pl-9 pr-4 py-2 text-xs text-gray-800 placeholder:text-gray-400 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20"
+                    className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 pl-9 pr-4 py-2 text-xs text-gray-800 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20"
                   />
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery("")}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
                     >
                       <X className="h-3.5 w-3.5" />
                     </button>
@@ -738,14 +738,14 @@ export const MyDocuments = () => {
                       }}
                       className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl font-bold transition-all shrink-0 ${
                         isSelected
-                          ? "bg-slate-900 text-white shadow-sm"
-                          : "bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900 border border-gray-100"
+                          ? "bg-slate-900 dark:bg-slate-700 text-white shadow-sm"
+                          : "bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 border border-gray-100 dark:border-gray-700"
                       }`}
                     >
                       {tab.label}
                       <span
                         className={`inline-flex items-center justify-center rounded-full px-1.5 py-0.2 text-[10px] font-extrabold ${
-                          isSelected ? "bg-white/20 text-white" : "bg-gray-200/80 text-gray-700"
+                          isSelected ? "bg-white/20 text-white" : "bg-gray-200/80 dark:bg-gray-600/60 text-gray-700 dark:text-gray-200"
                         }`}
                       >
                         {tab.count}
@@ -760,15 +760,15 @@ export const MyDocuments = () => {
             {isLoading ? (
               <div className="flex flex-col items-center justify-center py-20 gap-3">
                 <Loader2 className="h-8 w-8 text-indigo-600 animate-spin" />
-                <p className="text-xs font-semibold text-gray-400">Loading your applications…</p>
+                <p className="text-xs font-semibold text-gray-400 dark:text-gray-500">Loading your applications…</p>
               </div>
             ) : filteredApplications.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
-                <div className="h-16 w-16 rounded-2xl bg-indigo-50 flex items-center justify-center mb-3">
-                  <Inbox className="h-8 w-8 text-indigo-400" />
+                <div className="h-16 w-16 rounded-2xl bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center mb-3">
+                  <Inbox className="h-8 w-8 text-indigo-400 dark:text-indigo-400" />
                 </div>
-                <h3 className="text-base font-bold text-gray-900">No applications found</h3>
-                <p className="text-xs text-gray-400 mt-1 max-w-sm">
+                <h3 className="text-base font-bold text-gray-900 dark:text-gray-100">No applications found</h3>
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 max-w-sm">
                   {searchQuery || appStatusFilter !== "all"
                     ? "Try adjusting your search query or status filter."
                     : "You haven't submitted any job applications yet. Browse open roles to get started."}
@@ -787,7 +787,7 @@ export const MyDocuments = () => {
                 <div className="hidden md:block overflow-x-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="bg-slate-50/80 border-b border-gray-100 text-[11px] font-extrabold uppercase tracking-wider text-gray-500">
+                      <tr className="bg-slate-50/80 dark:bg-gray-800/60 border-b border-gray-100 dark:border-gray-700 text-[11px] font-extrabold uppercase tracking-wider text-gray-500 dark:text-gray-400">
                         <th className="py-3.5 px-6">Company Name</th>
                         <th className="py-3.5 px-6">Role</th>
                         <th className="py-3.5 px-6">Date Applied</th>
@@ -796,7 +796,7 @@ export const MyDocuments = () => {
                         <th className="py-3.5 px-6 text-right">Action</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-100 text-xs">
+                    <tbody className="divide-y divide-gray-100 dark:divide-gray-800 text-xs">
                       {paginatedApplications.map((app, index) => {
                         const company = app.job?.company;
                         const companyName = company?.companyName || company?.name || "Company";
@@ -809,16 +809,16 @@ export const MyDocuments = () => {
                         return (
                           <tr
                             key={app._id}
-                            className="hover:bg-slate-50/60 transition-colors group"
+                            className="hover:bg-slate-50/60 dark:hover:bg-gray-800/50 transition-colors group"
                           >
                             {/* Company Name */}
-                            <td className="py-4 px-6 font-semibold text-gray-900">
+                            <td className="py-4 px-6 font-semibold text-gray-900 dark:text-gray-100">
                               <div className="flex items-center gap-3">
                                 {companyLogo ? (
                                   <img
                                     src={companyLogo}
                                     alt={companyName}
-                                    className="h-9 w-9 rounded-xl object-contain border border-gray-100 bg-white p-0.5"
+                                    className="h-9 w-9 rounded-xl object-contain border border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800 p-0.5"
                                   />
                                 ) : (
                                   <div
@@ -828,11 +828,11 @@ export const MyDocuments = () => {
                                   </div>
                                 )}
                                 <div className="min-w-0">
-                                  <p className="font-bold text-gray-900 truncate max-w-[180px]">
+                                  <p className="font-bold text-gray-900 dark:text-gray-100 truncate max-w-[180px]">
                                     {companyName}
                                   </p>
                                   {app.job?.location && (
-                                    <p className="text-[11px] text-gray-400 truncate max-w-[180px] flex items-center gap-1">
+                                    <p className="text-[11px] text-gray-400 dark:text-gray-500 truncate max-w-[180px] flex items-center gap-1">
                                       <MapPin className="h-3 w-3" />
                                       {app.job.location}
                                     </p>
@@ -846,20 +846,20 @@ export const MyDocuments = () => {
                               <div className="min-w-0">
                                 <Link
                                   to={`/job/${app.job?._id}`}
-                                  className="font-bold text-indigo-600 hover:text-indigo-800 hover:underline truncate block max-w-[200px]"
+                                  className="font-bold text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 hover:underline truncate block max-w-[200px]"
                                 >
                                   {app.job?.title || "Role Title"}
                                 </Link>
-                                <span className="inline-block mt-0.5 text-[10px] font-semibold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">
+                                <span className="inline-block mt-0.5 text-[10px] font-semibold text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-md">
                                   {app.job?.type || "Full-Time"}
                                 </span>
                               </div>
                             </td>
 
                             {/* Date Applied */}
-                            <td className="py-4 px-6 text-gray-600 font-medium whitespace-nowrap">
+                            <td className="py-4 px-6 text-gray-600 dark:text-gray-300 font-medium whitespace-nowrap">
                               {moment(app.createdAt).format("DD-MM-YYYY")}
-                              <span className="block text-[10px] text-gray-400">
+                              <span className="block text-[10px] text-gray-400 dark:text-gray-500">
                                 {moment(app.createdAt).fromNow()}
                               </span>
                             </td>
@@ -883,23 +883,23 @@ export const MyDocuments = () => {
                                     setSelectedInterviewApp(app);
                                     setIsInterviewModalOpen(true);
                                   }}
-                                  className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700 hover:bg-emerald-100 transition shadow-2xs"
+                                  className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-200 dark:border-emerald-500/30 bg-emerald-50 dark:bg-emerald-500/10 px-2.5 py-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-500/20 transition shadow-2xs"
                                 >
-                                  <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+                                  <CheckCircle2 className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
                                   Confirmed ({moment(app.interview.date).format("D MMM")})
                                 </button>
                               ) : app.status === "Interviewing" ? (
-                                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md">
+                                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/10 px-2 py-0.5 rounded-md">
                                   <Clock className="h-3 w-3" />
                                   Schedule Pending
                                 </span>
                               ) : app.status === "Offered" ? (
-                                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md">
+                                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded-md">
                                   <Sparkles className="h-3 w-3" />
                                   Offer Extended
                                 </span>
                               ) : (
-                                <span className="text-[11px] text-gray-400 italic">
+                                <span className="text-[11px] text-gray-400 dark:text-gray-500 italic">
                                   —
                                 </span>
                               )}
@@ -914,15 +914,15 @@ export const MyDocuments = () => {
                                       setSelectedInterviewApp(app);
                                       setIsInterviewModalOpen(true);
                                     }}
-                                    className="px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition"
+                                    className="px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 transition"
                                   >
                                     View Interview
                                   </button>
                                 )}
-                                
+
                                 <button
                                   onClick={() => setAppToWithdraw(app)}
-                                  className="px-3 py-1.5 text-xs font-bold rounded-lg border border-gray-200 bg-white text-gray-700 hover:text-red-600 hover:border-red-200 hover:bg-red-50 transition shadow-2xs"
+                                  className="px-3 py-1.5 text-xs font-bold rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 hover:border-red-200 dark:hover:border-red-500/30 hover:bg-red-50 dark:hover:bg-red-500/10 transition shadow-2xs"
                                   title="Withdraw this application"
                                 >
                                   WITHDRAW
@@ -937,7 +937,7 @@ export const MyDocuments = () => {
                 </div>
 
                 {/* Mobile Cards View */}
-                <div className="block md:hidden divide-y divide-gray-100">
+                <div className="block md:hidden divide-y divide-gray-100 dark:divide-gray-800">
                   {paginatedApplications.map((app, index) => {
                     const company = app.job?.company;
                     const companyName = company?.companyName || company?.name || "Company";
@@ -955,10 +955,10 @@ export const MyDocuments = () => {
                               {initials}
                             </div>
                             <div className="min-w-0">
-                              <p className="font-bold text-gray-900 text-sm truncate">{companyName}</p>
+                              <p className="font-bold text-gray-900 dark:text-gray-100 text-sm truncate">{companyName}</p>
                               <Link
                                 to={`/job/${app.job?._id}`}
-                                className="text-xs font-bold text-indigo-600 hover:underline truncate block"
+                                className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline truncate block"
                               >
                                 {app.job?.title}
                               </Link>
@@ -972,16 +972,16 @@ export const MyDocuments = () => {
                           </span>
                         </div>
 
-                        <div className="flex items-center justify-between text-xs text-gray-500">
+                        <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
                           <span>Applied: {moment(app.createdAt).format("DD-MM-YYYY")}</span>
                           <span>{app.job?.location || "Location"}</span>
                         </div>
 
                         {app.status === "Interviewing" && app.interview?.date && (
-                          <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-between">
+                          <div className="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 flex items-center justify-between">
                             <div className="text-xs">
-                              <p className="font-bold text-emerald-800">Interview Confirmed</p>
-                              <p className="text-[11px] text-emerald-600">
+                              <p className="font-bold text-emerald-800 dark:text-emerald-400">Interview Confirmed</p>
+                              <p className="text-[11px] text-emerald-600 dark:text-emerald-400/80">
                                 {moment(app.interview.date).format("ddd, D MMM")} @ {app.interview.time}
                               </p>
                             </div>
@@ -997,10 +997,10 @@ export const MyDocuments = () => {
                           </div>
                         )}
 
-                        <div className="pt-2 flex items-center justify-end gap-2 border-t border-gray-50">
+                        <div className="pt-2 flex items-center justify-end gap-2 border-t border-gray-50 dark:border-gray-800">
                           <button
                             onClick={() => setAppToWithdraw(app)}
-                            className="px-3 py-1 text-xs font-bold text-red-600 border border-red-200 rounded-lg hover:bg-red-50"
+                            className="px-3 py-1 text-xs font-bold text-red-600 dark:text-red-400 border border-red-200 dark:border-red-500/30 rounded-lg hover:bg-red-50 dark:hover:bg-red-500/10"
                           >
                             Withdraw
                           </button>
@@ -1011,7 +1011,7 @@ export const MyDocuments = () => {
                 </div>
 
                 {/* Pagination Controls */}
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 sm:px-6 border-t border-gray-100 text-xs text-gray-500 bg-slate-50/50">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 sm:px-6 border-t border-gray-100 dark:border-gray-800 text-xs text-gray-500 dark:text-gray-400 bg-slate-50/50 dark:bg-gray-800/30">
                   <div className="flex items-center gap-2">
                     <span>Items per page:</span>
                     <select
@@ -1020,7 +1020,7 @@ export const MyDocuments = () => {
                         setItemsPerPage(Number(e.target.value));
                         setAppPage(1);
                       }}
-                      className="rounded-lg border border-gray-200 bg-white px-2 py-1 text-xs font-semibold text-gray-700 outline-none"
+                      className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-1 text-xs font-semibold text-gray-700 dark:text-gray-300 outline-none"
                     >
                       <option value={5}>5</option>
                       <option value={10}>10</option>
@@ -1036,7 +1036,7 @@ export const MyDocuments = () => {
                     <button
                       onClick={() => setAppPage(1)}
                       disabled={appPage === 1}
-                      className="p-1.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-100 disabled:opacity-40 disabled:hover:bg-white"
+                      className="p-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-40 disabled:hover:bg-white dark:disabled:hover:bg-gray-800"
                       title="First Page"
                     >
                       <ChevronsLeft className="h-4 w-4" />
@@ -1044,18 +1044,18 @@ export const MyDocuments = () => {
                     <button
                       onClick={() => setAppPage((p) => Math.max(1, p - 1))}
                       disabled={appPage === 1}
-                      className="p-1.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-100 disabled:opacity-40 disabled:hover:bg-white"
+                      className="p-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-40 disabled:hover:bg-white dark:disabled:hover:bg-gray-800"
                       title="Previous Page"
                     >
                       <ChevronLeft className="h-4 w-4" />
                     </button>
-                    <span className="px-3 font-bold text-gray-700">
+                    <span className="px-3 font-bold text-gray-700 dark:text-gray-300">
                       Page {appPage} of {totalAppPages}
                     </span>
                     <button
                       onClick={() => setAppPage((p) => Math.min(totalAppPages, p + 1))}
                       disabled={appPage === totalAppPages}
-                      className="p-1.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-100 disabled:opacity-40 disabled:hover:bg-white"
+                      className="p-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-40 disabled:hover:bg-white dark:disabled:hover:bg-gray-800"
                       title="Next Page"
                     >
                       <ChevronRight className="h-4 w-4" />
@@ -1063,7 +1063,7 @@ export const MyDocuments = () => {
                     <button
                       onClick={() => setAppPage(totalAppPages)}
                       disabled={appPage === totalAppPages}
-                      className="p-1.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-100 disabled:opacity-40 disabled:hover:bg-white"
+                      className="p-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-40 disabled:hover:bg-white dark:disabled:hover:bg-gray-800"
                       title="Last Page"
                     >
                       <ChevronsRight className="h-4 w-4" />
@@ -1081,38 +1081,38 @@ export const MyDocuments = () => {
           <div ref={uploadSectionRef} className="space-y-6">
             
             {/* Upload Card */}
-            <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+            <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2.5">
-                  <div className="h-9 w-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                  <div className="h-9 w-9 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
                     <Upload className="h-4.5 w-4.5" />
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-gray-900">Upload Candidate Document</h3>
-                    <p className="text-xs text-gray-400">
+                    <h3 className="text-base font-bold text-gray-900 dark:text-gray-100">Upload Candidate Document</h3>
+                    <p className="text-xs text-gray-400 dark:text-gray-500">
                       Upload certificates, resumes, and identification to fulfill employer verification requests.
                     </p>
                   </div>
                 </div>
 
-                <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700">
+                <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-emerald-50 dark:bg-emerald-500/10 px-2.5 py-0.5 text-xs font-bold text-emerald-700 dark:text-emerald-400">
                   <Shield className="h-3 w-3" /> Secure Vault
                 </span>
               </div>
 
               {/* Upload Controls Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 mb-4">
-                
+
                 {/* Category Selector */}
                 <div className="sm:col-span-4 relative">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">
                     Document Category
                   </label>
                   <div className="relative">
                     <select
                       value={uploadCategory}
                       onChange={(e) => setUploadCategory(e.target.value)}
-                      className="w-full appearance-none rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 pr-10 text-xs font-semibold text-gray-800 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20"
+                      className="w-full appearance-none rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3.5 py-2.5 pr-10 text-xs font-semibold text-gray-800 dark:text-gray-100 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20"
                     >
                       {CATEGORIES.map((c) => (
                         <option key={c} value={c}>
@@ -1120,13 +1120,13 @@ export const MyDocuments = () => {
                         </option>
                       ))}
                     </select>
-                    <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-gray-500" />
                   </div>
                 </div>
 
                 {/* Document Title / Label */}
                 <div className="sm:col-span-5">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">
+                  <label className="block text-xs font-bold text-gray-700 dark:text-gray-300 mb-1">
                     Document Label (Optional)
                   </label>
                   <input
@@ -1134,7 +1134,7 @@ export const MyDocuments = () => {
                     value={customDocTitle}
                     onChange={(e) => setCustomDocTitle(e.target.value)}
                     placeholder={`e.g. ${uploadCategory} - 2026`}
-                    className="w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-xs font-medium text-gray-800 placeholder:text-gray-400 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20"
+                    className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3.5 py-2.5 text-xs font-medium text-gray-800 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20"
                   />
                 </div>
 
@@ -1144,7 +1144,7 @@ export const MyDocuments = () => {
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={isUploading}
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 px-4 py-2.5 text-xs font-bold text-white shadow-sm shadow-indigo-200 transition-all hover:scale-[1.02] active:scale-100 disabled:opacity-60 disabled:scale-100"
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 px-4 py-2.5 text-xs font-bold text-white transition-all hover:scale-[1.02] active:scale-100 disabled:opacity-60 disabled:scale-100"
                   >
                     {isUploading ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
@@ -1179,32 +1179,32 @@ export const MyDocuments = () => {
                 onClick={() => fileInputRef.current?.click()}
                 className={`flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-6 text-center cursor-pointer transition-all ${
                   isDragOver
-                    ? "border-indigo-500 bg-indigo-50/70 scale-[1.01]"
-                    : "border-indigo-100 bg-indigo-50/20 hover:border-indigo-300 hover:bg-indigo-50/40"
+                    ? "border-indigo-500 bg-indigo-50/70 dark:bg-indigo-500/10 scale-[1.01]"
+                    : "border-indigo-100 dark:border-indigo-500/20 bg-indigo-50/20 dark:bg-indigo-500/5 hover:border-indigo-300 dark:hover:border-indigo-500/40 hover:bg-indigo-50/40 dark:hover:bg-indigo-500/10"
                 }`}
               >
-                <div className="h-10 w-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center mb-2">
+                <div className="h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-2">
                   <Upload className="h-5 w-5" />
                 </div>
-                <p className="text-xs font-bold text-gray-800">
+                <p className="text-xs font-bold text-gray-800 dark:text-gray-100">
                   Click to browse or drag and drop your file here
                 </p>
-                <p className="text-[11px] text-gray-400 mt-0.5">
+                <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-0.5">
                   Supported formats: PDF, DOC, DOCX, JPEG, PNG · Maximum file size: 10 MB
                 </p>
               </div>
             </div>
 
             {/* Uploaded Documents List */}
-            <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm space-y-4">
+            <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5">
-                  <div className="h-9 w-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                  <div className="h-9 w-9 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
                     <FileText className="h-4.5 w-4.5" />
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-gray-900">Your Document Vault</h3>
-                    <p className="text-xs text-gray-400">
+                    <h3 className="text-base font-bold text-gray-900 dark:text-gray-100">Your Document Vault</h3>
+                    <p className="text-xs text-gray-400 dark:text-gray-500">
                       {documents.length} document{documents.length !== 1 ? "s" : ""} uploaded and saved to your candidate profile
                     </p>
                   </div>
@@ -1221,7 +1221,7 @@ export const MyDocuments = () => {
                         className={`px-3 py-1.5 rounded-lg font-bold transition text-xs shrink-0 ${
                           active
                             ? "bg-indigo-600 text-white shadow-2xs"
-                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                            : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
                         }`}
                       >
                         {cat}
@@ -1236,10 +1236,10 @@ export const MyDocuments = () => {
                   <Loader2 className="h-6 w-6 text-indigo-500 animate-spin" />
                 </div>
               ) : filteredDocuments.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-14 text-center rounded-xl border border-dashed border-gray-200 bg-gray-50/50">
-                  <Inbox className="h-8 w-8 text-gray-300 mb-2" />
-                  <p className="text-sm font-bold text-gray-600">No documents in this category</p>
-                  <p className="text-xs text-gray-400 mt-0.5">
+                <div className="flex flex-col items-center justify-center py-14 text-center rounded-xl border border-dashed border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
+                  <Inbox className="h-8 w-8 text-gray-300 dark:text-gray-600 mb-2" />
+                  <p className="text-sm font-bold text-gray-600 dark:text-gray-300">No documents in this category</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
                     Upload your certificates, ID, or resume using the form above.
                   </p>
                 </div>

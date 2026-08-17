@@ -5,23 +5,24 @@ import { ChevronDown } from "lucide-react";
 const FieldWrapper = ({ label, required, hint, error, children }) => (
   <div className="flex flex-col gap-1.5">
     {label && (
-      <label className="text-sm font-medium text-gray-700">
+      <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
         {label}
-        {required && <span className="ml-0.5 text-red-500">*</span>}
+        {required && <span className="ml-0.5 text-red-500 dark:text-red-400">*</span>}
       </label>
     )}
     {children}
     {hint && !error && (
-      <p className="text-xs text-gray-400 leading-relaxed">{hint}</p>
+      <p className="text-xs text-gray-400 leading-relaxed dark:text-gray-500">{hint}</p>
     )}
-    {error && <p className="text-xs text-red-500">{error}</p>}
+    {error && <p className="text-xs text-red-500 dark:text-red-400">{error}</p>}
   </div>
 );
 
-// shared ring classes 
+// shared ring classes
 const base =
   "w-full rounded-xl border border-gray-200 bg-white text-sm text-gray-900 " +
-  "placeholder:text-gray-400 outline-none transition-all duration-200 " +
+  "dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 " +
+  "placeholder:text-gray-400 dark:placeholder:text-gray-500 outline-none transition-all duration-200 " +
   "focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20";
 
 //InputField 
@@ -45,7 +46,7 @@ export const InputField = ({
     <div className="relative">
       {Icon && (
         <div className="pointer-events-none absolute inset-y-0 left-3.5 flex items-center">
-          <Icon className="h-4 w-4 text-gray-400" />
+          <Icon className="h-4 w-4 text-gray-400 dark:text-gray-500" />
         </div>
       )}
       <input
@@ -57,7 +58,7 @@ export const InputField = ({
         disabled={disabled}
         className={`${base} py-3 ${Icon ? `${iconPadding} pr-4` : "px-4"} ${
           error ? "border-red-400 focus:border-red-400 focus:ring-red-400/20" : ""
-        } ${disabled ? "cursor-not-allowed bg-gray-50 text-gray-400" : ""} ${className}`}
+        } ${disabled ? "cursor-not-allowed bg-gray-50 text-gray-400 dark:bg-gray-800/50 dark:text-gray-500" : ""} ${className}`}
         {...rest}
       />
     </div>
@@ -83,7 +84,7 @@ export const SelectField = ({
     <div className="relative">
       {Icon && (
         <div className="pointer-events-none absolute inset-y-0 left-3.5 flex items-center">
-          <Icon className="h-4 w-4 text-gray-400" />
+          <Icon className="h-4 w-4 text-gray-400 dark:text-gray-500" />
         </div>
       )}
       <select
@@ -92,9 +93,9 @@ export const SelectField = ({
         onChange={onChange}
         disabled={disabled}
         className={`${base} py-3 appearance-none ${Icon ? "pl-10 pr-10" : "px-4 pr-10"} ${
-          !value ? "text-gray-400" : "text-gray-900"
+          !value ? "text-gray-400 dark:text-gray-500" : "text-gray-900 dark:text-gray-100"
         } ${error ? "border-red-400 focus:border-red-400 focus:ring-red-400/20" : ""} ${
-          disabled ? "cursor-not-allowed bg-gray-50" : "cursor-pointer"
+          disabled ? "cursor-not-allowed bg-gray-50 dark:bg-gray-800/50" : "cursor-pointer"
         } ${className}`}
       >
         <option value="" disabled hidden>
@@ -108,7 +109,7 @@ export const SelectField = ({
       </select>
       {/* Custom chevron */}
       <div className="pointer-events-none absolute inset-y-0 right-3.5 flex items-center">
-        <ChevronDown className="h-4 w-4 text-gray-400" />
+        <ChevronDown className="h-4 w-4 text-gray-400 dark:text-gray-500" />
       </div>
     </div>
   </FieldWrapper>
@@ -138,7 +139,7 @@ export const TextAreaField = ({
       disabled={disabled}
       className={`${base} px-4 py-3 resize-y ${
         error ? "border-red-400 focus:border-red-400 focus:ring-red-400/20" : ""
-      } ${disabled ? "cursor-not-allowed bg-gray-50 text-gray-400" : ""} ${className}`}
+      } ${disabled ? "cursor-not-allowed bg-gray-50 text-gray-400 dark:bg-gray-800/50 dark:text-gray-500" : ""} ${className}`}
     />
   </FieldWrapper>
 );

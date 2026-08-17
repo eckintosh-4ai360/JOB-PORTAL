@@ -313,10 +313,10 @@ export const LocationPicker = ({
     <div className="flex flex-col gap-1.5" ref={containerRef}>
       {label && (
         <div className="flex items-center justify-between">
-          <label className="text-sm font-medium text-gray-700">
-            {label} {required && <span className="text-red-500">*</span>}
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            {label} {required && <span className="text-red-500 dark:text-red-400">*</span>}
           </label>
-          <span className="text-[11px] text-indigo-600 font-medium flex items-center gap-1">
+          <span className="text-[11px] text-indigo-600 dark:text-indigo-400 font-medium flex items-center gap-1">
             <Map className="h-3 w-3" /> Powered by Google & Map Locator
           </span>
         </div>
@@ -325,7 +325,7 @@ export const LocationPicker = ({
       {/* Main input container */}
       <div className="relative">
         <div className="pointer-events-none absolute inset-y-0 left-3.5 flex items-center">
-          <MapPin className="h-4 w-4 text-indigo-500" />
+          <MapPin className="h-4 w-4 text-indigo-500 dark:text-indigo-400" />
         </div>
 
         <input
@@ -334,7 +334,7 @@ export const LocationPicker = ({
           onChange={handleInputChange}
           onFocus={() => setShowDropdown(true)}
           placeholder={placeholder}
-          className={`w-full rounded-xl border border-gray-200 bg-white py-3 pl-11 pr-24 text-sm text-gray-900 placeholder:text-gray-400 outline-none transition-all duration-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 ${
+          className={`w-full rounded-xl border border-gray-200 bg-white py-3 pl-11 pr-24 text-sm text-gray-900 placeholder:text-gray-400 outline-none transition-all duration-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500 ${
             error ? "border-red-400 focus:border-red-400" : ""
           }`}
         />
@@ -347,10 +347,10 @@ export const LocationPicker = ({
             onClick={handleDetectLocation}
             disabled={isGeolocating}
             title="Use current GPS location"
-            className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition active:scale-95 disabled:opacity-50"
+            className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition active:scale-95 disabled:opacity-50 dark:bg-indigo-500/10 dark:text-indigo-400 dark:hover:bg-indigo-500/20"
           >
             {isGeolocating ? (
-              <Loader2 className="h-4 w-4 animate-spin text-indigo-600" />
+              <Loader2 className="h-4 w-4 animate-spin text-indigo-600 dark:text-indigo-400" />
             ) : (
               <Navigation className="h-4 w-4" />
             )}
@@ -369,16 +369,16 @@ export const LocationPicker = ({
 
         {/* Autocomplete Dropdown */}
         {showDropdown && suggestions.length > 0 && (
-          <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-60 overflow-y-auto rounded-xl border border-gray-100 bg-white p-1.5 shadow-xl animate-in fade-in duration-150">
+          <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-60 overflow-y-auto rounded-xl border border-gray-100 bg-white p-1.5 shadow-xl animate-in fade-in duration-150 dark:border-gray-800 dark:bg-gray-900">
             {suggestions.map((item, idx) => (
               <button
                 key={idx}
                 type="button"
                 onClick={() => handleSelectSuggestion(item)}
-                className="flex w-full items-start gap-2.5 rounded-lg px-3 py-2.5 text-left text-xs transition hover:bg-indigo-50/60"
+                className="flex w-full items-start gap-2.5 rounded-lg px-3 py-2.5 text-left text-xs transition hover:bg-indigo-50/60 dark:hover:bg-indigo-500/10"
               >
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-indigo-500" />
-                <span className="line-clamp-2 text-gray-700 font-medium">
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-indigo-500 dark:text-indigo-400" />
+                <span className="line-clamp-2 text-gray-700 font-medium dark:text-gray-300">
                   {item.display_name}
                 </span>
               </button>
@@ -387,18 +387,18 @@ export const LocationPicker = ({
         )}
 
         {isSearching && showDropdown && (
-          <div className="absolute left-0 right-0 top-full z-50 mt-1 rounded-xl border border-gray-100 bg-white p-3 shadow-xl flex items-center gap-2 text-xs text-gray-500">
-            <Loader2 className="h-4 w-4 animate-spin text-indigo-600" />
+          <div className="absolute left-0 right-0 top-full z-50 mt-1 rounded-xl border border-gray-100 bg-white p-3 shadow-xl flex items-center gap-2 text-xs text-gray-500 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-500">
+            <Loader2 className="h-4 w-4 animate-spin text-indigo-600 dark:text-indigo-400" />
             <span>Finding location details...</span>
           </div>
         )}
       </div>
 
-      {error && <p className="text-xs text-red-500">{error}</p>}
+      {error && <p className="text-xs text-red-500 dark:text-red-400">{error}</p>}
 
       {/* Selected location coordinates badge */}
       {selectedCoords && (
-        <div className="flex items-center justify-between text-[11px] text-gray-500 bg-slate-50 border border-slate-100 rounded-lg px-3 py-1.5">
+        <div className="flex items-center justify-between text-[11px] text-gray-500 bg-slate-50 border border-slate-100 rounded-lg px-3 py-1.5 dark:text-gray-500 dark:bg-gray-800 dark:border-gray-700">
           <span className="flex items-center gap-1.5 font-medium">
             <Check className="h-3.5 w-3.5 text-emerald-500" />
             Pinned Location ({selectedCoords.lat.toFixed(4)}, {selectedCoords.lng.toFixed(4)})
@@ -407,7 +407,7 @@ export const LocationPicker = ({
             href={googleMapsSearchUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-indigo-600 hover:underline flex items-center gap-1 font-semibold"
+            className="text-indigo-600 hover:underline flex items-center gap-1 font-semibold dark:text-indigo-400"
           >
             Open in Google Maps <ExternalLink className="h-3 w-3" />
           </a>
@@ -417,7 +417,7 @@ export const LocationPicker = ({
       {/* Interactive Map Picker Modal */}
       {showMapModal && (
         <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="w-full max-w-2xl rounded-3xl bg-white shadow-2xl border border-gray-100 overflow-hidden flex flex-col animate-in zoom-in-95 duration-200">
+          <div className="w-full max-w-2xl rounded-3xl bg-white shadow-2xl border border-gray-100 overflow-hidden flex flex-col animate-in zoom-in-95 duration-200 dark:bg-gray-900 dark:border-gray-800">
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4 bg-slate-900 text-white">
               <div className="flex items-center gap-2.5">
@@ -439,30 +439,30 @@ export const LocationPicker = ({
             </div>
 
             {/* Modal Search Bar */}
-            <div className="p-3 bg-slate-50 border-b border-slate-100 relative">
+            <div className="p-3 bg-slate-50 border-b border-slate-100 relative dark:bg-gray-900 dark:border-gray-800">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-gray-500" />
                 <input
                   type="text"
                   value={modalQuery}
                   onChange={handleModalSearchChange}
                   placeholder="Search a place or address to focus map..."
-                  className="w-full rounded-xl border border-gray-200 bg-white py-2 pl-9 pr-4 text-xs text-gray-900 placeholder:text-gray-400 outline-none focus:border-indigo-500"
+                  className="w-full rounded-xl border border-gray-200 bg-white py-2 pl-9 pr-4 text-xs text-gray-900 placeholder:text-gray-400 outline-none focus:border-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500"
                 />
               </div>
 
               {/* Modal Search Dropdown */}
               {modalSuggestions.length > 0 && (
-                <div className="absolute left-3 right-3 top-full z-50 mt-1 max-h-48 overflow-y-auto rounded-xl border border-gray-200 bg-white p-1 shadow-xl">
+                <div className="absolute left-3 right-3 top-full z-50 mt-1 max-h-48 overflow-y-auto rounded-xl border border-gray-200 bg-white p-1 shadow-xl dark:border-gray-700 dark:bg-gray-800">
                   {modalSuggestions.map((item, idx) => (
                     <button
                       key={idx}
                       type="button"
                       onClick={() => handleModalSelectSuggestion(item)}
-                      className="flex w-full items-start gap-2 rounded-lg p-2 text-left text-xs hover:bg-indigo-50"
+                      className="flex w-full items-start gap-2 rounded-lg p-2 text-left text-xs hover:bg-indigo-50 dark:hover:bg-indigo-500/10"
                     >
-                      <MapPin className="h-3.5 w-3.5 text-indigo-500 shrink-0 mt-0.5" />
-                      <span className="truncate text-gray-700 font-medium">{item.display_name}</span>
+                      <MapPin className="h-3.5 w-3.5 text-indigo-500 shrink-0 mt-0.5 dark:text-indigo-400" />
+                      <span className="truncate text-gray-700 font-medium dark:text-gray-300">{item.display_name}</span>
                     </button>
                   ))}
                 </div>
@@ -470,19 +470,19 @@ export const LocationPicker = ({
             </div>
 
             {/* Interactive Leaflet Map Container */}
-            <div className="relative h-80 w-full bg-slate-100">
+            <div className="relative h-80 w-full bg-slate-100 dark:bg-gray-800">
               <div ref={mapRef} className="h-full w-full z-0" />
-              <div className="absolute top-3 right-3 z-[400] bg-white/90 backdrop-blur-xs px-3 py-1.5 rounded-xl border border-gray-200 shadow-sm text-[11px] font-semibold text-gray-700 flex items-center gap-1.5">
-                <Locate className="h-3.5 w-3.5 text-indigo-600" />
+              <div className="absolute top-3 right-3 z-[400] bg-white/90 backdrop-blur-xs px-3 py-1.5 rounded-xl border border-gray-200 shadow-sm text-[11px] font-semibold text-gray-700 flex items-center gap-1.5 dark:bg-gray-900/90 dark:border-gray-700 dark:text-gray-300">
+                <Locate className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
                 Drag marker or click map
               </div>
             </div>
 
             {/* Modal Footer */}
-            <div className="p-5 bg-white border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div className="text-xs text-gray-600 font-medium text-center sm:text-left min-w-0 flex-1">
-                <p className="font-bold text-gray-900 truncate">{modalQuery || "Click map to select location"}</p>
-                <p className="text-gray-400 text-[11px] mt-0.5">
+            <div className="p-5 bg-white border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3 dark:bg-gray-900 dark:border-gray-800">
+              <div className="text-xs text-gray-600 font-medium text-center sm:text-left min-w-0 flex-1 dark:text-gray-300">
+                <p className="font-bold text-gray-900 truncate dark:text-gray-100">{modalQuery || "Click map to select location"}</p>
+                <p className="text-gray-400 text-[11px] mt-0.5 dark:text-gray-500">
                   Coords: {modalCoords.lat.toFixed(5)}, {modalCoords.lng.toFixed(5)}
                 </p>
               </div>
@@ -491,14 +491,14 @@ export const LocationPicker = ({
                 <button
                   type="button"
                   onClick={() => setShowMapModal(false)}
-                  className="rounded-xl border border-gray-200 px-4 py-2.5 text-xs font-semibold text-gray-600 hover:bg-gray-50 transition"
+                  className="rounded-xl border border-gray-200 px-4 py-2.5 text-xs font-semibold text-gray-600 hover:bg-gray-50 transition dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={handleConfirmLocation}
-                  className="rounded-xl bg-indigo-600 hover:bg-indigo-700 px-5 py-2.5 text-xs font-bold text-white transition shadow-md shadow-indigo-100 flex items-center gap-1.5"
+                  className="rounded-xl bg-indigo-600 hover:bg-indigo-700 px-5 py-2.5 text-xs font-bold text-white transition shadow-md shadow-indigo-100 dark:shadow-none flex items-center gap-1.5"
                 >
                   <Check className="h-4 w-4" />
                   Confirm Location

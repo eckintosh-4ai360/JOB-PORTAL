@@ -38,7 +38,7 @@ const JOB_TYPE_OPTIONS = [
 
 // Currency badge component
 const GhsIcon = () => (
-  <span className="text-xs font-bold text-gray-400 leading-none">GH₵</span>
+  <span className="text-xs font-bold text-gray-400 dark:text-gray-500 leading-none">GH₵</span>
 );
 
 const ManageJobs = () => {
@@ -265,8 +265,8 @@ const ManageJobs = () => {
         {/*  Header Row  */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Job Management</h1>
-            <p className="mt-1 text-sm text-gray-500">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Job Management</h1>
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
               Manage your job postings and track applications
             </p>
           </div>
@@ -280,15 +280,15 @@ const ManageJobs = () => {
         </div>
 
         {/*  Search and Filter Controls  */}
-        <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
+        <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-4 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
           <div className="relative w-full md:max-w-md">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-gray-500" />
             <input
               type="text"
               placeholder="Search jobs..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-10 pr-4 text-sm text-gray-900 placeholder:text-gray-400 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10"
+              className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 py-2.5 pl-10 pr-4 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10"
             />
           </div>
 
@@ -297,7 +297,7 @@ const ManageJobs = () => {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 outline-none cursor-pointer focus:border-blue-500"
+              className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 outline-none cursor-pointer focus:border-blue-500"
             >
               <option value="all">All Status</option>
               <option value="active">Active</option>
@@ -308,7 +308,7 @@ const ManageJobs = () => {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 outline-none cursor-pointer focus:border-blue-500"
+              className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 outline-none cursor-pointer focus:border-blue-500"
             >
               <option value="newest">Newest First</option>
               <option value="oldest">Oldest First</option>
@@ -318,32 +318,32 @@ const ManageJobs = () => {
         </div>
 
         {/* Result summary */}
-        <div className="text-xs font-semibold text-gray-400">
+        <div className="text-xs font-semibold text-gray-400 dark:text-gray-500">
           Showing {sortedJobs.length} of {jobs.length} job{jobs.length !== 1 ? "s" : ""}
         </div>
 
         {/*  Main content grid/table ─ */}
         {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-32 gap-4 rounded-2xl border border-gray-100 bg-white">
+          <div className="flex flex-col items-center justify-center py-32 gap-4 rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
             <Loader2 className="h-8 w-8 text-primary animate-spin" />
-            <p className="text-sm font-medium text-gray-400">Loading your jobs list…</p>
+            <p className="text-sm font-medium text-gray-400 dark:text-gray-500">Loading your jobs list…</p>
           </div>
         ) : sortedJobs.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 text-center rounded-2xl border border-gray-100 bg-white">
-            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-50">
-              <Briefcase className="h-8 w-8 text-gray-400" />
+          <div className="flex flex-col items-center justify-center py-24 text-center rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
+            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-50 dark:bg-gray-800">
+              <Briefcase className="h-8 w-8 text-gray-400 dark:text-gray-500" />
             </div>
-            <h3 className="text-lg font-bold text-gray-900">No jobs found</h3>
-            <p className="mt-1 text-sm text-gray-500 max-w-sm">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">No jobs found</h3>
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 max-w-sm">
               Try adjusting your search query, status filters, or post a new job opening.
             </p>
           </div>
         ) : (
-          <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
+          <div className="overflow-hidden rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
             {/* Desktop Table */}
             <div className="hidden md:block overflow-x-auto">
-              <table className="w-full border-collapse text-left text-sm text-gray-500">
-                <thead className="bg-slate-50/75 border-b border-gray-100 text-xs font-bold uppercase tracking-wider text-gray-400">
+              <table className="w-full border-collapse text-left text-sm text-gray-500 dark:text-gray-400">
+                <thead className="bg-slate-50/75 dark:bg-gray-800/60 border-b border-gray-100 dark:border-gray-700 text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
                   <tr>
                     <th scope="col" className="px-6 py-4">Job Title</th>
                     <th scope="col" className="px-6 py-4">Status</th>
@@ -351,23 +351,23 @@ const ManageJobs = () => {
                     <th scope="col" className="px-6 py-4 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50">
+                <tbody className="divide-y divide-gray-50 dark:divide-gray-800">
                   {paginatedJobs.map((job) => {
                     const isActive = !job.isClosed;
                     return (
-                      <tr key={job._id} className="hover:bg-slate-50/50 transition-colors">
+                      <tr key={job._id} className="hover:bg-slate-50/50 dark:hover:bg-gray-800/50 transition-colors">
                         <td className="px-6 py-5">
                           <div className="flex flex-col">
-                            <span className="font-bold text-gray-900 text-base">{job.title}</span>
-                            <span className="text-xs text-gray-400 mt-0.5">{job.company?.name || "SPG User"}</span>
+                            <span className="font-bold text-gray-900 dark:text-gray-100 text-base">{job.title}</span>
+                            <span className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{job.company?.name || "SPG User"}</span>
                           </div>
                         </td>
                         <td className="px-6 py-5">
                           <span
                             className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold ${
                               isActive
-                                ? "bg-emerald-50 text-emerald-600 ring-1 ring-emerald-200"
-                                : "bg-gray-100 text-gray-500 ring-1 ring-gray-200"
+                                ? "bg-emerald-50 text-emerald-600 ring-1 ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/30"
+                                : "bg-gray-100 text-gray-500 ring-1 ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700"
                             }`}
                           >
                             <span className={`h-1.5 w-1.5 rounded-full ${isActive ? "bg-emerald-500" : "bg-gray-400"}`} />
@@ -377,9 +377,9 @@ const ManageJobs = () => {
                         <td className="px-6 py-5">
                           <button
                             onClick={() => navigate(`/applicants?jobId=${job._id}`)}
-                            className="flex items-center gap-2 font-bold text-indigo-600 hover:text-indigo-700 transition"
+                            className="flex items-center gap-2 font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition"
                           >
-                            <Users className="h-4.5 w-4.5 text-indigo-500" />
+                            <Users className="h-4.5 w-4.5 text-indigo-500 dark:text-indigo-400" />
                             <span>{job.applicantCount ?? 0}</span>
                           </button>
                         </td>
@@ -388,7 +388,7 @@ const ManageJobs = () => {
                             {/* Edit */}
                             <button
                               onClick={() => handleEditClick(job)}
-                              className="rounded-lg p-2 text-blue-600 hover:bg-blue-50 transition"
+                              className="rounded-lg p-2 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-500/10 transition"
                               title="Edit Job"
                             >
                               <Edit3 className="h-4 w-4" />
@@ -399,8 +399,8 @@ const ManageJobs = () => {
                               onClick={() => handleToggleClose(job._id, job.isClosed)}
                               className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-bold transition border ${
                                 isActive
-                                  ? "text-orange-600 border-orange-100 hover:bg-orange-50"
-                                  : "text-emerald-600 border-emerald-100 hover:bg-emerald-50"
+                                  ? "text-orange-600 dark:text-orange-400 border-orange-100 dark:border-orange-500/30 hover:bg-orange-50 dark:hover:bg-orange-500/10"
+                                  : "text-emerald-600 dark:text-emerald-400 border-emerald-100 dark:border-emerald-500/30 hover:bg-emerald-50 dark:hover:bg-emerald-500/10"
                               }`}
                             >
                               {isActive ? (
@@ -419,7 +419,7 @@ const ManageJobs = () => {
                             {/* Delete */}
                             <button
                               onClick={() => initiateDelete(job._id)}
-                              className="rounded-lg p-2 text-red-500 hover:bg-red-50 transition"
+                              className="rounded-lg p-2 text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition"
                               title="Delete Job"
                             >
                               <Trash2 className="h-4 w-4" />
@@ -434,35 +434,35 @@ const ManageJobs = () => {
             </div>
 
             {/* Mobile Stack Cards Layout */}
-            <div className="md:hidden divide-y divide-gray-100">
+            <div className="md:hidden divide-y divide-gray-100 dark:divide-gray-800">
               {paginatedJobs.map((job) => {
                 const isActive = !job.isClosed;
                 return (
-                  <div key={job._id} className="p-5 space-y-4 hover:bg-slate-50/50">
+                  <div key={job._id} className="p-5 space-y-4 hover:bg-slate-50/50 dark:hover:bg-gray-800/50">
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <h4 className="font-bold text-gray-900 text-base">{job.title}</h4>
-                        <p className="text-xs text-gray-400 mt-0.5">{job.company?.name || "SPG User"}</p>
+                        <h4 className="font-bold text-gray-900 dark:text-gray-100 text-base">{job.title}</h4>
+                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{job.company?.name || "SPG User"}</p>
                       </div>
                       <span
                         className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-bold ${
                           isActive
-                            ? "bg-emerald-50 text-emerald-600 ring-1 ring-emerald-200"
-                            : "bg-gray-100 text-gray-500 ring-1 ring-gray-200"
+                            ? "bg-emerald-50 text-emerald-600 ring-1 ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/30"
+                            : "bg-gray-100 text-gray-500 ring-1 ring-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700"
                         }`}
                       >
                         {isActive ? "Active" : "Closed"}
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between border-t border-slate-50 pt-3 text-sm">
+                    <div className="flex items-center justify-between border-t border-slate-50 dark:border-gray-800 pt-3 text-sm">
                       <div className="flex items-center gap-2">
-                        <span className="text-gray-400">Applicants:</span>
+                        <span className="text-gray-400 dark:text-gray-500">Applicants:</span>
                         <button
                           onClick={() => navigate(`/applicants?jobId=${job._id}`)}
-                          className="flex items-center gap-1.5 font-bold text-indigo-600 hover:text-indigo-700"
+                          className="flex items-center gap-1.5 font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300"
                         >
-                          <Users className="h-4 w-4 text-indigo-500" />
+                          <Users className="h-4 w-4 text-indigo-500 dark:text-indigo-400" />
                           {job.applicantCount ?? 0}
                         </button>
                       </div>
@@ -472,9 +472,9 @@ const ManageJobs = () => {
                     <div className="flex gap-2 pt-1">
                       <button
                         onClick={() => handleEditClick(job)}
-                        className="flex-1 flex items-center justify-center gap-1.5 rounded-xl border border-gray-200 bg-white py-2 text-xs font-semibold text-gray-700 hover:border-gray-300"
+                        className="flex-1 flex items-center justify-center gap-1.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 py-2 text-xs font-semibold text-gray-700 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600"
                       >
-                        <Edit3 className="h-3.5 w-3.5 text-blue-500" />
+                        <Edit3 className="h-3.5 w-3.5 text-blue-500 dark:text-blue-400" />
                         Edit
                       </button>
 
@@ -482,8 +482,8 @@ const ManageJobs = () => {
                         onClick={() => handleToggleClose(job._id, job.isClosed)}
                         className={`flex-1 flex items-center justify-center gap-1.5 rounded-xl border py-2 text-xs font-semibold transition ${
                           isActive
-                            ? "border-orange-100 text-orange-600 hover:bg-orange-50"
-                            : "border-emerald-100 text-emerald-600 hover:bg-emerald-50"
+                            ? "border-orange-100 dark:border-orange-500/30 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-500/10"
+                            : "border-emerald-100 dark:border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-500/10"
                         }`}
                       >
                         {isActive ? <XCircle className="h-3.5 w-3.5" /> : <CheckCircle className="h-3.5 w-3.5" />}
@@ -492,7 +492,7 @@ const ManageJobs = () => {
 
                       <button
                         onClick={() => initiateDelete(job._id)}
-                        className="flex items-center justify-center rounded-xl border border-red-100 p-2 text-red-500 hover:bg-red-50"
+                        className="flex items-center justify-center rounded-xl border border-red-100 dark:border-red-500/30 p-2 text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -504,24 +504,24 @@ const ManageJobs = () => {
 
             {/*  Pagination Footer Controls  */}
             {totalPages > 1 && (
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-gray-100 bg-white px-6 py-4 rounded-b-2xl">
-                <div className="text-xs text-gray-500 font-medium">
-                  Showing <span className="font-semibold text-gray-900">{Math.min((currentPage - 1) * itemsPerPage + 1, totalItems)}</span> to{" "}
-                  <span className="font-semibold text-gray-900">{Math.min(currentPage * itemsPerPage, totalItems)}</span> of{" "}
-                  <span className="font-semibold text-gray-900">{totalItems}</span> jobs
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 px-6 py-4 rounded-b-2xl">
+                <div className="text-xs text-gray-500 dark:text-gray-400 font-medium">
+                  Showing <span className="font-semibold text-gray-900 dark:text-gray-100">{Math.min((currentPage - 1) * itemsPerPage + 1, totalItems)}</span> to{" "}
+                  <span className="font-semibold text-gray-900 dark:text-gray-100">{Math.min(currentPage * itemsPerPage, totalItems)}</span> of{" "}
+                  <span className="font-semibold text-gray-900 dark:text-gray-100">{totalItems}</span> jobs
                 </div>
-                
+
                 <div className="flex items-center gap-2">
                   {/* Items per page selector */}
                   <div className="flex items-center gap-1.5 mr-2">
-                    <span className="text-xs text-gray-400 font-medium">Per page:</span>
+                    <span className="text-xs text-gray-400 dark:text-gray-500 font-medium">Per page:</span>
                     <select
                       value={itemsPerPage}
                       onChange={(e) => {
                         setItemsPerPage(Number(e.target.value));
                         setCurrentPage(1);
                       }}
-                      className="rounded-lg border border-gray-200 bg-white px-2 py-1 text-xs text-gray-600 outline-none cursor-pointer focus:border-blue-500"
+                      className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-1 text-xs text-gray-600 dark:text-gray-300 outline-none cursor-pointer focus:border-blue-500"
                     >
                       <option value={5}>5</option>
                       <option value={10}>10</option>
@@ -534,7 +534,7 @@ const ManageJobs = () => {
                     type="button"
                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
-                    className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-500 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+                    className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 transition hover:bg-gray-50 dark:hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <ChevronLeft className="h-4 w-4" />
                   </button>
@@ -548,7 +548,7 @@ const ManageJobs = () => {
                         className={`flex h-8 w-8 items-center justify-center rounded-lg text-xs font-semibold transition ${
                           currentPage === page
                             ? "bg-primary text-white shadow-sm shadow-primary/10"
-                            : "border border-gray-200 bg-white text-gray-600 hover:bg-gray-50"
+                            : "border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                         }`}
                       >
                         {page}
@@ -560,7 +560,7 @@ const ManageJobs = () => {
                     type="button"
                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                     disabled={currentPage === totalPages}
-                    className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-500 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+                    className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400 transition hover:bg-gray-50 dark:hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <ChevronRight className="h-4 w-4" />
                   </button>
@@ -574,16 +574,16 @@ const ManageJobs = () => {
       {/*  Edit Job Modal  */}
       {editingJob && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl border border-gray-100 bg-white p-6 shadow-2xl animate-in fade-in zoom-in duration-200">
+          <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-2xl animate-in fade-in zoom-in duration-200">
             {/* Header */}
-            <div className="sticky top-0 z-10 bg-white flex items-center justify-between border-b border-gray-100 pb-4 mb-5">
+            <div className="sticky top-0 z-10 bg-white dark:bg-gray-900 flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-4 mb-5">
               <div>
-                <h3 className="text-lg font-bold text-gray-900">Edit Job Posting</h3>
-                <p className="text-xs text-gray-400">Make changes to your job parameters below</p>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Edit Job Posting</h3>
+                <p className="text-xs text-gray-400 dark:text-gray-500">Make changes to your job parameters below</p>
               </div>
               <button
                 onClick={() => setEditingJob(null)}
-                className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                className="rounded-lg p-1.5 text-gray-400 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-300"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -704,7 +704,7 @@ const ManageJobs = () => {
               />
 
               <div>
-                <p className="mb-1 text-sm font-semibold text-gray-700">Salary Range</p>
+                <p className="mb-1 text-sm font-semibold text-gray-700 dark:text-gray-300">Salary Range</p>
                 <div className="grid grid-cols-2 gap-4">
                   <InputField
                     name="salaryMin"
@@ -729,11 +729,11 @@ const ManageJobs = () => {
                 </div>
               </div>
 
-              <div className="flex gap-3 pt-4 border-t border-gray-100 justify-end">
+              <div className="flex gap-3 pt-4 border-t border-gray-100 dark:border-gray-800 justify-end">
                 <button
                   type="button"
                   onClick={() => setEditingJob(null)}
-                  className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                  className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-5 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
                   Cancel
                 </button>
@@ -763,19 +763,19 @@ const ManageJobs = () => {
       {/*  Delete Confirmation Dialog  */}
       {deletingJobId && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-3xl border border-gray-100 bg-white p-6 shadow-2xl animate-in fade-in zoom-in duration-200">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-50 text-red-500 mb-4">
+          <div className="w-full max-w-md rounded-3xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-2xl animate-in fade-in zoom-in duration-200">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-50 dark:bg-red-500/10 text-red-500 dark:text-red-400 mb-4">
               <AlertCircle className="h-6 w-6" />
             </div>
-            <h3 className="text-lg font-bold text-gray-900">Delete Job Posting</h3>
-            <p className="mt-2 text-sm text-gray-500">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Delete Job Posting</h3>
+            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
               Are you sure you want to delete this job posting? This action is permanent and all candidate applications for this job will be removed.
             </p>
             <div className="flex gap-3 mt-6 justify-end">
               <button
                 type="button"
                 onClick={() => setDeletingJobId(null)}
-                className="rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
                 disabled={isDeleting}
               >
                 Cancel
