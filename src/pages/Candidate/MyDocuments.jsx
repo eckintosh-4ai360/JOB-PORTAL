@@ -112,10 +112,10 @@ export const MyDocuments = () => {
   const fileInputRef = useRef(null);
   const uploadSectionRef = useRef(null);
 
-  // Active section tab: 'applications' or 'documents' or 'all'
+  // Active section tab
   const [activeTab, setActiveTab] = useState("all");
 
-  // Application filter tab: 'all', 'reviewing', 'interview', 'hired', 'unsuccessful'
+  // Application filter tab
   const [appStatusFilter, setAppStatusFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -401,9 +401,7 @@ export const MyDocuments = () => {
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-7">
         
-        {/* ========================================================================= */}
         {/* PAGE HEADER */}
-        {/* ========================================================================= */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <div className="flex items-center gap-2.5">
@@ -443,212 +441,205 @@ export const MyDocuments = () => {
           </div>
         </div>
 
-        {/* ========================================================================= */}
-        {/* TOP METRICS & STATS CARDS */}
-        {/* ========================================================================= */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {/* TOP METRICS ROW: 2 LEFT STACKED / GRID STAT CARDS + 1 RIGHT INTERVIEW CARD */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
           
-          {/* Card 1: Total Jobs Applied */}
-          <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-            <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-indigo-500 to-indigo-600" />
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-bold text-gray-600">Total Jobs Applied</p>
-              <div className="h-9 w-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <Briefcase className="h-4.5 w-4.5" />
-              </div>
-            </div>
-            <div className="mt-4 flex items-baseline gap-2">
-              <span className="text-3xl sm:text-4xl font-extrabold text-gray-900">
-                {isLoading ? "—" : applications.length}
-              </span>
-              <span className="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">
-                {applications.filter((a) => a.status === "Interviewing" || a.status === "Under Review").length} Active
-              </span>
-            </div>
-            <p className="mt-2 text-xs text-gray-400">
-              Submitted applications in hiring pipelines
-            </p>
-          </div>
-
-          {/* Card 2: Applications to Submit Documents On */}
-          <div className="rounded-2xl border border-amber-100/80 bg-white p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-            <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-amber-500 to-rose-500" />
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5">
-                <p className="text-sm font-bold text-gray-800">Applications to Submit Docs</p>
-                <div
-                  className="group/tooltip relative cursor-pointer"
-                  title="Applications requiring missing credentials (certificates, ID, or resume)"
-                >
-                  <Info className="h-4 w-4 text-amber-500" />
+          {/* Left Column: 2 Stat Cards */}
+          <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-5">
+            
+            {/* Stat Card 1: Total Jobs Applied */}
+            <div className="rounded-2xl border border-gray-200/90 bg-white p-6 shadow-xs flex flex-col justify-between hover:border-gray-300 transition-colors">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-bold text-gray-900 tracking-tight">
+                  Total Jobs Applied
+                </h3>
+                <div className="h-8 w-8 rounded-lg bg-gray-50 flex items-center justify-center text-gray-500">
+                  <Briefcase className="h-4 w-4" />
                 </div>
               </div>
-              <div className="h-9 w-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <AlertCircle className="h-4.5 w-4.5" />
+              <div className="mt-3">
+                <span className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
+                  {isLoading ? "—" : applications.length}
+                </span>
               </div>
             </div>
-            <div className="mt-4 flex items-baseline gap-2">
-              <span className="text-3xl sm:text-4xl font-extrabold text-amber-700">
-                {isLoading ? "—" : missingDocumentInfo.count}
-              </span>
-              {missingDocumentInfo.hasPendingAction && (
-                <span className="text-xs font-bold text-rose-700 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-full animate-pulse">
-                  Action Needed
+
+            {/* Stat Card 2: Applications to Submit Documents On */}
+            <div className="rounded-2xl border border-gray-200/90 bg-white p-6 shadow-xs flex flex-col justify-between hover:border-gray-300 transition-colors">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <h3 className="text-sm font-bold text-gray-900 tracking-tight">
+                    Applications to Submit Documents On
+                  </h3>
+                  <div
+                    className="relative cursor-pointer text-gray-400 hover:text-gray-600"
+                    title="Applications in interview or review stages that require document verification"
+                  >
+                    <Info className="h-4 w-4" />
+                  </div>
+                </div>
+                <div className="h-8 w-8 rounded-lg bg-gray-50 flex items-center justify-center text-gray-500">
+                  <AlertCircle className="h-4 w-4" />
+                </div>
+              </div>
+              <div className="mt-3">
+                <span className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
+                  {isLoading ? "—" : missingDocumentInfo.count}
                 </span>
-              )}
+              </div>
             </div>
-            <p className="mt-2 text-xs text-gray-400">
-              {missingDocumentInfo.hasPendingAction
-                ? "Additional credentials requested for active stages"
-                : "All required credentials in order"}
-            </p>
+
           </div>
 
-          {/* Card 3: Upcoming Interviews */}
-          <div className="rounded-2xl border border-emerald-100/80 bg-white p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-            <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-emerald-500 to-teal-500" />
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-bold text-gray-800">Upcoming Interviews</p>
-              <div className="h-9 w-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                <Calendar className="h-4.5 w-4.5" />
+          {/* Right Column: Upcoming Interviews Spotlight Card */}
+          <div className="lg:col-span-7 rounded-2xl border border-gray-200/90 bg-white p-6 shadow-xs flex flex-col justify-between hover:border-gray-300 transition-colors">
+            <div>
+              <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
+                <h3 className="text-sm font-bold text-gray-900 tracking-tight">
+                  Upcoming Interviews
+                </h3>
+                <div className="h-8 w-8 rounded-lg bg-gray-50 flex items-center justify-center text-gray-500">
+                  <Calendar className="h-4 w-4" />
+                </div>
               </div>
-            </div>
 
-            <div className="mt-4">
               {isLoading ? (
-                <div className="h-10 flex items-center">
+                <div className="py-6 flex items-center justify-center">
                   <Loader2 className="h-5 w-5 text-gray-400 animate-spin" />
                 </div>
               ) : upcomingInterviews.length > 0 ? (
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl sm:text-3xl font-extrabold text-emerald-700">
-                      {upcomingInterviews.length}
-                    </span>
-                    <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
-                      Scheduled
-                    </span>
-                  </div>
-                  {/* Latest interview preview */}
-                  <div
-                    onClick={() => {
-                      setSelectedInterviewApp(upcomingInterviews[0]);
-                      setIsInterviewModalOpen(true);
-                    }}
-                    className="mt-2 p-2.5 rounded-xl bg-emerald-50/60 border border-emerald-100 hover:bg-emerald-100/60 cursor-pointer transition flex items-center justify-between gap-2"
-                  >
-                    <div className="min-w-0">
-                      <p className="text-xs font-bold text-emerald-900 truncate">
-                        {upcomingInterviews[0].job?.title}
-                      </p>
-                      <p className="text-[11px] text-emerald-700 truncate">
-                        {moment(upcomingInterviews[0].interview.date).format("ddd, D MMM")} · {upcomingInterviews[0].interview.time}
-                      </p>
-                    </div>
-                    <ArrowRight className="h-3.5 w-3.5 text-emerald-700 shrink-0" />
-                  </div>
+                <div className="space-y-3">
+                  {upcomingInterviews.slice(0, 2).map((app) => {
+                    const company = app.job?.company;
+                    const companyName = company?.companyName || company?.name || "Company";
+                    return (
+                      <div
+                        key={app._id}
+                        onClick={() => {
+                          setSelectedInterviewApp(app);
+                          setIsInterviewModalOpen(true);
+                        }}
+                        className="group flex items-start justify-between gap-3 p-3.5 rounded-xl bg-gray-50/70 hover:bg-indigo-50/60 border border-gray-100 hover:border-indigo-200 cursor-pointer transition"
+                      >
+                        <div className="flex items-start gap-3 min-w-0">
+                          <div className="mt-0.5 h-8 w-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-indigo-600 shrink-0">
+                            <Calendar className="h-4 w-4" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-xs sm:text-sm font-bold text-gray-900 truncate">
+                              {app.job?.title}{" "}
+                              <span className="font-semibold text-gray-500">
+                                @ {companyName} {app.job?.location ? `– ${app.job.location}` : ""}
+                              </span>
+                            </p>
+                            <p className="text-xs font-semibold text-indigo-600 mt-0.5">
+                              {moment(app.interview.date).format("ddd, D MMM YYYY")}{" "}
+                              {app.interview.time ? `at ${app.interview.time}` : ""}{" "}
+                              <span className="text-gray-400 font-normal">· (1st Interview)</span>
+                            </p>
+                          </div>
+                        </div>
+
+                        <span className="text-xs font-bold text-indigo-600 group-hover:translate-x-0.5 transition-transform shrink-0 flex items-center gap-1 mt-1">
+                          Details <ChevronRight className="h-3.5 w-3.5" />
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               ) : (
-                <div>
-                  <span className="text-3xl sm:text-4xl font-extrabold text-gray-400">0</span>
-                  <p className="mt-2 text-xs text-gray-400">No scheduled interviews at this time</p>
+                <div className="py-7 text-center">
+                  <p className="text-xs font-semibold text-gray-500">
+                    No scheduled interviews at this time
+                  </p>
+                  <p className="text-[11px] text-gray-400 mt-0.5">
+                    When employers schedule an interview, it will appear here.
+                  </p>
                 </div>
               )}
             </div>
+
+            {upcomingInterviews.length > 0 && (
+              <p className="text-[11px] text-gray-400 mt-3 border-t border-gray-50 pt-2">
+                Click any interview to access instructions, joining link, or copy location.
+              </p>
+            )}
           </div>
 
         </div>
 
-        {/* ========================================================================= */}
         {/* ACTION REQUIRED: SUBMIT MISSING DOCUMENTS BANNER */}
-        {/* ========================================================================= */}
         {missingDocumentInfo.hasPendingAction && (
-          <div className="relative rounded-2xl border-2 border-amber-200/90 bg-gradient-to-r from-amber-50/90 via-rose-50/50 to-amber-50/80 p-5 sm:p-6 shadow-sm overflow-hidden animate-in fade-in duration-300">
-            {/* Background ambient shape */}
-            <div className="pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-amber-400/10 blur-2xl" />
-
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-5 relative z-10">
+          <div className="rounded-2xl border border-rose-200/90 bg-rose-50/40 p-5 sm:p-6 shadow-xs animate-in fade-in duration-200">
+            <div className="flex flex-col gap-4">
               
-              <div className="flex items-start gap-4">
-                <div className="h-10 w-10 sm:h-11 sm:w-11 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-amber-200 mt-0.5">
-                  <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6" />
+              {/* Header */}
+              <div className="flex items-center gap-2.5">
+                <div className="h-6 w-6 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold shrink-0">
+                  !
                 </div>
-
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="text-base sm:text-lg font-extrabold text-gray-900">
-                      Action Required: Submit Missing Documents
-                    </h3>
-                    <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-bold text-amber-800">
-                      Priority
-                    </span>
-                  </div>
-
-                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed max-w-2xl">
-                    You have interview-stage or active applications that require additional credentials. Please upload the missing documents to your profile to proceed with employer reviews.
-                  </p>
-
-                  {/* List of affected positions & missing credentials pills */}
-                  <div className="pt-1 flex flex-col sm:flex-row sm:items-center gap-2 flex-wrap">
-                    {missingDocumentInfo.actionableApps.length > 0 ? (
-                      missingDocumentInfo.actionableApps.map((app) => {
-                        const companyName =
-                          app.job?.company?.companyName || app.job?.company?.name || "Employer";
-                        return (
-                          <div
-                            key={app._id}
-                            className="inline-flex items-center gap-2 rounded-xl bg-white/90 border border-amber-200 px-3 py-1.5 text-xs font-semibold text-gray-800 shadow-xs"
-                          >
-                            <Briefcase className="h-3.5 w-3.5 text-amber-600 shrink-0" />
-                            <span className="font-bold text-gray-900">{app.job?.title}</span>
-                            <span className="text-gray-400">@</span>
-                            <span className="text-gray-600">{companyName}</span>
-                          </div>
-                        );
-                      })
-                    ) : (
-                      <span className="text-xs font-bold text-gray-700">Recommended Credentials:</span>
-                    )}
-
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className="text-xs font-bold text-amber-900">Missing:</span>
-                      {missingDocumentInfo.missingPills.map((pill) => (
-                        <button
-                          key={pill}
-                          onClick={() => {
-                            if (pill.includes("Certificate")) scrollToUpload("Certificate");
-                            else if (pill.includes("ID")) scrollToUpload("ID Document");
-                            else scrollToUpload("Resume");
-                          }}
-                          className="inline-flex items-center gap-1 rounded-full border border-rose-200 bg-rose-50 hover:bg-rose-100 px-2.5 py-0.5 text-xs font-bold text-rose-700 transition"
-                          title="Click to upload this document"
-                        >
-                          <Plus className="h-3 w-3" />
-                          {pill}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                <h3 className="text-base font-extrabold text-gray-900 tracking-tight">
+                  Action Required: Submit Missing Documents
+                </h3>
               </div>
 
-              {/* Action Button */}
-              <button
-                onClick={() => scrollToUpload()}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-600 to-rose-600 px-5 py-3 text-xs sm:text-sm font-bold text-white shadow-lg shadow-amber-200 hover:from-amber-700 hover:to-rose-700 transition-all hover:scale-105 active:scale-100 shrink-0"
-              >
-                <Upload className="h-4 w-4" />
-                Upload Documents to Profile
-                <ArrowRight className="h-4 w-4" />
-              </button>
+              {/* Subtitle */}
+              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed max-w-3xl">
+                You have interview-stage applications that require additional documents. Please upload the missing documents to your profile to proceed.
+              </p>
+
+              {/* Application Row & Missing Pills */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
+                
+                <div className="space-y-2">
+                  {missingDocumentInfo.actionableApps.map((app) => {
+                    const company = app.job?.company;
+                    const companyName = company?.companyName || company?.name || "Arch Holdings Limited";
+                    return (
+                      <div key={app._id} className="flex flex-wrap items-center gap-2 text-xs">
+                        <span className="flex items-center gap-1.5 font-bold text-gray-900">
+                          <Briefcase className="h-3.5 w-3.5 text-rose-600" />
+                          {app.job?.title}
+                        </span>
+                        <span className="text-gray-500">@ {companyName}</span>
+                      </div>
+                    );
+                  })}
+
+                  <div className="flex items-center gap-2 flex-wrap text-xs">
+                    <span className="font-bold text-rose-700">Missing:</span>
+                    {missingDocumentInfo.missingPills.map((pill) => (
+                      <button
+                        key={pill}
+                        onClick={() => {
+                          if (pill.includes("Certificate")) scrollToUpload("Certificate");
+                          else if (pill.includes("ID")) scrollToUpload("ID Document");
+                          else scrollToUpload("Resume");
+                        }}
+                        className="inline-flex items-center gap-1 rounded-full border border-rose-300 bg-white hover:bg-rose-100/70 px-3 py-1 text-xs font-semibold text-rose-700 transition shadow-2xs"
+                      >
+                        {pill}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Upload CTA Button */}
+                <button
+                  onClick={() => scrollToUpload()}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 hover:bg-slate-800 px-5 py-3 text-xs font-bold text-white transition-all shadow-sm hover:scale-[1.01] active:scale-100 shrink-0 uppercase tracking-wide"
+                >
+                  <ArrowRight className="h-4 w-4" />
+                  Upload Documents to Profile
+                </button>
+
+              </div>
 
             </div>
           </div>
         )}
 
-        {/* ========================================================================= */}
         {/* MAIN SECTION TABS */}
-        {/* ========================================================================= */}
         <div className="flex items-center border-b border-gray-200">
           <button
             onClick={() => setActiveTab("all")}
@@ -687,9 +678,8 @@ export const MyDocuments = () => {
           </button>
         </div>
 
-        {/* ========================================================================= */}
+      
         {/* SECTION 1: APPLICATIONS HISTORY TABLE & TRACKER */}
-        {/* ========================================================================= */}
         {(activeTab === "all" || activeTab === "applications") && (
           <div className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
             
@@ -1085,9 +1075,8 @@ export const MyDocuments = () => {
           </div>
         )}
 
-        {/* ========================================================================= */}
+      
         {/* SECTION 2: DOCUMENT VAULT & UPLOAD */}
-        {/* ========================================================================= */}
         {(activeTab === "all" || activeTab === "documents") && (
           <div ref={uploadSectionRef} className="space-y-6">
             
@@ -1330,9 +1319,8 @@ export const MyDocuments = () => {
 
       </main>
 
-      {/* ========================================================================= */}
+    
       {/* MODAL 1: INTERVIEW SCHEDULE DETAILS */}
-      {/* ========================================================================= */}
       {isInterviewModalOpen && selectedInterviewApp?.interview && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
           <div className="bg-white rounded-2xl max-w-lg w-full border border-gray-100 shadow-2xl p-6 relative overflow-hidden animate-in zoom-in-95 duration-200">
@@ -1445,9 +1433,7 @@ export const MyDocuments = () => {
         </div>
       )}
 
-      {/* ========================================================================= */}
       {/* MODAL 2: WITHDRAW APPLICATION CONFIRMATION */}
-      {/* ========================================================================= */}
       {appToWithdraw && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
           <div className="bg-white rounded-2xl max-w-md w-full border border-gray-100 shadow-2xl p-6 text-center animate-in zoom-in-95 duration-200">
@@ -1483,9 +1469,8 @@ export const MyDocuments = () => {
         </div>
       )}
 
-      {/* ========================================================================= */}
+      
       {/* MODAL 3: DELETE DOCUMENT CONFIRMATION */}
-      {/* ========================================================================= */}
       {docToDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
           <div className="bg-white rounded-2xl max-w-md w-full border border-gray-100 shadow-2xl p-6 text-center animate-in zoom-in-95 duration-200">
